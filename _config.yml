@@ -14,6 +14,7 @@ permalink: pretty
 gems:
   - susy
   - bourbon
+  - breakpoint
 
 # Asset settings
 sass:
