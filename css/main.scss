@@ -1,7 +1,8 @@
 ---
 ---
 
-@import 'normalize-css.scss/normalize-css';
+$em-base: 14;
+@import 'normalize-scss/normalize';
 @import 'bourbon/dist/bourbon';
 @import 'compass-breakpoint/stylesheets/breakpoint';
 @import 'susy/sass/susy';
