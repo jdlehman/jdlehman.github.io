@@ -1,0 +1,6 @@
+html, body {
+  @include breakpoint($medium) {
+    font-size: rem(16px);
+    padding: rem(10px);
+  }
+}

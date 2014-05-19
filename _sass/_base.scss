@@ -8,35 +8,36 @@ $large: 900px;
 
 $susy: (
   columns: 12,
-  gutters: 1/4
+  gutters: 1/4,
+  global-box-sizing: border-box,
+  debug: (
+    image: hide,
+    color: rgba(#66f, .25),
+    output: background,
+    toggle: top right,
+  )
 );
 
-* {
-  margin: 0;
-  padding: 0;
-}
+@include border-box-sizing;
+
 
 html, body {
-  height: 100%;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
+  padding: rem(5px);
   line-height: 1.5;
-  font-weight: 300;
-  background-color: #fdfdfd;
-  @include container(show);
+  @include container();
 }
 
-h1, h2, h3, h4, h5, h6 { font-size: 100%; font-weight: 400; }
-
-a         { color: #2a7ae2; text-decoration: none; }
-a:hover   { color: #000; text-decoration: underline; }
-a:visited { color: #205caa; }
+a {
+  text-decoration: none;
+}
 
 .github-icon-svg,
 .twitter-icon-svg {
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: rem(16px);
+  height: rem(16px);
+  top: rem(3px);
   position: relative;
-  top: 3px;
 }

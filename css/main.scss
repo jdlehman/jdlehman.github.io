@@ -1,13 +1,13 @@
 ---
 ---
 
-@import 'normalize.css.scss/normalize.css.scss';
+@import 'normalize-css.scss/normalize-css';
 @import 'bourbon/dist/bourbon';
-@import 'breakpoint/breakpoint/breakpoint';
+@import 'compass-breakpoint/stylesheets/breakpoint';
 @import 'susy/sass/susy';
 
-@import 'base';
 @import 'solarized_light';
+@import 'base';
 @import 'header';
 @import 'typography';
 

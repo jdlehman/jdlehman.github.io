@@ -17,7 +17,7 @@
   "dependencies": {
     "susy": "~2.1.2",
     "bourbon": "~4.0.1",
-    "breakpoint": "~4.6.4",
-    "normalize.css.scss": "~3.0.2"
+    "compass-breakpoint": "~2.4.2",
+    "normalize-css.scss": "~3.0.3"
   }
 }
