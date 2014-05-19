@@ -1,0 +1,22 @@
+{
+  "name": "in_lehmans_terms",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jdlehman/in_lehmans_terms",
+  "authors": [
+    "jdlehman <jonathan.lehman91@gmail.com>"
+  ],
+  "description": "blog for in_lehmans_terms",
+  "main": "_site/index.html",
+  "keywords": [
+    "jdlehman",
+    "in_lehmans_terms",
+    "jonathan",
+    "lehman"
+  ],
+  "private": true,
+  "devDependencies": {
+    "susy": "~2.1.2",
+    "bourbon": "~4.0.1",
+    "breakpoint": "~4.6.4"
+  }
+}
