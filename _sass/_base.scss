@@ -3,15 +3,15 @@
 /* ----------------------------------------------------------*/
 
 // breakpoint sizes
-$medium: 600px;
-$large: 900px;
+$mobile: (susy: (4, 1/8), breakpoint: (320px));
+$tablet: (susy: (6, 1/8), breakpoint: (640px));
+$small-desktop: (susy: (8, 1/4), breakpoint: (960px));
+$desktop: (susy: (12, 1/4), breakpoint: (1280px));
 
 $susy: (
-  columns: 12,
-  gutters: 1/4,
   global-box-sizing: border-box,
   debug: (
-    image: hide,
+    image: show,
     color: rgba(#66f, .25),
     output: background,
     toggle: top right,
@@ -22,11 +22,20 @@ $susy: (
 
 
 html, body {
+  @include container(map-get-deep($mobile, susy));
+  @include breakpoint(map-get-deep($tablet, breakpoint)) {
+    @include container(map-get-deep($tablet, susy));
+  }
+  @include breakpoint(map-get-deep($small-desktop, breakpoint)) {
+    @include container(map-get-deep($small-desktop, susy));
+  }
+  @include breakpoint(map-get-deep($desktop, breakpoint)) {
+    @include container(map-get-deep($desktop, susy));
+  }
   font-family: Helvetica, Arial, sans-serif;
   font-size: 14px;
   padding: rem(5px);
   line-height: 1.5;
-  @include container();
 }
 
 a {

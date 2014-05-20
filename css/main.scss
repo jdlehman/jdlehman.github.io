@@ -3,6 +3,7 @@
 
 $em-base: 14;
 @import 'normalize-scss/normalize';
+@import 'sassy-maps/sass/sassy-maps';
 @import 'bourbon/dist/bourbon';
 @import 'compass-breakpoint/stylesheets/breakpoint';
 @import 'susy/sass/susy';

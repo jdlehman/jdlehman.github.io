@@ -1,5 +1,5 @@
 html, body {
-  @include breakpoint($medium) {
+  @include breakpoint(map-get-deep($small-desktop, breakpoint)) {
     font-size: rem(16px);
     padding: rem(10px);
   }

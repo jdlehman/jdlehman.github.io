@@ -18,6 +18,6 @@
     "susy": "~2.1",
     "bourbon": "~4.0",
     "compass-breakpoint": "~2.4",
-    "normalize-scss": "~3.0.1"
+    "normalize-scss": "~3.0"
   }
 }
