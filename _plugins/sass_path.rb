@@ -1,5 +1,3 @@
-require 'sass'
-
 base_directory  = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 bower_path      = File.join(base_directory, '_app/bower_components')
 
