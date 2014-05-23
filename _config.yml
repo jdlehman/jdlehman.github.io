@@ -19,4 +19,8 @@ sass:
   style: :compressed
 
 # Files to exclude
-exclude: ['Gemfile', 'Gemfile.lock']
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - bower_components
+  - bower.json

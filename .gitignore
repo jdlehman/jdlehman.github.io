@@ -1,5 +1,4 @@
 _site
 .sass-cache
 .bundle
-app/bower_components
-_app/bower_components
+bower_components
