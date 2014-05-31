@@ -2,6 +2,7 @@
 // Layouts
 // -------
 
+// susy default settings
 $susy: (
   global-box-sizing: border-box,
   gutter-position: split,
@@ -10,24 +11,38 @@ $susy: (
 );
 @include border-box-sizing;
 
-// breakpoint sizes
+// layout properties
 $jl-layouts: (
-  sm: (susy: (columns: 4), breakpoint: (320px)),
-  md: (susy: (columns: 6), breakpoint: (640px)),
-  lg: (susy: (columns: 8), breakpoint: (960px)),
-  xl: (susy: (columns: 12), breakpoint: (1280px)),
+  sm: (susy: (columns: 4), breakpoint: 320px),
+  md: (susy: (columns: 6), breakpoint: 640px),
+  lg: (susy: (columns: 8), breakpoint: 960px),
+  xl: (susy: (columns: 12), breakpoint: 1280px),
 ) !global;
 
+// get susy layout by name from $jl-layouts
+//
+// Parameters:
+// @name: layout name
 @function jl-layout($name) {
   $settings: map-get-deep($jl-layouts, $name, susy);
   @return map-merge($susy, $settings);
 }
 
+// set susy layout by name from $jl-layouts
+//
+// Parameters:
+// @name: layout name
 @mixin jl-container($name) {
   $layout: jl-layout($name);
   @include container($layout);
 }
 
+// set susy layout for all child selectors
+// by name from $jl-layouts. global settings are restored
+// outside of this content block.
+//
+// Parameters:
+// @name: layout name
 @mixin with-jl-layout($name) {
   $layout: jl-layout($name);
   @include with-layout($layout, $clean: true) {
@@ -35,6 +50,11 @@ $jl-layouts: (
   }
 }
 
+// set susy breakpoint by layout name from $jl-layouts.
+// sets a min-width media query
+//
+// Parameters:
+// @name: layout name
 @mixin jl-breakpoint($name) {
   $query: map-get-deep($jl-layouts, $name, breakpoint);
   $layout: jl-layout($name);
@@ -43,6 +63,13 @@ $jl-layouts: (
   }
 }
 
+// set susy breakpoint by layout name from $jl-layouts.
+// this uses respond-to property on $jl-layouts to set
+// a min-width AND max-width media query.
+// Note: ***use this to prevent smaller layouts from getting EVERYTHING
+//
+// Parameters:
+// @name: layout name
 @mixin jl-respond-to($name) {
   $query: map-get-deep($jl-layouts, $name, respond-to);
   $layout: jl-layout($name);
@@ -55,6 +82,8 @@ $jl-layouts: (
 // Breakpoint Integration
 // ----------------------
 
+// add respond-to property to $jl-layouts.
+// this contains min-width and max-width for breakpoints.
 @each $name, $info in $jl-layouts {
   $names: map-keys($jl-layouts);
   $index: index($names, $name);
@@ -73,7 +102,7 @@ $jl-layouts: (
   $max-width: null;
   @if $index == 1 {
     $max-width: $next-breakpoint - 1px;
-    $respond-to: 'max-width' $max-width;
+    $respond-to: max-width $max-width;
   } @else if $index != length($names) {
     $min-width: $current-breakpoint;
     $max-width: $next-breakpoint - 1px;
