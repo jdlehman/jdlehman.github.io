@@ -1,6 +1,9 @@
-html, body {
+html {
   @include breakpoint(map-get-deep($small-desktop, breakpoint)) {
     font-size: rem(16px);
-    padding: rem(10px);
   }
+}
+
+body {
+  padding: rem(10px);
 }
