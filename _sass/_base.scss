@@ -1,41 +1,25 @@
-/* ----------------------------------------------------------*/
-/* Base */
-/* ----------------------------------------------------------*/
-
-// breakpoint sizes
-$mobile: (susy: (4, 1/8), breakpoint: (320px));
-$tablet: (susy: (6, 1/8), breakpoint: (640px));
-$small-desktop: (susy: (8, 1/4), breakpoint: (960px));
-$desktop: (susy: (12, 1/4), breakpoint: (1280px));
-
-$susy: (
-  global-box-sizing: border-box,
-  gutter-position: split,
-  gutters: 1/4,
-  debug: (image: show)
-);
-
-@include border-box-sizing;
-
+// ----
+// Base
+// ----
 
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 body {
-  @include container(map-get-deep($mobile, susy));
-  @include breakpoint(map-get-deep($tablet, breakpoint)) {
-    @include container(map-get-deep($tablet, susy));
+  @include jl-container(sm);
+  @include jl-breakpoint(md) {
+    @include jl-container(md);
   }
-  @include breakpoint(map-get-deep($small-desktop, breakpoint)) {
-    @include container(map-get-deep($small-desktop, susy));
+  @include jl-breakpoint(lg) {
+    @include jl-container(lg);
   }
-  @include breakpoint(map-get-deep($desktop, breakpoint)) {
-    @include container(map-get-deep($desktop, susy));
+  @include jl-breakpoint(xl) {
+    @include jl-container(xl);
   }
 
   font-family: Helvetica, Arial, sans-serif;
-  padding: rem(5px);
+  padding: rem(16px);
   line-height: 1.5;
 }
 
@@ -43,11 +27,3 @@ a {
   text-decoration: none;
 }
 
-.github-icon-svg,
-.twitter-icon-svg {
-  display: inline-block;
-  width: rem(16px);
-  height: rem(16px);
-  top: rem(3px);
-  position: relative;
-}

@@ -1,0 +1,87 @@
+// -------
+// Layouts
+// -------
+
+$susy: (
+  global-box-sizing: border-box,
+  gutter-position: split,
+  gutters: 1/4,
+  // debug: (image: show)
+);
+@include border-box-sizing;
+
+// breakpoint sizes
+$jl-layouts: (
+  sm: (susy: (columns: 4), breakpoint: (320px)),
+  md: (susy: (columns: 6), breakpoint: (640px)),
+  lg: (susy: (columns: 8), breakpoint: (960px)),
+  xl: (susy: (columns: 12), breakpoint: (1280px)),
+) !global;
+
+@function jl-layout($name) {
+  $settings: map-get-deep($jl-layouts, $name, susy);
+  @return map-merge($susy, $settings);
+}
+
+@mixin jl-container($name) {
+  $layout: jl-layout($name);
+  @include container($layout);
+}
+
+@mixin with-jl-layout($name) {
+  $layout: jl-layout($name);
+  @include with-layout($layout, $clean: true) {
+    @content;
+  }
+}
+
+@mixin jl-breakpoint($name) {
+  $query: map-get-deep($jl-layouts, $name, breakpoint);
+  $layout: jl-layout($name);
+  @include susy-breakpoint($query, $layout) {
+    @content;
+  }
+}
+
+@mixin jl-respond-to($name) {
+  $query: map-get-deep($jl-layouts, $name, respond-to);
+  $layout: jl-layout($name);
+  @include susy-breakpoint($query, $layout) {
+    @content;
+  }
+}
+
+// ----------------------
+// Breakpoint Integration
+// ----------------------
+
+@each $name, $info in $jl-layouts {
+  $names: map-keys($jl-layouts);
+  $index: index($names, $name);
+  // Current and next breakpoint info.
+  $current-breakpoint: map-get($info, breakpoint);
+  $next-name: null;
+  $next-breakpoint: null;
+  @if $index < length($names) {
+    $next-name: nth($names, $index + 1);
+    $next-breakpoint: map-get-deep($jl-layouts, $next-name, breakpoint);
+  }
+  // Construct respond-to breakpoint for each layout. The first and
+  // last media queries are different than each middle layout.
+  $respond-to: null;
+  $min-width: null;
+  $max-width: null;
+  @if $index == 1 {
+    $max-width: $next-breakpoint - 1px;
+    $respond-to: 'max-width' $max-width;
+  } @else if $index != length($names) {
+    $min-width: $current-breakpoint;
+    $max-width: $next-breakpoint - 1px;
+    $respond-to: (width $min-width $max-width);
+  } @else {
+    $min-width: $current-breakpoint;
+    $respond-to: $min-width;
+  }
+  // Add respond-to to the jl-layouts map.
+  $jl-layouts: map-set-deep($jl-layouts, ($name, respond-to), $respond-to) !global;
+}

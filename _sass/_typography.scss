@@ -1,9 +1,5 @@
 html {
-  @include breakpoint(map-get-deep($small-desktop, breakpoint)) {
-    font-size: rem(16px);
+  @include jl-breakpoint(md) {
+    font-size: 18px;
   }
-}
-
-body {
-  padding: rem(10px);
 }
