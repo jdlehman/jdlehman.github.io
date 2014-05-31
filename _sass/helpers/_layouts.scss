@@ -78,9 +78,52 @@ $jl-layouts: (
   }
 }
 
-// ----------------------
-// Breakpoint Integration
-// ----------------------
+// inspired by: Max Luster @maxluster
+// https://gist.github.com/maxluster/168e650267bac9faaafd
+//
+// Set values for a list of properties at
+// specified breakpoints.
+// Example usage:
+// @include jl-responsive((width:10px, height), (sm: 10px, md: (1rem, 15px)));
+//
+// Parameters:
+// @properties: a single value, list, or map of css properties
+//   map specifies default values (before media queries applied)
+//   ex: width or (width height) or (width: 10px height: 20em)
+// @layout-values: map of layouts with values of property values.
+//   if a single value is used for a layout in the case where multiple
+//   properties are specified, the value will be used for all properties
+//   at that breakpoint. the layouts (keys of the map) are from $jl-layouts
+//   ex: (sm: 10px, md: (2rem, 3px))
+@mixin jl-responsive($properties, $layout-values) {
+  // set default values
+  @if type-of($properties) == map {
+    @each $property, $default in $properties {
+      #{$property}: $default;
+    }
+    // strip default values
+    $properties: map-keys($properties);
+  }
+
+  // set properties for each layout/breakpoint
+  @each $layout, $values in $layout-values {
+    // example data at this point:
+    // $layout: sm
+    // $values: (12px, 20px) || 10px
+    @include jl-breakpoint($layout) {
+      $i: 1;
+      @each $property in $properties {
+        @if length($values) >= $i {
+          #{$property}: nth($values, $i);
+          $i: $i + 1;
+        }
+        @else { // use first value as catch all
+          #{$property}: nth($values, 1);
+        }
+      }
+    }
+  }
+}
 
 // add respond-to property to $jl-layouts.
 // this contains min-width and max-width for breakpoints.
