@@ -1,5 +1,38 @@
-html {
-  // @include jl-breakpoint(md) {
-  //   font-size: 18px;
+//
+// Header styles
+//
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-header;
+  @include jl-padding(rem(16px));
+}
+
+h1 {
+  @include jl-vertical-rhythm($font-size-xxl);
+}
+
+h2 {
+  @include jl-vertical-rhythm($font-size-xl);
+}
+
+h3 {
+  @include jl-vertical-rhythm($font-size-l);
+}
+
+//
+// Link styles
+//
+
+a {
+  text-decoration: none;
+  // color: $link-color;
+  // &:visited {
+  //   color: $link-visited-color;
+  // }
+  // &:hover {
+  //   color: $link-hover-color;
+  // }
+  // &:active {
+  //   color: $link-active-color
   // }
 }
