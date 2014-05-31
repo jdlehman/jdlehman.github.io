@@ -1,2 +1,19 @@
+// variables for sass libraries
 $breakpoint-to-ems: true;
 
+// typography
+$font-base: 16px;
+$vertical-rhythm-ratio: 1.5;
+$line-height-base: rem($font-base) * $vertical-rhythm-ratio;
+
+$font-size-xs:    rem(12px);
+$font-size-s:     rem(14px);
+$font-size-base:  rem($font-base);
+$font-size-m:     rem(18px);
+$font-size-l:     rem(20px);
+$font-size-xl:    rem(22px);
+$font-size-xxl:   rem(32px);
+
+$font-weight-normal: 300;
+$font-weight-strong: 500;
+$font-weight-header: 800;

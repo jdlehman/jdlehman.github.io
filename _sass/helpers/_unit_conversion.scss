@@ -1,0 +1,51 @@
+// ---------------
+// Unit Conversion
+// ---------------
+
+// Converts a value (rem, em, px, or unitless) to the desired units
+// More robust then bourbons rem() or em() functions
+//
+// Parameters:
+// @value: value to be converted. eg: 24px
+// @desired-unit: string of unit type to convert to. eg: 'px'
+@function jl-convert-to($value, $desired-unit) {
+  $unit: unit($value);
+  $number: strip-units($value);
+
+  // check if conversion necessary
+  @if $unit != $desired-unit and $desired-unit != '' {
+    @if $unit == 'px' { // px to (rem or em)
+      @if $desired-unit == 'rem' {
+        $value: rem($value);
+      }
+      @else {
+        $value: em($value);
+      }
+    }
+    @else if $desired-unit == 'px' { // (rem or em) to px
+      $value: jl-convert-to-px($number);
+    }
+    @else { // (rem to em) or (em to rem) or unitless to (em or rem or px)
+      $value: #{$number}#{$desired-unit};
+    }
+  }
+
+  @return $value;
+
+}
+
+// Convert rem or em value to pixels
+//
+// Parameters:
+// @val: rem or em value with or without units
+@function jl-convert-to-px($val) {
+  @if not unitless($val) {
+      $val: strip-units($val);
+  }
+
+  $base: $em-base;
+  @if not unitless($base) {
+      $base: strip-units($base);
+  }
+  @return ($val * $base) * 1px;
+}
