@@ -1,3 +1,17 @@
+html {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: $font-base;
+  line-height: $vertical-rhythm-ratio;
+  @include jl-responsive(
+    (font-size: $font-base),
+    (
+      md: $font-size-m,
+      lg: $font-size-l,
+      xl: $font-size-xl
+    )
+  );
+}
+
 //
 // Header styles
 //

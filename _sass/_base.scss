@@ -2,12 +2,6 @@
 // Base
 // ----
 
-html {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: $font-base;
-  line-height: $vertical-rhythm-ratio;
-}
-
 body {
   @include jl-container(sm);
   @include jl-breakpoint(md) {
