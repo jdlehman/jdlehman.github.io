@@ -1,13 +1,15 @@
 // variables for sass libraries
-
+// ----------------------------
 //breakpoint
 $breakpoint-to-ems: true;
 // modular-scale
 $ms-base: 1rem;
 $ms-ratio: $major-third;
+// bourbon
+$em-base: 14px !global;
 
 // typography
-$font-base: 16px;
+$font-base: 14px;
 $vertical-rhythm-ratio: 1.5;
 $line-height-base: rem($font-base) * $vertical-rhythm-ratio;
 
@@ -22,3 +24,7 @@ $font-size-xxl:   ms(4);
 $font-weight-normal: 300;
 $font-weight-strong: 500;
 $font-weight-header: 800;
+
+$font-family: Helvetica, Arial, sans-serif;
+$font-family-header: Helvetica, Arial, sans-serif;
+
