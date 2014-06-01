@@ -7,7 +7,7 @@
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{site.baseurl}}/css/main.css?bust={{ site.time | date_to_xmlschema | cgi_escape }}">
 
     <!-- vertical rhythm debug -->
     <!-- <link rel="stylesheet" href="http://basehold.it/24"> -->
