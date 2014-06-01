@@ -11,12 +11,13 @@ markdown: kramdown
 permalink: pretty
 
 # Gem Settings
-gems: []
+gems:
+  - jekyll-assets
 
-# Asset settings
-sass:
-  sass_dir: _sass
-  style: :compressed
+assets:
+  js_compressor:  uglifier
+  css_compressor: sass
+  cache: true
 
 # Files to exclude
 exclude:

@@ -1,4 +1,5 @@
-_site
-.sass-cache
 .bundle
+.jekyll-assets-cache
+.sass-cache
+_site
 bower_components
