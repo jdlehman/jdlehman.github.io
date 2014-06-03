@@ -1,10 +1,10 @@
 // variables for sass libraries
 // ----------------------------
 //breakpoint
-$breakpoint-to-ems: true;
+$breakpoint-to-ems: true !global;
 // modular-scale
-$ms-base: 1rem;
-$ms-ratio: $major-third;
+$ms-base: 1rem !global;
+$ms-ratio: $major-third !global;
 // bourbon
 $em-base: 14px !global;
 
