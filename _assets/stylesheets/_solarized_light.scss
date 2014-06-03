@@ -2,7 +2,7 @@
 /* ----------------------------------------------------------*/
 .highlight {
   background-color: #efefef;
-  @include jl-padding(rem(7px));
+  @include jl-padding(rem(16px));
   // border: 1px solid #ddd;
   -moz-box-shadow: 3px 3px rgba(0,0,0,0.1);
   -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
@@ -11,7 +11,7 @@
 }
 
 code {
-  font-family:'Bitstream Vera Sans Mono','Courier', monospace;
+  font-family: $font-family-code;
 }
 
 .highlight .c { color: #586E75 } /* Comment */

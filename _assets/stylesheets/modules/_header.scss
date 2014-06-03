@@ -1,3 +1,9 @@
 .site-header {
-  @include span(full);
+  // @include span(full);
+}
+
+.jl-title {
+  @include jl-vertical-rhythm($font-size-title);
+  font-family: $font-family-title;
+  font-weight: $font-weight-title;
 }

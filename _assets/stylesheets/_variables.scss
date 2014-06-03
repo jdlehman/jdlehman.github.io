@@ -20,11 +20,15 @@ $font-size-m:     ms(1);
 $font-size-l:     ms(2);
 $font-size-xl:    ms(3);
 $font-size-xxl:   ms(4);
+$font-size-title: ms(6);
 
 $font-weight-normal: 300;
 $font-weight-strong: 500;
-$font-weight-header: 800;
+$font-weight-header: 500;
+$font-weight-title:  700;
 
-$font-family: Helvetica, Arial, sans-serif;
-$font-family-header: Helvetica, Arial, sans-serif;
+$font-family: 'Quattrocento Sans', Arial, sans-serif; //Raleway, Lato
+$font-family-title: 'Jim Nightshade', Helvetica, sans-serif;
+$font-family-header: 'Yanone Kaffeesatz', Helvetica, sans-serif; //Lustria
+$font-family-code: 'Inconsolata', Courier, monospace;
 

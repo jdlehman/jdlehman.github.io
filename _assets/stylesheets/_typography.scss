@@ -19,7 +19,7 @@ html {
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-header;
   font-weight: $font-weight-header;
-  @include jl-padding(rem(16px));
+  // @include jl-padding(rem(16px));
 }
 
 h1 {

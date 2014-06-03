@@ -18,9 +18,9 @@ body {
 p, ul, ol, dl, blockquote, pre, code,
 td, th, textarea, small, caption, .highlight {
   @include jl-vertical-rhythm($font-size-base);
-  @include jl-padding(rem(16px));
+  // @include jl-padding(rem(16px));
 }
 
 ol, ul {
-  @include jl-padding(rem(32px));
+  // @include jl-padding(rem(32px));
 }
