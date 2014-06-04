@@ -6,10 +6,10 @@ $breakpoint-to-ems: true !global;
 $ms-base: 1rem !global;
 $ms-ratio: $major-third !global;
 // bourbon
-$em-base: 14px !global;
+$em-base: 16px !global;
 
 // typography
-$font-base: 14px;
+$font-base: 16px;
 $vertical-rhythm-ratio: 1.5;
 $line-height-base: rem($font-base) * $vertical-rhythm-ratio;
 
@@ -27,8 +27,8 @@ $font-weight-strong: 500;
 $font-weight-header: 500;
 $font-weight-title:  700;
 
-$font-family: 'Quattrocento Sans', Arial, sans-serif; //Raleway, Lato
+$font-family: 'Quattrocento Sans', Arial, sans-serif;
 $font-family-title: 'Jim Nightshade', Helvetica, sans-serif;
-$font-family-header: 'Yanone Kaffeesatz', Helvetica, sans-serif; //Lustria
+$font-family-header: 'Lustria', Helvetica, sans-serif;
 $font-family-code: 'Inconsolata', Courier, monospace;
 

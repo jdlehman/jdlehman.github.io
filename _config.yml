@@ -9,6 +9,7 @@ timezone: America/New_York
 # Build settings
 markdown: kramdown
 permalink: pretty
+highlight: rouge
 
 # Gem Settings
 gems:
