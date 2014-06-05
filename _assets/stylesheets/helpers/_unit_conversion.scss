@@ -26,12 +26,19 @@
       $value: jl-convert-to-px($number);
     }
     @else { // (rem to em) or (em to rem) or unitless to (em or rem or px)
-      $value: #{$number}#{$desired-unit};
+      @if $desired-unit == 'rem' {
+        $value: $number * 1rem;
+      }
+      @else if $desired-unit == 'em' {
+        $value: $number * 1em;
+      }
+      @else if $desired-unit == 'px' {
+        $value: $number * 1px;
+      }
     }
   }
 
   @return $value;
-
 }
 
 // Convert rem or em value to pixels

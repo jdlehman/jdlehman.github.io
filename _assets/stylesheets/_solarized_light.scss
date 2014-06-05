@@ -1,9 +1,10 @@
 /* Syntax highlighting styles */
 /* ----------------------------------------------------------*/
 .highlight {
+  @include jl-vertical-rhythm($font-size-base, $border: 2px);
+  @include jl-padding(16px);
   background-color: #efefef;
-  @include jl-padding(rem(16px));
-  // border: 1px solid #ddd;
+  border: 1px solid #ddd;
   -moz-box-shadow: 3px 3px rgba(0,0,0,0.1);
   -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
   box-shadow: 3px 3px rgba(0,0,0,0.1);

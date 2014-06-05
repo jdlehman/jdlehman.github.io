@@ -5,35 +5,37 @@
 // Set up vertical rhythm for an element
 //
 // Parameters:
-// @font-size: font-size in rems, ems or px. this is the height if use-height is true. (required)
+// @font-size: font-size in rems, px, or ems. this is the height if use-height is true. (required)
 // @bottom-rows: number of rows (height of $line-height-base) on bottom. defaults to 1. (optional)
 // @top-rows: number of rows (height of $line-height-base) on top (optional)
 // @use-height: true if using an element that has height beyond font-size (buttons, images, divs, etc.) (optional)
+// @border: total border in rems, px, or ems used on element (sum of top and bottom border). this prevents border from throwing off rhythm. (optional)
 //
 // ***Note: $bottom-rows and $top-rows allow decimal (and negative) values. keep in mind a decimal value
 // will knock off the vertical rhythm for that element, though it will pick up again after the disturbance
-@mixin jl-vertical-rhythm($font-size, $bottom-rows: 1, $top-rows: 0, $use-height: false) {
+//
+@mixin jl-vertical-rhythm($font-size, $bottom-rows: 1, $top-rows: 0, $use-height: false, $border: 0px) {
   $font-size: jl-convert-to($font-size, 'rem');
+  $border: jl-convert-to($border, 'rem');
   $multiplier: ceil($font-size / $line-height-base);
-
+  // check if height based element
+  // if so use height property for height, otherwise use line-height property
   @if $use-height {
-    $leftover:      $line-height-base * $multiplier - $font-size;
+    $leftover: $line-height-base * $multiplier - $font-size - $border;
     height:         $font-size;
     margin-top:     $line-height-base * $top-rows + $leftover / 2;
     margin-bottom:  $line-height-base * $bottom-rows + $leftover / 2;
   }
-  @else {
+  @else { // text based element (uses line height)
     font-size:      $font-size;
     line-height:    $line-height-base * $multiplier;
     margin-top:     $line-height-base * $top-rows;
-    margin-bottom:  $line-height-base * $bottom-rows;
+    margin-bottom:  $line-height-base * $bottom-rows - $border;
   }
-
   // prevent padding from ruining vertical rhythm
   // any adjustments like this should be made using $top-rows and $bottom-rows
   padding-top: 0;
   padding-bottom: 0;
-
 }
 
 // Set left and right margin (vertical rhythm friendly)
@@ -43,6 +45,7 @@
 // @size: desired size, unit agnostic. takes a list or single value.
 //   eg: $size: 1rem sets both to 1rem, $size: 1rem 2rem sets left to 1rem and right to 2rem
 // @units: units to use (rem, em, px). (optional defaults to rems)
+//
 @mixin jl-margin($size, $units: 'rem') {
   $left-size: $size;
   $right-size: $size;
@@ -62,6 +65,7 @@
 // @size: desired size, unit agnostic. takes a list or single value.
 //   eg: $size: 1rem sets both to 1rem, $size: 1rem 2rem sets left to 1rem and right to 2rem
 // @units: units to use (rem, em, px). (optional defaults to rems)
+//
 @mixin jl-padding($size, $units: 'rem') {
   $left-size: $size;
   $right-size: $size;

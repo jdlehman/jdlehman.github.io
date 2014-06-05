@@ -2,6 +2,18 @@
 // Base
 // ----
 
+// vertical rhythm debug
+// html {
+//   @include jl-responsive(
+//     (background: url(http://basehold.it/i/24)),
+//     (
+//       md: url(http://basehold.it/i/27),
+//       lg: url(http://basehold.it/i/30),
+//       xl: url(http://basehold.it/i/33)
+//     )
+//   );
+// }
+
 body {
   @include jl-container(sm);
   @include jl-breakpoint(md) {
@@ -15,12 +27,7 @@ body {
   }
 }
 
-p, ul, ol, dl, blockquote, pre, code,
-td, th, textarea, small, caption, .highlight {
+p, ul, ol, dl, blockquote, pre, span, code,
+td, th, textarea, small, caption {
   @include jl-vertical-rhythm($font-size-base);
-  // @include jl-padding(rem(16px));
-}
-
-ol, ul {
-  // @include jl-padding(rem(32px));
 }

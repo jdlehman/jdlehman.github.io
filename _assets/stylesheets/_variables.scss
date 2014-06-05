@@ -1,15 +1,17 @@
+$font-base: 16px;
+
 // variables for sass libraries
 // ----------------------------
 //breakpoint
 $breakpoint-to-ems: true !global;
+$breakpoint-base-font-size: $font-base !global;
 // modular-scale
 $ms-base: 1rem !global;
 $ms-ratio: $major-third !global;
 // bourbon
-$em-base: 16px !global;
+$em-base: $font-base !global;
 
 // typography
-$font-base: 16px;
 $vertical-rhythm-ratio: 1.5;
 $line-height-base: rem($font-base) * $vertical-rhythm-ratio;
 
@@ -29,6 +31,6 @@ $font-weight-title:  700;
 
 $font-family: 'Quattrocento Sans', Arial, sans-serif;
 $font-family-title: 'Jim Nightshade', Helvetica, sans-serif;
-$font-family-header: 'Lustria', Helvetica, sans-serif;
+$font-family-header: 'Lustria', Helvetica, serif;
 $font-family-code: 'Inconsolata', Courier, monospace;
 
