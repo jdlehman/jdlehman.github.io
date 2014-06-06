@@ -31,3 +31,7 @@ p, ul, ol, dl, blockquote, pre, span, code,
 td, th, textarea, small, caption {
   @include jl-vertical-rhythm($font-size-base);
 }
+
+code {
+  vertical-align: bottom; // fixes a monospace font bug in the browser
+}
