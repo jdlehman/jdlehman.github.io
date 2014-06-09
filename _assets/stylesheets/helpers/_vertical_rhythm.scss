@@ -17,7 +17,7 @@
 //
 @mixin jl-vertical-rhythm($font-size, $bottom-rows: 1, $top-rows: 0, $use-height: false, $border: 0rem) {
   $font-size: jl-convert-to($font-size, 'rem');
-  $border: if($use-height, 0rem, jl-convert-to($border, 'rem');
+  $border: if($use-height, 0rem, jl-convert-to($border, 'rem'));
   $multiplier: ceil($font-size / $line-height-base);
   // check if height based element
   // if so use height property for height, otherwise use line-height property
