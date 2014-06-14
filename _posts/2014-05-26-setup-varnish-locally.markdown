@@ -55,13 +55,13 @@ make install
 {% endhighlight %}
 
 This will install the module binaries to the correct location, allowing you to import the module
-in your vcls. You can now configure ```default.vcl``` to your liking. It is located at
-```/user/local/etc/varnish``` on OSX.
+in your vcls. You can now configure `default.vcl` to your liking. It is located at
+`/user/local/etc/varnish` on OSX.
 
 ### Usage
 
-If you installed Varnish via brew, you can use ```launchctl``` and the ```plist``` files to load the
-service, or you can use the ```varnishd``` command via the terminal. I recommend using the terminal initially
+If you installed Varnish via brew, you can use `launchctl` and the `plist` files to load the
+service, or you can use the `varnishd` command via the terminal. I recommend using the terminal initially
 because this will allow you to see and debug any errors. The property list files will fail silently if there
 are any errors.
 
@@ -74,10 +74,10 @@ varnishd -h
 
 ***Command Breakdown***
 
-* ```-f``` Specifies the location of the ```vcl``` script to launch Varnish with.
-* ```-s``` Specifies storage options. The file argument stores in ```/tmp``` by default. You can
-specify another location with ```-s file,/location```
-* ```-a``` Specifies the address and port that Varnish will run at. You can access your website
+* `-f` Specifies the location of the `vcl` script to launch Varnish with.
+* `-s` Specifies storage options. The file argument stores in `/tmp` by default. You can
+specify another location with `-s file,/location`
+* `-a` Specifies the address and port that Varnish will run at. You can access your website
 through Varnish using this address and port.
 
 By now you should be up and running with Varnish locally on your development environment.
