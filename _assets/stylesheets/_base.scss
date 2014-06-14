@@ -27,10 +27,17 @@ body {
   }
 }
 
-p, ul, ol, dl, blockquote, pre, span, code,
+p, ul, ol, dl, blockquote, span, code,
 td, th, textarea, small, caption {
   @include jl-vertical-rhythm($font-size-base);
+}
+
+.post-content p {
   text-align: justify;
+}
+
+pre {
+  @include jl-vertical-rhythm($font-size-base, $bottom-rows: 0);
 }
 
 code {
