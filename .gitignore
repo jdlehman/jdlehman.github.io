@@ -1,5 +1,6 @@
 .bundle
 .jekyll-assets-cache
+.ruby-version
 .sass-cache
 _site
 bower_components
