@@ -30,6 +30,7 @@ body {
 p, ul, ol, dl, blockquote, pre, span, code,
 td, th, textarea, small, caption {
   @include jl-vertical-rhythm($font-size-base);
+  text-align: justify;
 }
 
 code {
