@@ -36,3 +36,9 @@ td, th, textarea, small, caption {
 code {
   vertical-align: bottom; // fixes a monospace font bug in the browser
 }
+
+// inline code blocks
+p code, ul code {
+  color: lighten($black, 20%);
+  background-color: darken($background-color, 3%);
+}
