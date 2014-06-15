@@ -1,0 +1,15 @@
+// -----------------
+// Post specific CSS
+// -----------------
+// format: post title to lower case separated by dashes
+
+.vertical-rhythm {
+  @include jl-responsive(
+    (background: url(http://basehold.it/i/24)),
+    (
+      md: url(http://basehold.it/i/27),
+      lg: url(http://basehold.it/i/30),
+      xl: url(http://basehold.it/i/33)
+    )
+  );
+}
