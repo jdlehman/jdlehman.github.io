@@ -29,7 +29,7 @@ body {
 
 p, ul, ol, dl, blockquote, span, code,
 td, th, textarea, small, caption {
-  @include jl-vertical-rhythm($font-size-base);
+  @include jl-vertical-rhythm($jl-font-size-base);
 }
 
 .post-content p {
@@ -37,7 +37,7 @@ td, th, textarea, small, caption {
 }
 
 pre {
-  @include jl-vertical-rhythm($font-size-base, $bottom-rows: 0);
+  @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
 }
 
 code {
@@ -46,6 +46,6 @@ code {
 
 // inline code blocks
 p code, ul code {
-  color: lighten($black, 20%);
-  background-color: darken($background-color, 3%);
+  color: lighten($jl-black, 20%);
+  background-color: darken($jl-background-color, 3%);
 }

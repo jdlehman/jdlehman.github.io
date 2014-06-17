@@ -1,13 +1,13 @@
 html, body {
-  font-family: $font-family;
-  font-size: $font-base;
-  line-height: $vertical-rhythm-ratio;
+  font-family: $jl-font-family;
+  font-size: $jl-font-base;
+  line-height: $jl-vertical-rhythm-ratio;
   @include jl-responsive(
-    (font-size: $font-base),
+    (font-size: $jl-font-base),
     (
-      md: $font-base + 2px,
-      lg: $font-base + 4px,
-      xl: $font-base + 6px
+      md: $jl-font-base + 2px,
+      lg: $jl-font-base + 4px,
+      xl: $jl-font-base + 6px
     )
   );
 }
@@ -17,20 +17,20 @@ html, body {
 //
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-family-header;
-  font-weight: $font-weight-header;
+  font-family: $jl-font-family-header;
+  font-weight: $jl-font-weight-header;
 }
 
 h1 {
-  @include jl-vertical-rhythm($font-size-xxl);
+  @include jl-vertical-rhythm($jl-font-size-xxl);
 }
 
 h2 {
-  @include jl-vertical-rhythm($font-size-xl);
+  @include jl-vertical-rhythm($jl-font-size-xl);
 }
 
 h3 {
-  @include jl-vertical-rhythm($font-size-l);
+  @include jl-vertical-rhythm($jl-font-size-l);
 }
 
 //

@@ -1,7 +1,7 @@
 /* Syntax highlighting styles */
 /* ----------------------------------------------------------*/
 .highlight {
-  @include jl-vertical-rhythm($font-size-base, $border: 2px);
+  @include jl-vertical-rhythm($jl-font-size-base, $border: 2px);
   @include jl-padding(16px);
   background-color: #efefef;
   border: 1px solid #ddd;
@@ -12,7 +12,7 @@
 }
 
 code {
-  font-family: $font-family-code;
+  font-family: $jl-font-family-code;
 }
 
 .highlight .c { color: #586E75 } /* Comment */

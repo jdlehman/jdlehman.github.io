@@ -18,20 +18,20 @@
 @mixin jl-vertical-rhythm($font-size, $bottom-rows: 1, $top-rows: 0, $use-height: false, $border: 0rem) {
   $font-size: jl-convert-to($font-size, 'rem');
   $border: if($use-height, 0rem, jl-convert-to($border, 'rem'));
-  $multiplier: ceil($font-size / $line-height-base);
+  $multiplier: ceil($font-size / $jl-line-height-base);
   // check if height based element
   // if so use height property for height, otherwise use line-height property
   @if $use-height {
-    $leftover: $line-height-base * $multiplier - $font-size - $border;
+    $leftover: $jl-line-height-base * $multiplier - $font-size - $border;
     height:         $font-size;
     margin-top:     $line-height-base * $top-rows + $leftover / 2;
     margin-bottom:  $line-height-base * $bottom-rows + $leftover / 2;
   }
   @else { // text based element (uses line height)
     font-size:      $font-size;
-    line-height:    $line-height-base * $multiplier;
-    margin-top:     $line-height-base * $top-rows;
-    margin-bottom:  $line-height-base * $bottom-rows - $border;
+    line-height:    $jl-line-height-base * $multiplier;
+    margin-top:     $jl-line-height-base * $top-rows;
+    margin-bottom:  $jl-line-height-base * $bottom-rows - $border;
   }
   // prevent padding from ruining vertical rhythm
   // any adjustments like this should be made using $top-rows and $bottom-rows

@@ -1,40 +1,41 @@
-$font-base: 16px;
+$jl-font-base: 16px;
 
 // variables for sass libraries
 // ----------------------------
 //breakpoint
 $breakpoint-to-ems: true !global;
-$breakpoint-base-font-size: $font-base !global;
+$breakpoint-base-font-size: $jl-font-base !global;
 // modular-scale
 $ms-base: 1rem !global;
 $ms-ratio: $major-third !global;
 // bourbon
-$em-base: $font-base !global;
+$em-base: $jl-font-base !global;
 
 // typography
-$vertical-rhythm-ratio: 1.5;
-$line-height-base: rem($font-base) * $vertical-rhythm-ratio;
+$jl-vertical-rhythm-ratio: 1.5;
+$jl-line-height-base: rem($jl-font-base) * $jl-vertical-rhythm-ratio;
 
-$font-size-xs:    ms(-2);
-$font-size-s:     ms(-1);
-$font-size-base:  ms(0);
-$font-size-m:     ms(1);
-$font-size-l:     ms(2);
-$font-size-xl:    ms(3);
-$font-size-xxl:   ms(4);
-$font-size-title: ms(6);
+$jl-font-size-xs:    ms(-2);
+$jl-font-size-s:     ms(-1);
+$jl-font-size-base:  ms(0);
+$jl-font-size-m:     ms(1);
+$jl-font-size-l:     ms(2);
+$jl-font-size-xl:    ms(3);
+$jl-font-size-xxl:   ms(4);
+$jl-font-size-title: ms(6);
 
-$font-weight-normal: 300;
-$font-weight-strong: 500;
-$font-weight-header: 500;
-$font-weight-title:  700;
+$jl-font-weight-normal: 300;
+$jl-font-weight-strong: 500;
+$jl-font-weight-header: 500;
+$jl-font-weight-title:  700;
 
-$font-family: 'Quattrocento Sans', Arial, sans-serif;
-$font-family-title: 'Jim Nightshade', Helvetica, sans-serif;
-$font-family-header: 'Lustria', Helvetica, serif;
-$font-family-code: 'Inconsolata', Courier, monospace;
+$jl-font-family:        'Quattrocento Sans', Arial, sans-serif;
+$jl-font-family-title:  'Jim Nightshade', Helvetica, sans-serif;
+$jl-font-family-header: 'Lustria', Helvetica, serif;
+$jl-font-family-code:   'Inconsolata', Courier, monospace;
 
-$black: #000;
-$white: #fff;
-$font-color: $black;
-$background-color: $white;
+$jl-black: #000;
+$jl-white: #fff;
+
+$jl-font-color:       $jl-black;
+$jl-background-color: $jl-white;
