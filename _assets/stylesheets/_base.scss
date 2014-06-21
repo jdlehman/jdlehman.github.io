@@ -35,17 +35,3 @@ td, th, textarea, small, caption {
 .post-content p {
   text-align: justify;
 }
-
-pre {
-  @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
-}
-
-code {
-  vertical-align: bottom; // fixes a monospace font bug in the browser
-}
-
-// inline code blocks
-p code, ul code {
-  color: lighten($jl-black, 20%);
-  background-color: darken($jl-background-color, 3%);
-}
