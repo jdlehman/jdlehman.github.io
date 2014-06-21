@@ -4,6 +4,7 @@
 
 pre {
   @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
+  font-family: $jl-font-family-code;
 }
 
 code {
