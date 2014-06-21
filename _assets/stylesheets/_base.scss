@@ -26,12 +26,3 @@ body {
     @include jl-container(xl);
   }
 }
-
-p, ul, ol, dl, blockquote, span, code,
-td, th, textarea, small, caption {
-  @include jl-vertical-rhythm($jl-font-size-base);
-}
-
-.post-content p {
-  text-align: justify;
-}

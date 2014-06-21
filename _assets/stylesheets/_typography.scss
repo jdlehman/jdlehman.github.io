@@ -1,3 +1,7 @@
+// ==========
+// Typography
+// ==========
+
 html, body {
   font-family: $jl-font-family;
   font-size: $jl-font-base;
@@ -12,9 +16,18 @@ html, body {
   );
 }
 
-//
+p, ul, ol, dl, blockquote, span,
+td, th, textarea, small, caption {
+  @include jl-vertical-rhythm($jl-font-size-base);
+}
+
+.post-content p {
+  text-align: justify;
+}
+
+// -------------
 // Header styles
-//
+// -------------
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $jl-font-family-header;
@@ -33,9 +46,9 @@ h3 {
   @include jl-vertical-rhythm($jl-font-size-l);
 }
 
-//
+// -----------
 // Link styles
-//
+// -----------
 
 a {
   text-decoration: none;

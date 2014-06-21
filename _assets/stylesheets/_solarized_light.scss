@@ -1,5 +1,23 @@
-/* Syntax highlighting styles */
-/* ----------------------------------------------------------*/
+// ==========================
+// Syntax highlighting styles
+// ==========================
+
+pre {
+  @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
+}
+
+code {
+  @include jl-vertical-rhythm($jl-font-size-base);
+  font-family: $jl-font-family-code;
+  vertical-align: bottom; // fixes a monospace font bug in the browser
+}
+
+// inline code blocks
+p code, ul code {
+  color: lighten($jl-black, 20%);
+  background-color: darken($jl-background-color, 3%);
+}
+
 .highlight {
   @include jl-vertical-rhythm($jl-font-size-base, $border: 2px);
   @include jl-padding(16px);
@@ -9,21 +27,6 @@
   -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
   box-shadow: 3px 3px rgba(0,0,0,0.1);
   overflow: hidden;
-}
-
-pre {
-  @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
-}
-
-code {
-  font-family: $jl-font-family-code;
-  vertical-align: bottom; // fixes a monospace font bug in the browser
-}
-
-// inline code blocks
-p code, ul code {
-  color: lighten($jl-black, 20%);
-  background-color: darken($jl-background-color, 3%);
 }
 
 .highlight .c { color: #586E75 } /* Comment */
