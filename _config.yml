@@ -8,8 +8,8 @@ timezone: America/New_York
 
 # Build settings
 markdown: kramdown
-# kramdown:
-#   input: GFM # github flavored markdown
+kramdown:
+  input: GFM # github flavored markdown
 permalink: pretty
 highlight: rouge
 
