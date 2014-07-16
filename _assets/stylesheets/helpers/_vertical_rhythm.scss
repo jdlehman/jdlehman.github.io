@@ -33,10 +33,6 @@
     margin-top:     $jl-line-height-base * $top-rows;
     margin-bottom:  $jl-line-height-base * $bottom-rows - $border;
   }
-  // prevent padding from ruining vertical rhythm
-  // any adjustments like this should be made using $top-rows and $bottom-rows
-  padding-top: 0;
-  padding-bottom: 0;
 }
 
 // Set left and right margin (vertical rhythm friendly)
