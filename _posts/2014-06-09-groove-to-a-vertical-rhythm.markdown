@@ -34,7 +34,7 @@ First let's figure out what we need to solve conceptually. We want all of our el
 
 Let's gradually build up a Sass solution to handle these cases. First we will need to set up the basis for our vertical rhythm, the base font-size and line-height. While we are at it, we will also set up some base styles.
 
-{% highlight sass %}
+```sass
 $base-font-size:    16px;
 $line-height-ratio: 1.5;
 // base line-height = 16px * 1.5 = 24px
@@ -51,7 +51,7 @@ html {
   padding-top:    0;
   padding-bottom: 0;
 }
-{% endhighlight %}
+```
 
 [Play with this example in Sassmeister](http://sassmeister.com/gist/f3a46154fff6c2e2f8f3)
 
@@ -59,11 +59,11 @@ We are simply setting our base-font size and line height at the DOM root, the ht
 
 As you can see, with this small amount of Sass, we have solved our first case. We now have vertical rhythm for all font-sizes that are less than or equal to our base line-height, which would be 24px with this base font size, `($base-font-size * $line-height-ratio)`. What happens if we try to add fonts with a size greater than this?
 
-{% highlight sass %}
+```sass
 h2 {
   font-size: 2rem; // 32px with a base font-size of 16px
 }
-{% endhighlight %}
+```
 
 Wait a minute, that works! Did we just solve both of our cases without even making use of our Sass specific powers? We could have just done this in CSS! Slow your roll. It is true that this works, take a look at the Sassmeister example above to verify that the h2 now fits centered on 2 lines, which is exactly what we want. Why does this work?
 
@@ -73,7 +73,7 @@ What if you want to use a modular scale and cannot guarantee whole number rem va
 
 First let's build what we already know. We will take in the desired font-size of our element and use it to determine the number of base line-heights our line-height must be set to in order for the element to take up a whole number of base lines.
 
-{% highlight sass %}
+```sass
 $base-font-size:    16px;
 $line-height-ratio: 1.5;
 $line-height-base:  1rem * $line-height-ratio;
@@ -90,7 +90,7 @@ h2 {
   // example usage
   @include vertical-rhythm(2.4rem);
 }
-{% endhighlight %}
+```
 
 [Play with this example in Sassmeister](http://sassmeister.com/gist/de630d458c15520247c1)
 
@@ -98,7 +98,7 @@ Now we see that we can use any font-size and it will still follow the vertical r
 
 Let's handle this additional case:
 
-{% highlight sass %}
+```sass
 // add $use-height parameter
 @mixin vertical-rhythm($font-size, $use-height: false) {
   // determine how many lines this font-size will take up
@@ -119,7 +119,7 @@ Let's handle this additional case:
     line-height:  $line-height-base * $multiplier;
   }
 }
-{% endhighlight %}
+```
 
 [Play with this example in Sassmeister](http://sassmeister.com/gist/1ed9ccf7a937494141ab)
 
@@ -131,7 +131,7 @@ Some common edge cases you may come across are borders and [margin collapsing](h
 
 Here is the vertical rhythm mixin I currently use on this site. Notice that I have added the `$bottom-rows` and `$top-rows` parameters to allow the specification of additional base-line rows above and below the element. I use 1 row below by default to get the flow I want between elements.
 
-{% highlight sass %}
+```sass
 @mixin vertical-rhythm($font-size, $bottom-rows: 1, $top-rows: 0, $use-height: false, $border: 0rem) {
   // I use a rem function that enables me to pass in the $font-size and $border
   // as rems or px, and the result of the function will give me rems
@@ -154,7 +154,7 @@ Here is the vertical rhythm mixin I currently use on this site. Notice that I ha
     margin-bottom:  $line-height-base * $bottom-rows - $border;
   }
 }
-{% endhighlight %}
+```
 
 [Play with this example in Sassmeister](http://sassmeister.com/gist/9e4a757c63f467677bbe)
 

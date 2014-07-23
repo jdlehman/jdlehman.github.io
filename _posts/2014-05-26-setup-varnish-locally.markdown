@@ -13,9 +13,9 @@ Today, I am going to focus on setting up [Varnish Cache](https://www.varnish-cac
 
 If you are using Mac OSX, you can simply use [Homebrew](http://brew.sh/) to install Varnish.
 
-{% highlight bash %}
+```bash
 brew install varnish
-{% endhighlight %}
+```
 
 If you are using vanilla Varnish without any other modules, you can skip ahead to the [usage](#usage) section. If you do not use brew, continue to follow along and we will install it from source.
 
@@ -25,7 +25,7 @@ Installing Varnish modules such as [libvmod-header](https://github.com/varnish/l
 
 First we must build Varnish's source. Download a Varnish from their website or [github](https://github.com/varnish/Varnish-Cache).
 
-{% highlight bash %}
+```bash
 cd /varnish-cache-source-location
 ./autogen.sh
 ./configure
@@ -33,19 +33,19 @@ make
 
 # install varnish without brew (optional)
 make install
-{% endhighlight %}
+```
 
 ***Note:*** If you get an rst2man error during compilation you need to [install docutils with pip](http://stackoverflow.com/a/12813081).
 
 Now that we have built Varnish, we can use it to build our modules. For each module do as follows.
 
-{% highlight bash %}
+```bash
 cd /varnish-module-location
 ./autogen.sh
 ./configure VARNISHSRC=/path-to-varnish-source
 make
 make install
-{% endhighlight %}
+```
 
 This will install the module binaries to the correct location, allowing you to import the module in your vcls. You can now configure `default.vcl` to your liking. It is located at `/user/local/etc/varnish` on OSX.
 
@@ -53,12 +53,12 @@ This will install the module binaries to the correct location, allowing you to i
 
 If you installed Varnish via brew, you can use `launchctl` and the `plist` files to load the service, or you can use the `varnishd` command via the terminal. I recommend using the terminal initially because this will allow you to see and debug any errors. The property list files will fail silently if there are any errors.
 
-{% highlight bash %}
+```bash
 # must run as root
 sudo varnishd -f /usr/local/etc/varnish/default.vcl -s file -a 0.0.0.0:8000
 # help: see available arguments with descriptions
 varnishd -h
-{% endhighlight %}
+```
 
 ***Command Breakdown***
 

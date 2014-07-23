@@ -8,9 +8,12 @@ timezone: America/New_York
 disqus_shortname: jdlehman
 
 # Build settings
-markdown: kramdown
-kramdown:
-  input: GFM # github flavored markdown
+# markdown: kramdown
+# kramdown:
+#   input: GFM # github flavored markdown
+markdown: redcarpet
+redcarpet:
+    extensions: ["fenced_code_blocks", "autolink", "strikethrough", "lax_spacing", "superscript", "with_toc_data"]
 permalink: pretty
 highlighter: rouge
 
