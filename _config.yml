@@ -12,7 +12,7 @@ markdown: kramdown
 kramdown:
   input: GFM # github flavored markdown
 permalink: pretty
-highlight: rouge
+highlighter: rouge
 
 # Gem Settings
 gems:
