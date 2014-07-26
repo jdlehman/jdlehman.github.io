@@ -1,9 +1,9 @@
 // =================
 // Post specific CSS
 // =================
-// format: post title to lower case separated by dashes
+// specify class in yaml frontmatter
 
-.groove-to-a-vertical-rhythm {
+.vertical-rhythm {
   @include jl-responsive(
     (background: url(http://basehold.it/i/24)),
     (
