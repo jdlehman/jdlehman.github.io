@@ -36,3 +36,15 @@ exclude:
   - Gemfile.lock
   - bower_components
   - bower.json
+  - Rakefile
+
+# Rakefile config
+post:
+  template: _post_template.txt
+  extension: md
+page:
+  template: _page_template.txt
+  extension: md
+editor: vim
+git:
+  branch: gh-pages
