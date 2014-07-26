@@ -1,7 +1,5 @@
 ---
 layout: post
-title:  "Setting Up Varnish Locally"
-date:   2014-05-26
 tags: varnish
 ---
 
