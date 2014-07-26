@@ -5,7 +5,7 @@ postClass: vertical-rhythm
 tags: sass css typography
 ---
 
-### Background
+## Background
 
 Grid frameworks are awesome. They solve a number of problems and enable developers to easily create virtually any layout they imagine. Paired with media queries, responsive layouts become more accessible and great experiences at all screen sizes are becoming more common.
 
@@ -25,7 +25,7 @@ Now we understand what vertical rhythm is and why it is desirable when composing
 
 Another thing to note before we continue, is that we will be using rems, root ems. This will allow us to keep our vertical rhythm even if we change the base font-size because everything will scale up.
 
-### Implementation Details
+## Implementation Details
 
 First let's figure out what we need to solve conceptually. We want all of our elements to fit uniformly within our base line-height lines. There are two primary cases:
 

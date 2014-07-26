@@ -7,7 +7,7 @@ Typically, the best way to ensure that a web application will run correctly in p
 
 Today, I am going to focus on setting up [Varnish Cache](https://www.varnish-cache.org), a "caching HTTP reverse proxy". Varnish allows you to cache responses to quickly serve common pages and provides powerful configuration for response headers and other cache settings.
 
-### Installation
+## Installation
 
 If you are using Mac OSX, you can simply use [Homebrew](http://brew.sh/) to install Varnish.
 
@@ -17,7 +17,7 @@ brew install varnish
 
 If you are using vanilla Varnish without any other modules, you can skip ahead to the [usage](#usage) section. If you do not use brew, continue to follow along and we will install it from source.
 
-### Installing Modules
+## Installing Modules
 
 Installing Varnish modules such as [libvmod-header](https://github.com/varnish/libvmod-header) or [libvmod-cookie](https://github.com/lkarsten/libvmod-cookie) requires building them from source using Varnish's source.
 
@@ -47,7 +47,7 @@ make install
 
 This will install the module binaries to the correct location, allowing you to import the module in your vcls. You can now configure `default.vcl` to your liking. It is located at `/user/local/etc/varnish` on OSX.
 
-### Usage
+## Usage
 
 If you installed Varnish via brew, you can use `launchctl` and the `plist` files to load the service, or you can use the `varnishd` command via the terminal. I recommend using the terminal initially because this will allow you to see and debug any errors. The property list files will fail silently if there are any errors.
 
