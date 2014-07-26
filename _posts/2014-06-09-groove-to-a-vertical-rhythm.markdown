@@ -3,7 +3,7 @@ layout: post
 title:  "Groove to a Vertical Rhythm"
 date:   2014-06-09
 postClass: vertical-rhythm
-categories: sass css typography
+tags: sass css typography
 ---
 
 ### Background
