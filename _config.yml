@@ -4,6 +4,8 @@ description: ""
 timezone: America/New_York
 usernames:
   disqus: jdlehman
+  twitter: inLehmans_Terms
+  github: jdlehman
 
 # Build settings
 markdown: redcarpet
