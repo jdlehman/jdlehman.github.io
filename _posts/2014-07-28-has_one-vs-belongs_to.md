@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Database Associations: "Has One" vs "Belongs To"
+title: Database Associations- "Has One" vs "Belongs To"
 tags: rails database
 ---
 
