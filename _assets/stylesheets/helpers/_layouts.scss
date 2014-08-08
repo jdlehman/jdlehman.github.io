@@ -9,7 +9,7 @@ $susy: (
   gutters: 1/4,
   // debug: (image: show)
 );
-@include border-box-sizing;
+@include global-box-sizing(border-box); //TODO: [Susy 2.2], $inherit: true);
 
 // layout properties
 $jl-layouts: (
