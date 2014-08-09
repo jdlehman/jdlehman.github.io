@@ -2,7 +2,8 @@
 require 'rake'
 require 'yaml'
 require 'fileutils'
-require 'rbconfig'
+require 'tmpdir'
+require 'jekyll'
 
 # == Configuration =============================================================
 
@@ -18,6 +19,9 @@ DATE = Time.now.strftime("%Y-%m-%d")
 # Directories
 POSTS = "_posts"
 DRAFTS = "_drafts"
+
+# Github info
+GITHUB_REPONAME = "jdlehman/in_lehmans_terms"
 
 # == Helpers ===================================================================
 
@@ -68,13 +72,7 @@ end
 
 # Get the "open" command
 def open_command
-  if RbConfig::CONFIG["host_os"] =~ /mswin|mingw/
-    "start"
-  elsif RbConfig::CONFIG["host_os"] =~ /darwin/
-    "open"
-  else
-    "xdg-open"
-  end
+  "xdg-open"
 end
 
 # == Tasks =====================================================================
@@ -147,7 +145,7 @@ end
 # rake build
 desc "Build the site"
 task :build do
-  execute("jekyll build")
+  execute("bundle exec jekyll build")
 end
 
 # rake watch
@@ -182,20 +180,33 @@ task :preview do
   Rake::Task[:watch].invoke
 end
 
-# rake deploy["Commit message"]
-desc "Deploy the site to a remote git repo"
-task :deploy, :message do |t, args|
-  message = args[:message]
-  branch = CONFIG["git"]["branch"]
-  if message.nil? or message.empty?
-    raise "Please add a commit message."
-  end
-  if branch.nil? or branch.empty?
-    raise "Please add a branch."
-  else
-    Rake::Task[:build].invoke
-    execute("git add .")
-    execute("git commit -m \"#{message}\"")
-    execute("git push origin #{branch}")
+
+# rake generate
+desc "Generate blog files"
+task :generate do
+  Jekyll::Site.new(Jekyll.configuration({
+    "source"      => ".",
+    "destination" => "_site",
+    "config" => "_config_production.yml"
+  })).process
+end
+
+# rake deploy
+desc "Generate and deploy blog to gh-pages"
+task :deploy => [:generate] do
+  Dir.mktmpdir do |tmp|
+    cp_r "_site/.", tmp
+
+    pwd = Dir.pwd
+    Dir.chdir tmp
+
+    system "git init"
+    system "git add ."
+    message = "Site updated at #{Time.now.utc}"
+    system "git commit -m #{message.inspect}"
+    system "git remote add origin git@github.com:#{GITHUB_REPONAME}.git"
+    system "git push origin master:refs/heads/gh-pages --force"
+
+    Dir.chdir pwd
   end
 end

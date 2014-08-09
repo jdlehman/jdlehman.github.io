@@ -1,5 +1,6 @@
 # Site settings
-production: false
+production: true
+baseurl: /in_lehmans_terms
 title: In Lehman's Terms
 description: ""
 timezone: America/New_York
@@ -27,10 +28,11 @@ gems:
 
 # Jekyll-assets settings
 assets:
-  js_compressor:
-  css_compressor:
-  cache:
-  cachebust: none
+  js_compressor:  uglifier
+  css_compressor: sass
+  cache: true
+  cachebust: hard
+  baseurl: /in_lehmans_terms/assets/
 
 # Files to exclude
 exclude:
