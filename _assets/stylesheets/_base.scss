@@ -15,14 +15,5 @@
 // }
 
 body {
-  @include jl-container(sm);
-  @include jl-breakpoint(md) {
-    @include jl-container(md);
-  }
-  @include jl-breakpoint(lg) {
-    @include jl-container(lg);
-  }
-  @include jl-breakpoint(xl) {
-    @include jl-container(xl);
-  }
+  margin: 1.5rem;
 }
