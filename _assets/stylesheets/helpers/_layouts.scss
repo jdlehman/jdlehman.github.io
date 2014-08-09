@@ -13,10 +13,10 @@ $susy: (
 
 // layout properties
 $jl-layouts: (
-  sm: (susy: (columns: 4), breakpoint: 320px),
-  md: (susy: (columns: 6), breakpoint: 640px),
-  lg: (susy: (columns: 8), breakpoint: 960px),
-  xl: (susy: (columns: 12), breakpoint: 1280px),
+  sm: (susy: (columns: 4)),
+  md: (susy: (columns: 12), breakpoint: 640px),
+  lg: (susy: (columns: 12), breakpoint: 1024px),
+  xl: (susy: (columns: 12), breakpoint: 1440px),
 ) !global;
 
 // get susy layout by name from $jl-layouts
