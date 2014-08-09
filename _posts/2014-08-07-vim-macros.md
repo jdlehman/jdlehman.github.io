@@ -16,7 +16,7 @@ def my_method
 end
 ```
 
-To do this we can start on the first line of the method (not the definition) and press `qq` to being recording our macro to register `q`. We can type `^wi(A)` followed by `q` to stop the recording, where `` is the escape character. Now we can execute `@q` on each line we want to modify to be wrapped in parenthesis to get the following result.
+To do this we can start on the first line of the method (not the definition) and press `qq` to being recording our macro to register `q`. We can type `^wi(^[A)^[` followed by `q` to stop the recording, where `^[` is the escape character. Now we can execute `@q` on each line we want to modify to be wrapped in parenthesis to get the following result.
 
 ```ruby
 def my_method
@@ -31,15 +31,15 @@ Let's break down the macro as it looks like gibberish when pasting the contents 
 
 - `^` takes our cursor to the beginning of the line. This ensures that we always start from the same location and follows the principle of generalizing a macro as much as possible to optimize the potential for reuse.
 - `w` jumps to the next word, which happens to be the beginning of our first argument
-- `i(` goes into insert mode and writes an open parenthesis then escapes back into normal mode
-- `A)` goes into insert mode at the end of the line and inserts a closing parenthesis before escaping back into normal mode
+- `i(^[` goes into insert mode and writes an open parenthesis then escapes back into normal mode
+- `A)^[` goes into insert mode at the end of the line and inserts a closing parenthesis before escaping back into normal mode
 
 When we break the macro down, it is actually really simple. Another thing we could have doe is typed `j` before we stopped recording which would have taken us to the next line of code automatically. Then we could have used a single command, `3@q`, instead of 3 separate commands to do the same amount of work.
 
 I already mentioned the notion of generalizing a macro to allow for its reuse. I think this is where macros can really shine. Every now and then you might create a macro that you would actually find useful in your everyday development. What do you do? You can simply create a mapping in your `vimrc` to run this macro such that it will always be available for use even if the original register you recorded it in is overwritten eventually. In your `vimrc` paste your macro in with `"qp`, where `q` is the register you used to record the macro. We are halfway there, simply add a mapping in front of this pasted content like, `nnoremap <leader>(`. The final result looking like:
 
 ```vim
-nnoremap <leader>( ^wi(A)
+nnoremap <leader>( ^wi(^[A)^[
 ```
 
 Now our old macro turned mapping will run whenever we type `<leader>(` in normal mode.
