@@ -39,8 +39,14 @@ $jl-font-family-title:  'Jim Nightshade', Helvetica, sans-serif;
 $jl-font-family-header: 'Lustria', Helvetica, serif;
 $jl-font-family-code:   'Source Code Pro', Courier, monospace;
 
-$jl-black: #000;
-$jl-white: #fff;
+$jl-black:        #000;
+$jl-white:        #fff;
+// color theme: https://kuler.adobe.com/Crying-in-the-Rain-color-theme-1344922
+$jl-brown:        #302c29;
+$jl-khaki:        #d1d1bc;
+$jl-mint-green:   #a7c4bb;
+$jl-laurel-green: #6c8c84;
+$jl-myrtle-green: #466964;
 
-$jl-font-color:       $jl-black;
-$jl-background-color: $jl-white;
+$jl-font-color:       $jl-brown;
+$jl-background-color: $jl-mint-green;

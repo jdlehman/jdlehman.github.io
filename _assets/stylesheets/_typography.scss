@@ -6,6 +6,8 @@ html, body {
   font-family: $jl-font-family;
   font-size: $jl-font-base;
   line-height: $jl-vertical-rhythm-ratio;
+  color: $jl-font-color;
+  background-color: $jl-background-color;
   @include jl-responsive(
     (font-size: $jl-font-base),
     (
@@ -34,6 +36,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: $jl-font-weight-header;
 }
 
+h2, h3, h4, h5, h6 {
+  color: lighten($jl-font-color, 5%);
+}
+
 h1 {
   @include jl-vertical-rhythm($jl-font-size-xxl);
 }
@@ -52,14 +58,11 @@ h3 {
 
 a {
   text-decoration: none;
-  // color: $link-color;
-  // &:visited {
-  //   color: $link-visited-color;
-  // }
-  // &:hover {
-  //   color: $link-hover-color;
-  // }
-  // &:active {
-  //   color: $link-active-color
-  // }
+  color: $jl-myrtle-green;
+  &:hover {
+    color: $jl-laurel-green;
+  }
+  &:active {
+    color: $jl-khaki;
+  }
 }
