@@ -210,3 +210,32 @@ task :deploy => [:generate] do
     Dir.chdir pwd
   end
 end
+
+namespace :iconfonts do
+
+  desc "Browse our icon fonts library using Fontello"
+  task :browse do
+    session_id = %x|curl -s -X POST -F "config=@_assets/fonts/icon_fonts/fontello/config.json" http://fontello.com/|.chomp
+    system "open 'http://fontello.com/#{session_id}'"
+  end
+
+  desc "Update the icon fonts using the latest Fontello download."
+  task :update do
+    download_zip = Dir[File.expand_path('~/Downloads/fontello-*.zip')].sort { |a,b| File.mtime(a) <=> File.mtime(b) }[0]
+    system("unzip #{download_zip} -d ~/Downloads") if download_zip
+    download_dir = Dir[File.expand_path('~/Downloads/fontello-*')]
+      .sort { |a,b| File.mtime(a) <=> File.mtime(b) }
+      .reject { |f| f =~ /\.zip$/ }[0]
+    FileUtils.mv "#{download_dir}/README.txt",             "_assets/fonts/icon_fonts/fontello/README.txt"
+    FileUtils.mv "#{download_dir}/LICENSE.txt",            "_assets/fonts/icon_fonts/fontello/LICENSE.txt"
+    FileUtils.mv "#{download_dir}/config.json",            "_assets/fonts/icon_fonts/fontello/config.json"
+    FileUtils.mv "#{download_dir}/font/inkicons.woff",     "_assets/fonts/icon_fonts/fontello.woff"
+    FileUtils.mv "#{download_dir}/font/inkicons.ttf",      "_assets/fonts/icon_fonts/fontello.ttf"
+    FileUtils.mv "#{download_dir}/font/inkicons.svg",      "_assets/fonts/icon_fonts/fontello.svg"
+    FileUtils.mv "#{download_dir}/font/inkicons.eot",      "_assets/fonts/icon_fonts/fontello.eot"
+    FileUtils.mv "#{download_dir}/css/inkicons-codes.css", "_assets/stylesheets/_icon_font.scss"
+    FileUtils.rm_rf(download_dir)
+    FileUtils.rm_rf(download_zip) if download_zip
+  end
+
+end
