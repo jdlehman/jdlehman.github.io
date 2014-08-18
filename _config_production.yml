@@ -33,6 +33,11 @@ assets:
   cache: true
   cachebust: hard
   baseurl: /in_lehmans_terms/assets/
+  sources:
+    - _assets/images
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _assets/fonts
 
 # Files to exclude
 exclude:

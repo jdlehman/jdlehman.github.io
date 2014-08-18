@@ -31,6 +31,11 @@ assets:
   css_compressor:
   cache:
   cachebust: none
+  sources:
+    - _assets/images
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _assets/fonts
 
 # Files to exclude
 exclude:

@@ -215,7 +215,7 @@ namespace :iconfonts do
 
   desc "Browse our icon fonts library using Fontello"
   task :browse do
-    session_id = %x|curl -s -X POST -F "config=@_assets/fonts/icon_fonts/fontello/config.json" http://fontello.com/|.chomp
+    session_id = %x|curl -s -X POST -F "config=@_assets/fonts/icon_fonts/blogicons/config.json" http://fontello.com/|.chomp
     system "open 'http://fontello.com/#{session_id}'"
   end
 
@@ -226,14 +226,14 @@ namespace :iconfonts do
     download_dir = Dir[File.expand_path('~/Downloads/fontello-*')]
       .sort { |a,b| File.mtime(a) <=> File.mtime(b) }
       .reject { |f| f =~ /\.zip$/ }[0]
-    FileUtils.mv "#{download_dir}/README.txt",             "_assets/fonts/icon_fonts/fontello/README.txt"
-    FileUtils.mv "#{download_dir}/LICENSE.txt",            "_assets/fonts/icon_fonts/fontello/LICENSE.txt"
-    FileUtils.mv "#{download_dir}/config.json",            "_assets/fonts/icon_fonts/fontello/config.json"
-    FileUtils.mv "#{download_dir}/font/inkicons.woff",     "_assets/fonts/icon_fonts/fontello.woff"
-    FileUtils.mv "#{download_dir}/font/inkicons.ttf",      "_assets/fonts/icon_fonts/fontello.ttf"
-    FileUtils.mv "#{download_dir}/font/inkicons.svg",      "_assets/fonts/icon_fonts/fontello.svg"
-    FileUtils.mv "#{download_dir}/font/inkicons.eot",      "_assets/fonts/icon_fonts/fontello.eot"
-    FileUtils.mv "#{download_dir}/css/inkicons-codes.css", "_assets/stylesheets/_icon_font.scss"
+    FileUtils.mv "#{download_dir}/README.txt",              "_assets/fonts/blogicons/README.txt"
+    FileUtils.mv "#{download_dir}/LICENSE.txt",             "_assets/fonts/blogicons/LICENSE.txt"
+    FileUtils.mv "#{download_dir}/config.json",             "_assets/fonts/blogicons/config.json"
+    FileUtils.mv "#{download_dir}/font/blogicons.woff",     "_assets/fonts/blogicons.woff"
+    FileUtils.mv "#{download_dir}/font/blogicons.ttf",      "_assets/fonts/blogicons.ttf"
+    FileUtils.mv "#{download_dir}/font/blogicons.svg",      "_assets/fonts/blogicons.svg"
+    FileUtils.mv "#{download_dir}/font/blogicons.eot",      "_assets/fonts/blogicons.eot"
+    FileUtils.mv "#{download_dir}/css/blogicons.css",       "_assets/stylesheets/icon_fonts/_blogicons-codes.scss"
     FileUtils.rm_rf(download_dir)
     FileUtils.rm_rf(download_zip) if download_zip
   end

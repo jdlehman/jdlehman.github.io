@@ -1,0 +1,35 @@
+{
+  "name": "blogicons",
+  "css_prefix_text": "jl-Icon-",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "copyright": "© 2014 CustomInk, LLC. All rights reserved. CustomInk is a registered trademark of CustomInk LLC.",
+  "glyphs": [
+    {
+      "uid": "de5f0a564ccf8816325330e292e11533",
+      "css": "rss",
+      "code": 59395,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "559647a6f430b3aeadbecd67194451dd",
+      "css": "menu",
+      "code": 59392,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0ece9a12de796b8411f868d582bee678",
+      "css": "github",
+      "code": 59393,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "906348dc798a0d42715cc97c875e3ac6",
+      "css": "twitter",
+      "code": 59394,
+      "src": "fontawesome"
+    }
+  ]
+}
