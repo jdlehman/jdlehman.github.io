@@ -11,29 +11,27 @@ require 'jekyll'
 task :default => :watch
 
 # Load the configuration file
-CONFIG = YAML.load_file("_config.yml")
-
-# Get and parse the date
-DATE = Time.now.strftime("%Y-%m-%d")
+CONFIG = YAML.load_file('_config.yml')
 
 # Directories
-POSTS = "_posts"
-DRAFTS = "_drafts"
+POSTS = '_posts'
+DRAFTS = '_drafts'
 
-# Github info
-GITHUB_REPONAME = "jdlehman/in_lehmans_terms"
+# Templates
+POST_TEMPLATE = '_post_template.txt'
+PAGE_TEMPLATE = '_page_template.txt'
+
+EDITOR = 'vim'
+DATE = Time.now.strftime('%Y-%m-%d')
+GITHUB_REPONAME = 'jdlehman/in_lehmans_terms'
+GITHUB_BRANCH = 'gh-pages'
 
 # == Helpers ===================================================================
-
-# Execute a system command
-def execute(command)
-  system "#{command}"
-end
 
 # Chech the title
 def check_title(title)
   if title.nil? or title.empty?
-    raise "Please add a title to your file."
+    raise 'Please add a title to your file.'
   end
 end
 
@@ -51,7 +49,7 @@ end
 
 # Save the file with the title in the YAML front matter
 def write_file(content, title, directory, filename)
-  parsed_content = "#{content.sub("title:", "title: \"#{title}\"")}"
+  parsed_content = "#{content.sub('title:', "title: \"#{title}\"")}"
   File.write("#{directory}/#{filename}", parsed_content)
   puts "#{filename} was created in '#{directory}'."
 end
@@ -60,180 +58,173 @@ end
 def create_file(directory, filename, content, title, editor)
   FileUtils.mkdir(directory) unless File.exists?(directory)
   if File.exists?("#{directory}/#{filename}")
-    raise "The file already exists."
+    raise 'The file already exists.'
   else
     write_file(content, title, directory, filename)
     if editor && !editor.nil?
       sleep 1
-      execute("#{editor} #{directory}/#{filename}")
+      system("#{editor} #{directory}/#{filename}")
     end
   end
 end
 
-# Get the "open" command
-def open_command
-  "xdg-open"
-end
-
 # == Tasks =====================================================================
 
-# rake post["Title"]
-desc "Create a post in _posts"
+# rake post['Title']
+desc 'Create a post in _posts'
 task :post, :title do |t, args|
+  template = POST_TEMPLATE
   title = args[:title]
-  template = CONFIG["post"]["template"]
-  extension = CONFIG["post"]["extension"]
-  editor = CONFIG["editor"]
+  extension = 'md'
   check_title(title)
   filename = "#{DATE}-#{transform_to_slug(title, extension)}"
   content = read_file(template)
-  create_file(POSTS, filename, content, title, editor)
+  create_file(POSTS, filename, content, title, EDITOR)
 end
 
-# rake draft["Title"]
-desc "Create a post in _drafts"
+# rake draft['Title']
+desc 'Create a post in _drafts'
 task :draft, :title do |t, args|
+  template = POST_TEMPLATE
   title = args[:title]
-  template = CONFIG["post"]["template"]
-  extension = CONFIG["post"]["extension"]
-  editor = CONFIG["editor"]
+  extension = 'md'
   check_title(title)
   filename = transform_to_slug(title, extension)
   content = read_file(template)
-  create_file(DRAFTS, filename, content, title, editor)
+  create_file(DRAFTS, filename, content, title, EDITOR)
 end
 
 # rake publish
-desc "Move a post from _drafts to _posts"
+desc 'Move a post from _drafts to _posts'
 task :publish do
-  extension = CONFIG["post"]["extension"]
+  extension = 'md'
   files = Dir["#{DRAFTS}/*.#{extension}"]
   files.each_with_index do |file, index|
-    puts "#{index + 1}: #{file}".sub("#{DRAFTS}/", "")
+    puts "#{index + 1}: #{file}".sub("#{DRAFTS}/", '')
   end
-  print "> "
+  print '> '
   number = $stdin.gets
   if number =~ /\D/
     filename = files[number.to_i - 1].sub("#{DRAFTS}/", "")
     FileUtils.mv("#{DRAFTS}/#{filename}", "#{POSTS}/#{DATE}-#{filename}")
     puts "#{filename} was moved to '#{POSTS}'."
   else
-    puts "Please choose a draft by the assigned number."
+    puts 'Please choose a draft by the assigned number.'
   end
 end
 
-# rake page["Title"]
-# rake page["Title","Path/to/folder"]
-desc "Create a page (optional filepath)"
-task :page, :title, :path do |t, args|
+# rake page['Title']
+desc 'Create a page'
+task :page, :title do |t, args|
+  template = PAGE_TEMPLATE
+  filename = 'index.html'
   title = args[:title]
-  template = CONFIG["page"]["template"]
-  extension = CONFIG["page"]["extension"]
-  editor = CONFIG["editor"]
-  directory = args[:path]
-  if directory.nil? or directory.empty?
-    directory = "./"
-  else
-    FileUtils.mkdir_p("#{directory}")
-  end
+  directory = args[:title]
   check_title(title)
-  filename = transform_to_slug(title, extension)
+  FileUtils.mkdir_p("#{directory}")
   content = read_file(template)
-  create_file(directory, filename, content, title, editor)
+  create_file(directory, filename, content, title, EDITOR)
 end
 
 # rake build
-desc "Build the site"
+desc 'Build the site'
 task :build do
-  execute("bundle exec jekyll build")
+  system 'jekyll build'
 end
 
 # rake watch
 # rake watch[number]
-# rake watch["drafts"]
-desc "Serve and watch the site (with post limit or drafts)"
+# rake watch['drafts']
+desc 'Serve and watch the site (with post limit or drafts)'
 task :watch, :option do |t, args|
   option = args[:option]
-  if option.nil? or option.empty?
-    execute("jekyll serve --watch")
+  if option.nil? || option.empty?
+    system 'jekyll serve --watch'
   else
-    if option == "drafts"
-      execute("jekyll serve --watch --drafts")
+    if option == 'drafts'
+      system 'jekyll serve --watch --drafts'
     else
-      execute("jekyll serve --watch --limit_posts #{option}")
+      system "jekyll serve --watch --limit_posts #{option}"
     end
   end
 end
 
-# rake preview
-desc "Launch a preview of the site in the browser"
-task :preview do
-  port = CONFIG["port"]
-  if port.nil? or port.empty?
-    port = 4000
+namespace :production do
+  # rake preview
+  desc 'Launch a preview of the site in the browser'
+  task :preview do
+    port = CONFIG['port']
+    if port.nil? || port.empty?
+      port = 4000
+    end
+    Thread.new do
+      puts 'Launching browser for preview...'
+      sleep 1
+      system("xdg-open http://localhost:#{port}/")
+    end
+    Rake::Task[:watch].invoke
   end
-  Thread.new do
-    puts "Launching browser for preview..."
-    sleep 1
-    execute("#{open_command} http://localhost:#{port}/")
+
+  # rake generate
+  desc 'Generate blog files'
+  task :generate do
+    Jekyll::Site.new(Jekyll.configuration({
+      'source'      => '.',
+      'destination' => '_site',
+      'config' => '_config_production.yml'
+    })).process
   end
-  Rake::Task[:watch].invoke
-end
 
+  # rake deploy
+  desc 'Generate and deploy blog to gh-pages'
+  task :deploy => [:generate] do
+    sha = `git log`.match(/[a-z0-9]{40}/)[0]
+    Dir.mktmpdir do |tmp|
+      pwd = Dir.pwd
+      Dir.chdir tmp
 
-# rake generate
-desc "Generate blog files"
-task :generate do
-  Jekyll::Site.new(Jekyll.configuration({
-    "source"      => ".",
-    "destination" => "_site",
-    "config" => "_config_production.yml"
-  })).process
-end
+      # setup git branch for github pages
+      system "git clone git@github.com:#{GITHUB_REPONAME} #{tmp}"
+      system "git checkout #{GITHUB_BRANCH}"
+      system "git pull origin #{GITHUB_BRANCH}"
 
-# rake deploy
-desc "Generate and deploy blog to gh-pages"
-task :deploy => [:generate] do
-  Dir.mktmpdir do |tmp|
-    cp_r "_site/.", tmp
+      # copy generated site contents
+      cp_r "#{pwd}/_site/.", tmp
 
-    pwd = Dir.pwd
-    Dir.chdir tmp
+      # push updated generated content to production
+      system "git add ."
+      message = "Site updated to #{sha} at #{Time.now.utc}"
+      system "git commit -m #{message.inspect}"
+      system "git push origin #{GITHUB_BRANCH}"
 
-    system "git init"
-    system "git add ."
-    message = "Site updated at #{Time.now.utc}"
-    system "git commit -m #{message.inspect}"
-    system "git remote add origin git@github.com:#{GITHUB_REPONAME}.git"
-    system "git push origin master:refs/heads/gh-pages --force"
-
-    Dir.chdir pwd
+      Dir.chdir pwd
+    end
   end
 end
 
 namespace :iconfonts do
 
-  desc "Browse our icon fonts library using Fontello"
+  desc 'Browse our icon fonts library using Fontello'
   task :browse do
     session_id = %x|curl -s -X POST -F "config=@_assets/fonts/icon_fonts/blogicons/config.json" http://fontello.com/|.chomp
     system "open 'http://fontello.com/#{session_id}'"
   end
 
-  desc "Update the icon fonts using the latest Fontello download."
+  desc 'Update the icon fonts using the latest Fontello download.'
   task :update do
     download_zip = Dir[File.expand_path('~/Downloads/fontello-*.zip')].sort { |a,b| File.mtime(a) <=> File.mtime(b) }[0]
     system("unzip #{download_zip} -d ~/Downloads") if download_zip
     download_dir = Dir[File.expand_path('~/Downloads/fontello-*')]
       .sort { |a,b| File.mtime(a) <=> File.mtime(b) }
       .reject { |f| f =~ /\.zip$/ }[0]
-    FileUtils.mv "#{download_dir}/README.txt",              "_assets/fonts/blogicons/README.txt"
-    FileUtils.mv "#{download_dir}/LICENSE.txt",             "_assets/fonts/blogicons/LICENSE.txt"
-    FileUtils.mv "#{download_dir}/config.json",             "_assets/fonts/blogicons/config.json"
-    FileUtils.mv "#{download_dir}/font/blogicons.woff",     "_assets/fonts/blogicons.woff"
-    FileUtils.mv "#{download_dir}/font/blogicons.ttf",      "_assets/fonts/blogicons.ttf"
-    FileUtils.mv "#{download_dir}/font/blogicons.svg",      "_assets/fonts/blogicons.svg"
-    FileUtils.mv "#{download_dir}/font/blogicons.eot",      "_assets/fonts/blogicons.eot"
-    FileUtils.mv "#{download_dir}/css/blogicons.css",       "_assets/stylesheets/icon_fonts/_blogicons-codes.scss"
+    FileUtils.mv "#{download_dir}/README.txt",              '_assets/fonts/blogicons/README.txt'
+    FileUtils.mv "#{download_dir}/LICENSE.txt",             '_assets/fonts/blogicons/LICENSE.txt'
+    FileUtils.mv "#{download_dir}/config.json",             '_assets/fonts/blogicons/config.json'
+    FileUtils.mv "#{download_dir}/font/blogicons.woff",     '_assets/fonts/blogicons.woff'
+    FileUtils.mv "#{download_dir}/font/blogicons.ttf",      '_assets/fonts/blogicons.ttf'
+    FileUtils.mv "#{download_dir}/font/blogicons.svg",      '_assets/fonts/blogicons.svg'
+    FileUtils.mv "#{download_dir}/font/blogicons.eot",      '_assets/fonts/blogicons.eot'
+    FileUtils.mv "#{download_dir}/css/blogicons.css",       '_assets/stylesheets/icon_fonts/_blogicons-codes.scss'
     FileUtils.rm_rf(download_dir)
     FileUtils.rm_rf(download_zip) if download_zip
   end
