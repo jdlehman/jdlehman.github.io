@@ -180,22 +180,17 @@ namespace :production do
   task :deploy => [:generate] do
     sha = `git log`.match(/[a-z0-9]{40}/)[0]
     Dir.mktmpdir do |tmp|
+      cp_r "_site/.", tmp
+
       pwd = Dir.pwd
       Dir.chdir tmp
 
-      # setup git branch for github pages
-      system "git clone git@github.com:#{GITHUB_REPONAME} #{tmp}"
-      system "git checkout #{GITHUB_BRANCH}"
-      system "git pull origin #{GITHUB_BRANCH}"
-
-      # copy generated site contents
-      cp_r "#{pwd}/_site/.", tmp
-
-      # push updated generated content to production
+      system "git init"
       system "git add ."
       message = "Site updated to #{sha} at #{Time.now.utc}"
       system "git commit -m #{message.inspect}"
-      system "git push origin #{GITHUB_BRANCH}"
+      system "git remote add origin git@github.com:#{GITHUB_REPONAME}.git"
+      system "git push origin master:refs/heads/#{GITHUB_BRANCH} --force"
 
       Dir.chdir pwd
     end
