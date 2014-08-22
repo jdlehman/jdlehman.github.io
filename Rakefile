@@ -224,7 +224,7 @@ namespace :iconfonts do
     FileUtils.mv "#{download_dir}/font/blogicons.ttf",      '_assets/fonts/blogicons.ttf'
     FileUtils.mv "#{download_dir}/font/blogicons.svg",      '_assets/fonts/blogicons.svg'
     FileUtils.mv "#{download_dir}/font/blogicons.eot",      '_assets/fonts/blogicons.eot'
-    FileUtils.mv "#{download_dir}/css/blogicons.css",       '_assets/stylesheets/icon_fonts/_blogicons-codes.scss'
+    FileUtils.mv "#{download_dir}/css/blogicons-codes.css",       '_assets/stylesheets/icon_fonts/_blogicons-codes.scss'
     FileUtils.rm_rf(download_dir)
     FileUtils.rm_rf(download_zip) if download_zip
   end
