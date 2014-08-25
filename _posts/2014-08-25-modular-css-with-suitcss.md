@@ -8,7 +8,7 @@ tags:
 
 Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.
 
-Ask yourself the question, "how and why do we apply structure to the code we write?" Now you might wonder, why don't we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with [SUIT CSS](https://github.com/suitcss/suit/blob/master/doc/README.md).
+Ask yourself the question, "how and why do we apply structure to the code we write?" Now you might wonder, why don't we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the [SUIT CSS](https://github.com/suitcss/suit/blob/master/doc/README.md) convention.
 
 ## SUIT CSS Introduction
 
@@ -34,7 +34,7 @@ It might look weird at first as it is different than the CSS you have written in
 - **is-stateName**
   - The `is-stateName` represents the current state of the element (if any). Ex: `is-disabled`, `is-active`, etc. This is written in camel case and is unlike the previous examples as it is a separate class added to an element.
 - **u-utilityName**
-  - The `u-UtilityName` is the odd one. It does not apply to a single component, but is a utility class is general enough in nature that it can add styling to just about any component. Ex: `u-inlineBlock`, `u-floatRight`, `u-clearfix`, etc. [BASSCSS](http://www.basscss.com/) has many good example utility classes (though not written in a strict SUIT CSS syntax).
+  - The `u-utilityName` is the odd one. It does not apply to a single component, but is a utility class is general enough in nature that it can add styling to just about any component. Ex: `u-inlineBlock`, `u-floatRight`, `u-clearfix`, etc. [BASSCSS](http://www.basscss.com/) has many good example utility classes (though not written in a strict SUIT CSS syntax).
 
 ## A Practical Example
 
