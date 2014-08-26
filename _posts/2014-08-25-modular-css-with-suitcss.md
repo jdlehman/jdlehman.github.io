@@ -8,7 +8,7 @@ tags:
 
 Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.
 
-Ask yourself the question, "how and why do we apply structure to the code we write?" Now you might wonder, why don't we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the [SUIT CSS](https://github.com/suitcss/suit/blob/master/doc/README.md) convention.
+Ask yourself the question, "how and why do we apply structure to the code we write?" Now you might wonder, why don't we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the [SUIT CSS](http://suitcss.github.io/) convention.
 
 ## SUIT CSS Introduction
 
@@ -72,7 +72,7 @@ Let's get some SUIT under our belts with an actual example. We will build out th
 ```
 
 ```css
-// generated css
+/* generated css */
 .my-AwesomeBox {
   background-color: blue;
   border: 1px solid black;
@@ -103,12 +103,12 @@ Let's get some SUIT under our belts with an actual example. We will build out th
 ## Why?
 
 While it might feel strange at first glance, give SUIT a shot (or at least another modular CSS variant like [BEM](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)). Writing CSS/Sass in this manner provides a number of great benefits:
-- consistency and structure
-  - this is much better than a hodgepodge of arbitrary CSS randomly strung about with no semantic meaning
-  - anyone can enter the project and easily understand and contribute
-- separation of concerns
-- promotes reuse of code by creating the building blocks for the site with components
-- [semantic syntax](http://nicolasgallagher.com/about-html-semantics-front-end-architecture/)
-- composable and extendable CSS
-  - modularity makes it easy to extend components and compose components to get the sum of their parts
-  - this is particularly useful for building style frameworks as it allows users of the framework to easily make it their own without fighting the framework
+- Consistency and structure
+  - This is much better than a hodgepodge of arbitrary CSS randomly strung about with no semantic meaning
+  - Anyone can enter the project and easily understand and contribute
+- Separation of concerns
+- Promotes reuse of code by creating the building blocks for the site with components
+- [Semantic syntax](http://nicolasgallagher.com/about-html-semantics-front-end-architecture/)
+- Composable and extendable CSS
+  - Modularity makes it easy to extend components and compose components to get the sum of their parts
+  - This is particularly useful for building style frameworks as it allows users of the framework to easily make it their own without fighting the framework
