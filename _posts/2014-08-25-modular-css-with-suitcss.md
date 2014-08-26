@@ -34,7 +34,7 @@ It might look weird at first as it is different than the CSS you have written in
 - **is-stateName**
   - The `is-stateName` represents the current state of the element (if any). Ex: `is-disabled`, `is-active`, etc. This is written in camel case and is unlike the previous examples as it is a separate class added to an element.
 - **u-utilityName**
-  - The `u-utilityName` is the odd one. It does not apply to a single component, but is a utility class is general enough in nature that it can add styling to just about any component. Ex: `u-inlineBlock`, `u-floatRight`, `u-clearfix`, etc. [BASSCSS](http://www.basscss.com/) has many good example utility classes (though not written in a strict SUIT CSS syntax).
+  - The `u-utilityName` is the odd one. The utility class does not apply to a single component, but is general enough in nature that it can add styling to just about any component. Ex: `u-inlineBlock`, `u-floatRight`, `u-clearfix`, etc. [BASSCSS](http://www.basscss.com/) has many good example utility classes (though not written in a strict SUIT CSS syntax).
 
 ## A Practical Example
 
