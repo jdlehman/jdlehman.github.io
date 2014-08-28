@@ -24,6 +24,7 @@ highlighter: rouge
 # Gem Settings
 gems:
   - jekyll-assets
+  - jekyll-sitemap
 
 # Jekyll-assets settings
 assets:
