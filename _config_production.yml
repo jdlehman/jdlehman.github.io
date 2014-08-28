@@ -1,6 +1,5 @@
 # Site settings
 production: true
-baseurl: /in_lehmans_terms
 title: In Lehman's Terms
 description: ""
 timezone: America/New_York
@@ -32,7 +31,6 @@ assets:
   css_compressor: sass
   cache: true
   cachebust: hard
-  baseurl: /in_lehmans_terms/assets/
   sources:
     - _assets/images
     - _assets/javascripts

@@ -23,8 +23,8 @@ PAGE_TEMPLATE = '_page_template.txt'
 
 EDITOR = 'vim'
 DATE = Time.now.strftime('%Y-%m-%d')
-GITHUB_REPONAME = 'jdlehman/in_lehmans_terms'
-GITHUB_BRANCH = 'gh-pages'
+GITHUB_REPONAME = 'jdlehman.github.io'
+GITHUB_BRANCH = 'master'
 
 # == Helpers ===================================================================
 
@@ -189,7 +189,7 @@ namespace :production do
       system "git add ."
       message = "Site updated to #{sha} at #{Time.now.utc}"
       system "git commit -m #{message.inspect}"
-      system "git remote add origin git@github.com:#{GITHUB_REPONAME}.git"
+      system "git remote add origin git@github.com:jdlehman/#{GITHUB_REPONAME}.git"
       system "git push origin master:refs/heads/#{GITHUB_BRANCH} --force"
 
       Dir.chdir pwd
