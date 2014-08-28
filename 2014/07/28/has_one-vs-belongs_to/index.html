@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Database Associations- "Has One" vs "Belongs To"</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+    <link rel="canonical" href="/2014/07/28/has_one-vs-belongs_to/">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/app-3df7d04f0eff3788c832d4e8734686e5.css">
+    
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
+
+    <!-- <nav class="site-nav"> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/feed.xml"></a> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/"></a> -->
+    <!--    -->
+    <!-- </nav> -->
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+        <div class="post ">
+
+  <header class="post-header">
+    <h1>Database Associations- "Has One" vs "Belongs To"</h1>
+    <p class="meta">Jul 28, 2014</p>
+  </header>
+
+  <article class="post-content">
+    <h2 id="which-one-goes-where?">Which One Goes Where?</h2>
+
+<p>One of the most confusing database relationship questions for me was always when to use <code>has_one</code> vs <code>belongs_to</code>. The relationship is a simple one-to-one relationship, and if we think about it in terms of the models, it makes a lot of sense. For example, let&#39;s say we have a <code>Dog</code> model and an <code>Owner</code> model. Immediately we can say the <code>Owner has_one Dog</code> and the <code>Dog belongs_to Owner</code>. In this case, the objects are familiar to us from our everyday life and it is easy to figure out. When the objects are more abstract like <code>Foo</code> and <code>Bar</code> it is much more difficult to determine. Let&#39;s hold that thought for a moment.</p>
+
+<p>The trickiest part of this whole ordeal for me was always figuring out which model object has the <code>foreign_key</code> on it, the <code>id</code> of the other model with which it is associated. This <code>foreign_key</code> is actually the only difference between the <code>has_one</code> and <code>belongs_to</code> semantic naming in a one-to-one relationship. The question is, does it go on the model that <code>belongs_to</code> the other or the one that <code>has_one</code> of the first prior? Let&#39;s go back to my original example with the <code>Owner</code> and the <code>Dog</code>. In this case, the <code>Owner has_one Dog</code>. In real life, most dogs are required to wear collars with some identification, typically the owner&#39;s name and address, in case the dog gets lost. Did you catch that? The dog has the owner&#39;s id on it, or relating it back to our database model, the <code>foreign_key</code>! Since <code>Dog belongs_to Owner</code>, the <code>foreign_key</code> will be on the <code>Dog</code> model, meaning the object that <code>belongs_to</code> the other will always have the <code>foreign_key</code> that makes the association. This example makes it easy to remember where the <code>foreign_key</code> belongs, but we still do not know how to determine which object belongs to the other in a more abstract case.</p>
+
+<p>Going back to the previously mentioned example with models, <code>Foo</code> and <code>Bar</code>, let&#39;s make some assumptions. Let&#39;s assume that <code>Foo has_one Bar</code>. For you Rails users, the Rails associations would look as follows.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># app/models/foo.rb</span>
+<span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">has_one</span> <span class="ss">:bar</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/bar.rb</span>
+<span class="k">class</span> <span class="nc">Bar</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:foo</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>If we want to find the <code>Bar</code> that belongs to a given <code>Foo</code>, the SQL would look something like the following.</p>
+<div class="highlight"><pre><code class="language-mysql" data-lang="mysql">-- "has_one" query
+-- Find the Bar that belongs to a given Foo
+-- assume an intance foo of Foo already exists
+SELECT *
+FROM Bar
+WHERE foo_id = foo.id
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Rails Active Record equivalent will call the above SQL behind the scenes</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="no">Foo</span><span class="p">.</span><span class="nf">first</span>
+<span class="n">foo</span><span class="p">.</span><span class="nf">bar</span>
+</code></pre></div>
+<p>To do the inverse, get a <code>Foo</code> for a given <code>Bar</code>, the SQL would look something like the following:</p>
+<div class="highlight"><pre><code class="language-mysql" data-lang="mysql">-- "belongs_to" query
+-- Find the Foo that has a given Bar
+-- assume an instance bar of Bar already exists
+SELECT *
+FROM Foo
+INNER JOIN Bar ON Foo.id = Bar.foo_id
+WHERE Bar.id = bar.id
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Rails Active Record equivalent will call the above SQL behind the scenes</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="no">Bar</span><span class="p">.</span><span class="nf">first</span>
+<span class="n">bar</span><span class="p">.</span><span class="nf">foo</span>
+</code></pre></div>
+<p>As you can see, the <code>has_one</code> query is much simpler and more performant in general than the <code>belongs_to</code> query as it does not require a join. This means if we will typically be accessing <code>Foo</code> objects through a given <code>Bar</code> instance, it would be wise to make this case the more performant one,  the <code>has_one</code> case. Therefore a good general rule is to make the &quot;dominant&quot; object, the object that will typically be driving logic and asking for the associated other model, the <code>has_one</code> model. The other will naturally be the <code>belongs_to</code> model in this one-to-one association example. Keep in mind that while the &quot;dominant&quot; model might be doing most of the driving, the association is still there making it fairly easy to go the other way as well.</p>
+
+<p>Hopefully now you know where to place the <code>foreign_key</code> (think of our <code>Owner has_one Dog</code> example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the <code>foreign_key</code> on models that are more abstract.</p>
+
+  </article>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/07/28/has_one-vs-belongs_to/';
+    var disqus_title = 'Database Associations- "Has One" vs "Belongs To"';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+    <h2>In Lehman's Terms</h2>
+
+    <div>
+      <a href="https://github.com/jdlehman">
+        <span class="jl-Icon-github"></span>
+      </a>
+      <a href="https://twitter.com/inLehmans_Terms">
+        <span class="jl-Icon-twitter"></span>
+      </a>
+      <a href="/feed.xml">
+        <span class="jl-Icon-rss"></span>
+      </a>
+    </div>
+
+    <div>
+      <p></p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+</html>

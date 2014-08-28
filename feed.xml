@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>In Lehman&#39;s Terms</title>
+    <description></description>
+    <link></link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Modular CSS with SUIT CSS</title>
+        <description>&lt;p&gt;Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.&lt;/p&gt;
+
+&lt;p&gt;Ask yourself the question, &amp;quot;how and why do we apply structure to the code we write?&amp;quot; Now you might wonder, why don&amp;#39;t we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the &lt;a href=&quot;http://suitcss.github.io/&quot;&gt;SUIT CSS&lt;/a&gt; convention.&lt;/p&gt;
+
+&lt;h2 id=&quot;suit-css-introduction&quot;&gt;SUIT CSS Introduction&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;#39;s dive right into it. The basic structure of SUIT is as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nc&quot;&gt;.namespace-ComponentName-descendantName--modifierName.is-stateName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+
+&lt;span class=&quot;nc&quot;&gt;.u-utilityName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It might look weird at first as it is different than the CSS you have written in the past, but bear with me, it&amp;#39;s purpose will become clear. This is not necessarily what each of your class declarations will look like, but is meant to serve as a guide and reference to writing semantic SUIT CSS. Each declaration you make will probably contain parts of the structure above.&lt;/p&gt;
+
+&lt;h3 id=&quot;breaking-it-down&quot;&gt;Breaking it down&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;namespace&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;namespace&lt;/code&gt; is optional and allows you to write CSS that will not conflict with any other libraries. This is written in camel case.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ComponentName&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;ComponentName&lt;/code&gt; is your top level component such as &lt;code&gt;Form&lt;/code&gt;. This is written in pascal case.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;descendantName&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;descendantName&lt;/code&gt; is a part of your component that is applying styles on the components behalf. Your &lt;code&gt;Form&lt;/code&gt; component might have a &lt;code&gt;group&lt;/code&gt; descendant, &lt;code&gt;Form-group&lt;/code&gt;. This is written in camel case and follows the base component with a &lt;code&gt;-&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;modifierName&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;modifierName&lt;/code&gt; is a presentation class that modifies the base class in some way. Ex: &lt;code&gt;Form--small&lt;/code&gt;, &lt;code&gt;Form--large&lt;/code&gt;, &lt;code&gt;Btn--primary&lt;/code&gt;, etc. This is written in camel case and follows the base component with a &lt;code&gt;--&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;is-stateName&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;is-stateName&lt;/code&gt; represents the current state of the element (if any). Ex: &lt;code&gt;is-disabled&lt;/code&gt;, &lt;code&gt;is-active&lt;/code&gt;, etc. This is written in camel case and is unlike the previous examples as it is a separate class added to an element.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;u-utilityName&lt;/strong&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;u-utilityName&lt;/code&gt; is the odd one. The utility class does not apply to a single component, but is general enough in nature that it can add styling to just about any component. Ex: &lt;code&gt;u-inlineBlock&lt;/code&gt;, &lt;code&gt;u-floatRight&lt;/code&gt;, &lt;code&gt;u-clearfix&lt;/code&gt;, etc. &lt;a href=&quot;http://www.basscss.com/&quot;&gt;BASSCSS&lt;/a&gt; has many good example utility classes (though not written in a strict SUIT CSS syntax).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;a-practical-example&quot;&gt;A Practical Example&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;#39;s get some SUIT under our belts with an actual example. We will build out the &amp;quot;awesome box&amp;quot; component.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// sass
+&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1px&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;black&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;250px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// .my-AwesomeBox--small
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--small&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// .my-AwesomeBox-title
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-title&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// .my-AwesomeBox--large
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--large&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// .my-AwesomeBox.is-selected
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;.is-selected&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nc&quot;&gt;.my-u-center&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;text-align&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;center&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;c&quot;&gt;/* generated css */&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1px&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;black&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;250px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox--small&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox-title&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox-title--large&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox.is-selected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nc&quot;&gt;.my-u-center&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;text-align&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;center&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/a166888f44271c291c80&quot;&gt;Play with this example on Sassmeister&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;why?&quot;&gt;Why?&lt;/h2&gt;
+
+&lt;p&gt;While it might feel strange at first glance, give SUIT a shot (or at least another modular CSS variant like &lt;a href=&quot;http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/&quot;&gt;BEM&lt;/a&gt;). Writing CSS/Sass in this manner provides a number of great benefits:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Consistency and structure
+
+&lt;ul&gt;
+&lt;li&gt;This is much better than a hodgepodge of arbitrary CSS randomly strung about with no semantic meaning&lt;/li&gt;
+&lt;li&gt;Anyone can enter the project and easily understand and contribute&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Separation of concerns&lt;/li&gt;
+&lt;li&gt;Promotes reuse of code by creating the building blocks for the site with components&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://nicolasgallagher.com/about-html-semantics-front-end-architecture/&quot;&gt;Semantic syntax&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Composable and extendable CSS
+
+&lt;ul&gt;
+&lt;li&gt;Modularity makes it easy to extend components and compose components to get the sum of their parts&lt;/li&gt;
+&lt;li&gt;This is particularly useful for building style frameworks as it allows users of the framework to easily make it their own without fighting the framework&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 25 Aug 2014 00:00:00 -0400</pubDate>
+        <link>/2014/08/25/modular-css-with-suitcss/</link>
+        <guid isPermaLink="true">/2014/08/25/modular-css-with-suitcss/</guid>
+      </item>
+    
+      <item>
+        <title>Vim Macros</title>
+        <description>&lt;p&gt;One of the big advantages I find to using vim as my editor is the ability to record and replay macros. The recording of a macro begins when &lt;code&gt;q&lt;/code&gt; is pressed followed by any other key, which specifies what register the macro is to be stored in. If we use &lt;code&gt;qq&lt;/code&gt; the macro will be stored in register &lt;code&gt;q&lt;/code&gt;, whereas &lt;code&gt;qt&lt;/code&gt; will store the macro in register &lt;code&gt;t&lt;/code&gt;. Once the recording is started, all keystrokes are stored into the specified register. Pressing &lt;code&gt;q&lt;/code&gt; again will stop the recording. To &amp;quot;playback&amp;quot; the macro, which will just execute the contents of the register as if you were pressing the keystrokes yourself, type &lt;code&gt;@&lt;/code&gt; followed by the register in which you stored the macro. &lt;code&gt;@@&lt;/code&gt; will playback the most recently played macro.&lt;/p&gt;
+
+&lt;p&gt;I find that a good baseline for when a macro might be useful is for repetitious editing or reformatting that cannot easily be accomplished using visual block mode. For example, given the following Ruby method, let&amp;#39;s say I wanted to modify the additional method calls to use parenthesis.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;my_method&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run_something&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run_something2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run_something3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg3&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# etc...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To do this we can start on the first line of the method (not the definition) and press &lt;code&gt;qq&lt;/code&gt; to being recording our macro to register &lt;code&gt;q&lt;/code&gt;. We can type &lt;code&gt;^wi(^[A)^[&lt;/code&gt; followed by &lt;code&gt;q&lt;/code&gt; to stop the recording, where &lt;code&gt;^[&lt;/code&gt; is the escape character. Now we can execute &lt;code&gt;@q&lt;/code&gt; on each line we want to modify to be wrapped in parenthesis to get the following result.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;my_method&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run_something&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run_something2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;run_something3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# etc...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Let&amp;#39;s break down the macro as it looks like gibberish when pasting the contents of the register as I did above.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;^&lt;/code&gt; takes our cursor to the beginning of the line. This ensures that we always start from the same location and follows the principle of generalizing a macro as much as possible to optimize the potential for reuse.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;w&lt;/code&gt; jumps to the next word, which happens to be the beginning of our first argument&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;i(^[&lt;/code&gt; goes into insert mode and writes an open parenthesis then escapes back into normal mode&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A)^[&lt;/code&gt; goes into insert mode at the end of the line and inserts a closing parenthesis before escaping back into normal mode&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When we break the macro down, it is actually really simple. Another thing we could have doe is typed &lt;code&gt;j&lt;/code&gt; before we stopped recording which would have taken us to the next line of code automatically. Then we could have used a single command, &lt;code&gt;3@q&lt;/code&gt;, instead of 3 separate commands to do the same amount of work.&lt;/p&gt;
+
+&lt;p&gt;I already mentioned the notion of generalizing a macro to allow for its reuse. I think this is where macros can really shine. Every now and then you might create a macro that you would actually find useful in your everyday development. What do you do? You can simply create a mapping in your &lt;code&gt;vimrc&lt;/code&gt; to run this macro such that it will always be available for use even if the original register you recorded it in is overwritten eventually. In your &lt;code&gt;vimrc&lt;/code&gt; paste your macro in with &lt;code&gt;&amp;quot;qp&lt;/code&gt;, where &lt;code&gt;q&lt;/code&gt; is the register you used to record the macro. We are halfway there, simply add a mapping in front of this pasted content like, &lt;code&gt;nnoremap &amp;lt;leader&amp;gt;(&lt;/code&gt;. The final result looking like:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;nnoremap &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;leader&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt; ^wi&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;^&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;A&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;^&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now our old macro turned mapping will run whenever we type &lt;code&gt;&amp;lt;leader&amp;gt;(&lt;/code&gt; in normal mode.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Aug 2014 00:00:00 -0400</pubDate>
+        <link>/2014/08/07/vim-macros/</link>
+        <guid isPermaLink="true">/2014/08/07/vim-macros/</guid>
+      </item>
+    
+      <item>
+        <title>Database Associations- &quot;Has One&quot; vs &quot;Belongs To&quot;</title>
+        <description>&lt;h2 id=&quot;which-one-goes-where?&quot;&gt;Which One Goes Where?&lt;/h2&gt;
+
+&lt;p&gt;One of the most confusing database relationship questions for me was always when to use &lt;code&gt;has_one&lt;/code&gt; vs &lt;code&gt;belongs_to&lt;/code&gt;. The relationship is a simple one-to-one relationship, and if we think about it in terms of the models, it makes a lot of sense. For example, let&amp;#39;s say we have a &lt;code&gt;Dog&lt;/code&gt; model and an &lt;code&gt;Owner&lt;/code&gt; model. Immediately we can say the &lt;code&gt;Owner has_one Dog&lt;/code&gt; and the &lt;code&gt;Dog belongs_to Owner&lt;/code&gt;. In this case, the objects are familiar to us from our everyday life and it is easy to figure out. When the objects are more abstract like &lt;code&gt;Foo&lt;/code&gt; and &lt;code&gt;Bar&lt;/code&gt; it is much more difficult to determine. Let&amp;#39;s hold that thought for a moment.&lt;/p&gt;
+
+&lt;p&gt;The trickiest part of this whole ordeal for me was always figuring out which model object has the &lt;code&gt;foreign_key&lt;/code&gt; on it, the &lt;code&gt;id&lt;/code&gt; of the other model with which it is associated. This &lt;code&gt;foreign_key&lt;/code&gt; is actually the only difference between the &lt;code&gt;has_one&lt;/code&gt; and &lt;code&gt;belongs_to&lt;/code&gt; semantic naming in a one-to-one relationship. The question is, does it go on the model that &lt;code&gt;belongs_to&lt;/code&gt; the other or the one that &lt;code&gt;has_one&lt;/code&gt; of the first prior? Let&amp;#39;s go back to my original example with the &lt;code&gt;Owner&lt;/code&gt; and the &lt;code&gt;Dog&lt;/code&gt;. In this case, the &lt;code&gt;Owner has_one Dog&lt;/code&gt;. In real life, most dogs are required to wear collars with some identification, typically the owner&amp;#39;s name and address, in case the dog gets lost. Did you catch that? The dog has the owner&amp;#39;s id on it, or relating it back to our database model, the &lt;code&gt;foreign_key&lt;/code&gt;! Since &lt;code&gt;Dog belongs_to Owner&lt;/code&gt;, the &lt;code&gt;foreign_key&lt;/code&gt; will be on the &lt;code&gt;Dog&lt;/code&gt; model, meaning the object that &lt;code&gt;belongs_to&lt;/code&gt; the other will always have the &lt;code&gt;foreign_key&lt;/code&gt; that makes the association. This example makes it easy to remember where the &lt;code&gt;foreign_key&lt;/code&gt; belongs, but we still do not know how to determine which object belongs to the other in a more abstract case.&lt;/p&gt;
+
+&lt;p&gt;Going back to the previously mentioned example with models, &lt;code&gt;Foo&lt;/code&gt; and &lt;code&gt;Bar&lt;/code&gt;, let&amp;#39;s make some assumptions. Let&amp;#39;s assume that &lt;code&gt;Foo has_one Bar&lt;/code&gt;. For you Rails users, the Rails associations would look as follows.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# app/models/foo.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_one&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:bar&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# app/models/bar.rb&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:foo&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If we want to find the &lt;code&gt;Bar&lt;/code&gt; that belongs to a given &lt;code&gt;Foo&lt;/code&gt;, the SQL would look something like the following.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-mysql&quot; data-lang=&quot;mysql&quot;&gt;-- &quot;has_one&quot; query
+-- Find the Bar that belongs to a given Foo
+-- assume an intance foo of Foo already exists
+SELECT *
+FROM Bar
+WHERE foo_id = foo.id
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Rails Active Record equivalent will call the above SQL behind the scenes&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bar&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To do the inverse, get a &lt;code&gt;Foo&lt;/code&gt; for a given &lt;code&gt;Bar&lt;/code&gt;, the SQL would look something like the following:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-mysql&quot; data-lang=&quot;mysql&quot;&gt;-- &quot;belongs_to&quot; query
+-- Find the Foo that has a given Bar
+-- assume an instance bar of Bar already exists
+SELECT *
+FROM Foo
+INNER JOIN Bar ON Foo.id = Bar.foo_id
+WHERE Bar.id = bar.id
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Rails Active Record equivalent will call the above SQL behind the scenes&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As you can see, the &lt;code&gt;has_one&lt;/code&gt; query is much simpler and more performant in general than the &lt;code&gt;belongs_to&lt;/code&gt; query as it does not require a join. This means if we will typically be accessing &lt;code&gt;Foo&lt;/code&gt; objects through a given &lt;code&gt;Bar&lt;/code&gt; instance, it would be wise to make this case the more performant one,  the &lt;code&gt;has_one&lt;/code&gt; case. Therefore a good general rule is to make the &amp;quot;dominant&amp;quot; object, the object that will typically be driving logic and asking for the associated other model, the &lt;code&gt;has_one&lt;/code&gt; model. The other will naturally be the &lt;code&gt;belongs_to&lt;/code&gt; model in this one-to-one association example. Keep in mind that while the &amp;quot;dominant&amp;quot; model might be doing most of the driving, the association is still there making it fairly easy to go the other way as well.&lt;/p&gt;
+
+&lt;p&gt;Hopefully now you know where to place the &lt;code&gt;foreign_key&lt;/code&gt; (think of our &lt;code&gt;Owner has_one Dog&lt;/code&gt; example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the &lt;code&gt;foreign_key&lt;/code&gt; on models that are more abstract.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 28 Jul 2014 00:00:00 -0400</pubDate>
+        <link>/2014/07/28/has_one-vs-belongs_to/</link>
+        <guid isPermaLink="true">/2014/07/28/has_one-vs-belongs_to/</guid>
+      </item>
+    
+      <item>
+        <title>Groove to a Vertical Rhythm</title>
+        <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;Grid frameworks are awesome. They solve a number of problems and enable developers to easily create virtually any layout they imagine. Paired with media queries, responsive layouts become more accessible and great experiences at all screen sizes are becoming more common.&lt;/p&gt;
+
+&lt;p&gt;Grids allow us to be lazy and not think about all the &amp;quot;complex math&amp;quot; they require. In actuality, grid frameworks are simple. Want to take up 6 columns on a 12 column grid? Set the width to 50%. Add some margins and clearfixes, and BOOM. You have yourself a &lt;a href=&quot;https://github.com/mourner/dead-simple-grid&quot;&gt;simple grid framework&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The purpose of a grid is to arrange our content in a well organized and define way. As humans, we are better at understanding patterns and organized content, and are more likely to read and retain information from such. Translation: great page organization leads to a better user experience. However, just organizing information on a grid-like structure is not enough. If you put too much content on a page it quickly becomes cluttered and unreadable again. The mere structure of a grid is not enough. Like anything, it must also be used wisely. The emergence of simple designs shows the importance of not only the content, but the white space around it. Readability is end-goal of typographic work.&lt;/p&gt;
+
+&lt;p&gt;While grid frameworks are great at organizing content horizontally, they fail miserably at organizing content vertically, that is establishing the vertical rhythm of the page. Like I mentioned earlier, humans intrinsically love patterns, and a strong vertical rhythm furthers the horizontal pattern employed by the grid by creating a vertical pattern.&lt;/p&gt;
+
+&lt;p&gt;The simplest analogy to vertical rhythm is the lines on a sheet of loose-leaf paper. You may have noticed by now that this page has dotted lines just like a sheet of paper. Notice how the text fits nicely in each line. The line does not hug the text, but provides a small amount of space, making the text readable and not looked cramped. Notice how each dotted line is the same distance apart, creating our rhythm. I am going to refer to this distance as the base line-height, which is derived from the base font-size, the size of the text you are currently reading.&lt;/p&gt;
+
+&lt;p&gt;So it appears that the base font-size fits perfectly in our lines, but what happens when the text is much larger than the base line-height. How can it possibly fit? Scroll up and take a look at the headers. What do you notice? The base line-heights are all the same, but large text takes up a number of FULL lines. The full part is important. In order to preserve vertical rhythm, we must ensure that each element takes up an integer number of lines. If it does not, the vertical rhythm will be off at that point on the page.&lt;/p&gt;
+
+&lt;p&gt;It appears the key to vertical rhythm is that all elements must take up a height of &lt;code&gt;(n * base line-height)&lt;/code&gt; where n is an integer value.&lt;/p&gt;
+
+&lt;p&gt;Now we understand what vertical rhythm is and why it is desirable when composing a site&amp;#39;s design. But how do we achieve this lofty goal? One way would be to calculate line-heights and font-sizes manually for various elements in your CSS. That does not sound like a lot of fun to me. Let&amp;#39;s avoid that tedious work and leverage some &lt;a href=&quot;http://sass-lang.com/&quot;&gt;Sass&lt;/a&gt; mixins to do the work for us. If you have not used Sass before, I highly recommend playing around with it in &lt;a href=&quot;http://sassmeister.com/&quot;&gt;Sassmeister&lt;/a&gt;. I will link some Sassmeister examples for you to play with as we explore creating vertical rhythm with Sass.&lt;/p&gt;
+
+&lt;p&gt;Another thing to note before we continue, is that we will be using rems, root ems. This will allow us to keep our vertical rhythm even if we change the base font-size because everything will scale up.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation-details&quot;&gt;Implementation Details&lt;/h2&gt;
+
+&lt;p&gt;First let&amp;#39;s figure out what we need to solve conceptually. We want all of our elements to fit uniformly within our base line-height lines. There are two primary cases:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;when the font-size is &lt;em&gt;smaller&lt;/em&gt; than the base line-height&lt;/li&gt;
+&lt;li&gt;when the font-size is &lt;em&gt;larger&lt;/em&gt; than the base line-height&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let&amp;#39;s gradually build up a Sass solution to handle these cases. First we will need to set up the basis for our vertical rhythm, the base font-size and line-height. While we are at it, we will also set up some base styles.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$base-font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$line-height-ratio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// base line-height = 16px * 1.5 = 24px
+&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;nv&quot;&gt;$base-font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$line-height-ratio&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;sx&quot;&gt;url(http://basehold.it/i/24)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;margin-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/f3a46154fff6c2e2f8f3&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;We are simply setting our base-font size and line height at the DOM root, the html element. By setting our base font-size on this element, we can define any additional sizes in rems to make them relate to the base font-size. If we then use media queries to change the font-size on the html element, all other sizes defined in rems will scale proportionally. You might be wondering why we are setting the top and bottom margins and padding on all elements to 0. This is to prevent any browser (or normalize.css) defaults from throwing off our vertical rhythm. In a bit, we will see how we can take control of the top and bottom to gain more vertical rhythm superpowers. Lastly, you might have noticed we are setting a background image. &lt;a href=&quot;http://basehold.it/&quot;&gt;Basehold.it&lt;/a&gt; is one of the tools I have found most valuable in understanding and debugging my site&amp;#39;s vertical rhythm. You can set it as a background as I have done, where the integer at the end of the URL specifies the base line-height, that is how a far apart you want the lines, in pixels. Basehold.it also allows you to import it as a stylesheet and even set the color of the lines.&lt;/p&gt;
+
+&lt;p&gt;As you can see, with this small amount of Sass, we have solved our first case. We now have vertical rhythm for all font-sizes that are less than or equal to our base line-height, which would be 24px with this base font size, &lt;code&gt;($base-font-size * $line-height-ratio)&lt;/code&gt;. What happens if we try to add fonts with a size greater than this?&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;nt&quot;&gt;h2&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;32px&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;font-size&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Wait a minute, that works! Did we just solve both of our cases without even making use of our Sass specific powers? We could have just done this in CSS! Slow your roll. It is true that this works, take a look at the Sassmeister example above to verify that the h2 now fits centered on 2 lines, which is exactly what we want. Why does this work?&lt;/p&gt;
+
+&lt;p&gt;Since we are setting the font-size to 2rem, it is indeed larger than the base font-size, but it is exactly 2 times larger. This relationship is important. This means it&amp;#39;s line-height would be &lt;code&gt;32px * 1.5 = 48px&lt;/code&gt;. What is so special about 48px? It is exactly 2 times our base line-height! This is why it works in that case. But what if the font-size is 2.4rem? Now we see that the vertical rhythm is thrown off. By using whole number rem values, we can guarantee that everything will always be a multiple of our base line-height, and therefore keep our vertical rhythm. Using whole number rem values is an easy convention to follow and you get vertical rhythm with practically no CSS necessary. Components could even be composed of parts that are not whole number rem values as long as the sum of their parts equals a whole rem value. &lt;a href=&quot;http://www.basscss.com/&quot;&gt;BASSCSS&lt;/a&gt; is a great example of this simple approach in practice. The simplicity of the project and the amount it is able to accomplish speaks for itself. If you think this is all you need for your use case, take these lessons and run with them, there is nothing wrong with taking the path of simplicity. In fact it will often lead to the least headaches down the road. However, this usecase is not for everyone.&lt;/p&gt;
+
+&lt;p&gt;What if you want to use a modular scale and cannot guarantee whole number rem values? What if we come back to the project 5 years later and forget this constraint? What if we are working on a large team and a new team member does not realize this rule? Regardless, we now have less control over our font-sizes and need to manually manage the minute details to ensure vertical rhythm. Let&amp;#39;s take advantage of our Sass powers and build a mixin that will overcome these limitations and do the work for us.&lt;/p&gt;
+
+&lt;p&gt;First let&amp;#39;s build what we already know. We will take in the desired font-size of our element and use it to determine the number of base line-heights our line-height must be set to in order for the element to take up a whole number of base lines.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$base-font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;m&quot;&gt;16px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$line-height-ratio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$line-height-ratio&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@mixin&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;vertical-rhythm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// determine how many lines this font-size will take up
+&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;h2&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// example usage
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;vertical-rhythm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.4rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/de630d458c15520247c1&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we see that we can use any font-size and it will still follow the vertical rhythm. I am sad to admit when we have come so far, that I over-simplified my cases from earlier. There is actually a third case. Not all DOM elements abide by the rules of line-height. Line-height only makes sense for elements I like to refer to as &amp;quot;text-based elements&amp;quot;. Elements like paragraphs, spans, and headers are all ruled by line-height. The actual height of the element depends on the amount of text within the element as well as how wide the container is and how many times the text must wrap to a new line. Each new line still preserves the line-height and vertical rhythm. The other kind of elements, that I will refer to as &amp;quot;non-text-based elements&amp;quot;, such as images, divs, and other containers are not governed by line-height in the same way that text-based elements are. Instead, they are governed by the defined height property. So you may wish to think of these two groups as line-height based elements and height-based elements. Though you can set the height on either of these, it is natural to set the line-height for a paragraph element, while setting the height of an image. The other way around and you end up with weird behavior. Likewise, we must abide by this natural order when establishing vertical rhythm.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s handle this additional case:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// add $use-height parameter
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;@mixin&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;vertical-rhythm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$use-height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// determine how many lines this font-size will take up
+&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// use height for height-based element, otherwise use line-height
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;@if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$use-height&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;nv&quot;&gt;$sb-line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;         &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// use leftover height to take up a whole number of base-lines
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// this leftover space is not needed for line-height based elements
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// because line-height takes up the entire whole number of base-lines itself
+&lt;/span&gt;    &lt;span class=&quot;nl&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;@else&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/1ed9ccf7a937494141ab&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;With just an additional parameter, we can handle this extra case. Now height-based elements will not break the flow of vertical rhythm.&lt;/p&gt;
+
+&lt;p&gt;One thing I want to note is that you must be careful not to become too obsessed by implementing strict vertical rhythm. There are potential edge cases you might come across, and going down the rabbit hole of vertical rhythm is quite overwhelming (trust me). While vertical rhythm can greatly improve the look, feel, and readability of a layout, being off by a few pixels here and there will not be noticable to anyone, but you, and probably only if you are using debug lines.&lt;/p&gt;
+
+&lt;p&gt;Some common edge cases you may come across are borders and &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/margin_collapsing&quot;&gt;margin collapsing&lt;/a&gt;. You can easily solve for borders by adding an additional parameter that accounts for the pixels being used in the height (this won&amp;#39;t affect height-based elements using the border-box model). Collapsing margins can be fixed by adding 1px of vertical padding and accounting for that extra pixel in the vertical rhythm.&lt;/p&gt;
+
+&lt;p&gt;Here is the vertical rhythm mixin I currently use on this site. Notice that I have added the &lt;code&gt;$bottom-rows&lt;/code&gt; and &lt;code&gt;$top-rows&lt;/code&gt; parameters to allow the specification of additional base-line rows above and below the element. I use 1 row below by default to get the flow I want between elements.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;k&quot;&gt;@mixin&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;vertical-rhythm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bottom-rows&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$top-rows&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$use-height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// I use a rem function that enables me to pass in the $font-size and $border
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// as rems or px, and the result of the function will give me rems
+&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// check if height-based element
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// if so use height property for height, otherwise use line-height property
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;@if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$use-height&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;         &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$top-rows&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bottom-rows&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;@else&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;based&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;uses&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$top-rows&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bottom-rows&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$border&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/9e4a757c63f467677bbe&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You may wonder why we are using rems for everything. Try resizing this window. Notice that the text scales (a benefit of specifying sizes in rems), but the vertical rhythm remains intact. This is the benefit of using rems! Now we can adjust our base-font size on the html element and everything will scale up/down while preserving the vertical rhythm.&lt;/p&gt;
+
+&lt;p&gt;I encourage you to take this mixin and use it to begin applying vertical rhythm to your sites.&lt;/p&gt;
+
+&lt;p&gt;Other great resources:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.8thlight.com/chris-peak/2012/12/30/vertical-rhythm.html&quot;&gt;Vertical Rhythm in Typography&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://typecast.com/blog/4-simple-steps-to-vertical-rhythm&quot;&gt;4 Simple STeps to Vertical Rhythm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 09 Jun 2014 00:00:00 -0400</pubDate>
+        <link>/2014/06/09/groove-to-a-vertical-rhythm/</link>
+        <guid isPermaLink="true">/2014/06/09/groove-to-a-vertical-rhythm/</guid>
+      </item>
+    
+      <item>
+        <title>Setup Varnish Locally</title>
+        <description>&lt;p&gt;Typically, the best way to ensure that a web application will run correctly in production is to stage it an environment just like production. Most of the time the overhead of setting up caching or other performance improvements is not necessary in development, but there are instances when the development being done directly interacts with or relies upon these components. In these situations it often pays off to take the time to set up &amp;quot;production components&amp;quot; so that changes can be tested prior to pushing changes to a staging or production environment, often a costly extra step.&lt;/p&gt;
+
+&lt;p&gt;Today, I am going to focus on setting up &lt;a href=&quot;https://www.varnish-cache.org&quot;&gt;Varnish Cache&lt;/a&gt;, a &amp;quot;caching HTTP reverse proxy&amp;quot;. Varnish allows you to cache responses to quickly serve common pages and provides powerful configuration for response headers and other cache settings.&lt;/p&gt;
+
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;If you are using Mac OSX, you can simply use &lt;a href=&quot;http://brew.sh/&quot;&gt;Homebrew&lt;/a&gt; to install Varnish.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install varnish
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you are using vanilla Varnish without any other modules, you can skip ahead to the &lt;a href=&quot;#usage&quot;&gt;usage&lt;/a&gt; section. If you do not use brew, continue to follow along and we will install it from source.&lt;/p&gt;
+
+&lt;h2 id=&quot;installing-modules&quot;&gt;Installing Modules&lt;/h2&gt;
+
+&lt;p&gt;Installing Varnish modules such as &lt;a href=&quot;https://github.com/varnish/libvmod-header&quot;&gt;libvmod-header&lt;/a&gt; or &lt;a href=&quot;https://github.com/lkarsten/libvmod-cookie&quot;&gt;libvmod-cookie&lt;/a&gt; requires building them from source using Varnish&amp;#39;s source.&lt;/p&gt;
+
+&lt;p&gt;First we must build Varnish&amp;#39;s source. Download a Varnish from their website or &lt;a href=&quot;https://github.com/varnish/Varnish-Cache&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /varnish-cache-source-location
+./autogen.sh
+./configure
+make
+
+&lt;span class=&quot;c&quot;&gt;# install varnish without brew (optional)&lt;/span&gt;
+make install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/strong&gt; If you get an rst2man error during compilation you need to &lt;a href=&quot;http://stackoverflow.com/a/12813081&quot;&gt;install docutils with pip&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now that we have built Varnish, we can use it to build our modules. For each module do as follows.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /varnish-module-location
+./autogen.sh
+./configure &lt;span class=&quot;nv&quot;&gt;VARNISHSRC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/path-to-varnish-source
+make
+make install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This will install the module binaries to the correct location, allowing you to import the module in your vcls. You can now configure &lt;code&gt;default.vcl&lt;/code&gt; to your liking. It is located at &lt;code&gt;/user/local/etc/varnish&lt;/code&gt; on OSX.&lt;/p&gt;
+
+&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;If you installed Varnish via brew, you can use &lt;code&gt;launchctl&lt;/code&gt; and the &lt;code&gt;plist&lt;/code&gt; files to load the service, or you can use the &lt;code&gt;varnishd&lt;/code&gt; command via the terminal. I recommend using the terminal initially because this will allow you to see and debug any errors. The property list files will fail silently if there are any errors.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# must run as root&lt;/span&gt;
+sudo varnishd -f /usr/local/etc/varnish/default.vcl -s file -a 0.0.0.0:8000
+&lt;span class=&quot;c&quot;&gt;# help: see available arguments with descriptions&lt;/span&gt;
+varnishd -h
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Command Breakdown&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-f&lt;/code&gt; Specifies the location of the &lt;code&gt;vcl&lt;/code&gt; script to launch Varnish with.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-s&lt;/code&gt; Specifies storage options. The file argument stores in &lt;code&gt;/tmp&lt;/code&gt; by default. You can specify another location with &lt;code&gt;-s file,/location&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-a&lt;/code&gt; Specifies the address and port that Varnish will run at. You can access your website through Varnish using this address and port.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;By now you should be up and running with Varnish locally on your development environment. For more information on Varnish in general and writing vcl scripts, consult the &lt;a href=&quot;https://www.varnish-cache.org/docs&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 26 May 2014 00:00:00 -0400</pubDate>
+        <link>/2014/05/26/setup-varnish-locally/</link>
+        <guid isPermaLink="true">/2014/05/26/setup-varnish-locally/</guid>
+      </item>
+    
+  </channel>
+</rss>

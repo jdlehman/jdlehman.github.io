@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>/2014/08/25/modular-css-with-suitcss/</loc>
+    <lastmod>2014-08-25T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>/2014/08/07/vim-macros/</loc>
+    <lastmod>2014-08-07T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>/2014/07/28/has_one-vs-belongs_to/</loc>
+    <lastmod>2014-07-28T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>/2014/06/09/groove-to-a-vertical-rhythm/</loc>
+    <lastmod>2014-06-09T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>/2014/05/26/setup-varnish-locally/</loc>
+    <lastmod>2014-05-26T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2014-08-28T08:34:08-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  
+  <url>
+    <loc>/google4f3ab6761d67654c.html</loc>
+    <lastmod>2014-08-28T08:22:01Z</lastmod>
+    <priority>0.6</priority>
+  </url>
+  
+</urlset>

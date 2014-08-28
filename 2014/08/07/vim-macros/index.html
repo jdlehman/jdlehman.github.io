@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vim Macros</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+    <link rel="canonical" href="/2014/08/07/vim-macros/">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/app-3df7d04f0eff3788c832d4e8734686e5.css">
+    
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
+
+    <!-- <nav class="site-nav"> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/feed.xml"></a> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/"></a> -->
+    <!--    -->
+    <!-- </nav> -->
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+        <div class="post ">
+
+  <header class="post-header">
+    <h1>Vim Macros</h1>
+    <p class="meta">Aug 7, 2014</p>
+  </header>
+
+  <article class="post-content">
+    <p>One of the big advantages I find to using vim as my editor is the ability to record and replay macros. The recording of a macro begins when <code>q</code> is pressed followed by any other key, which specifies what register the macro is to be stored in. If we use <code>qq</code> the macro will be stored in register <code>q</code>, whereas <code>qt</code> will store the macro in register <code>t</code>. Once the recording is started, all keystrokes are stored into the specified register. Pressing <code>q</code> again will stop the recording. To &quot;playback&quot; the macro, which will just execute the contents of the register as if you were pressing the keystrokes yourself, type <code>@</code> followed by the register in which you stored the macro. <code>@@</code> will playback the most recently played macro.</p>
+
+<p>I find that a good baseline for when a macro might be useful is for repetitious editing or reformatting that cannot easily be accomplished using visual block mode. For example, given the following Ruby method, let&#39;s say I wanted to modify the additional method calls to use parenthesis.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">my_method</span>
+  <span class="n">run_something</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span>
+  <span class="n">run_something2</span> <span class="n">arg1</span>
+  <span class="n">run_something3</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span>
+  <span class="c1"># etc...</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>To do this we can start on the first line of the method (not the definition) and press <code>qq</code> to being recording our macro to register <code>q</code>. We can type <code>^wi(^[A)^[</code> followed by <code>q</code> to stop the recording, where <code>^[</code> is the escape character. Now we can execute <code>@q</code> on each line we want to modify to be wrapped in parenthesis to get the following result.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">my_method</span>
+  <span class="n">run_something</span> <span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+  <span class="n">run_something2</span> <span class="p">(</span><span class="n">arg1</span><span class="p">)</span>
+  <span class="n">run_something3</span> <span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+  <span class="c1"># etc...</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Let&#39;s break down the macro as it looks like gibberish when pasting the contents of the register as I did above.</p>
+
+<ul>
+<li><code>^</code> takes our cursor to the beginning of the line. This ensures that we always start from the same location and follows the principle of generalizing a macro as much as possible to optimize the potential for reuse.</li>
+<li><code>w</code> jumps to the next word, which happens to be the beginning of our first argument</li>
+<li><code>i(^[</code> goes into insert mode and writes an open parenthesis then escapes back into normal mode</li>
+<li><code>A)^[</code> goes into insert mode at the end of the line and inserts a closing parenthesis before escaping back into normal mode</li>
+</ul>
+
+<p>When we break the macro down, it is actually really simple. Another thing we could have doe is typed <code>j</code> before we stopped recording which would have taken us to the next line of code automatically. Then we could have used a single command, <code>3@q</code>, instead of 3 separate commands to do the same amount of work.</p>
+
+<p>I already mentioned the notion of generalizing a macro to allow for its reuse. I think this is where macros can really shine. Every now and then you might create a macro that you would actually find useful in your everyday development. What do you do? You can simply create a mapping in your <code>vimrc</code> to run this macro such that it will always be available for use even if the original register you recorded it in is overwritten eventually. In your <code>vimrc</code> paste your macro in with <code>&quot;qp</code>, where <code>q</code> is the register you used to record the macro. We are halfway there, simply add a mapping in front of this pasted content like, <code>nnoremap &lt;leader&gt;(</code>. The final result looking like:</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim">nnoremap <span class="p">&lt;</span>leader<span class="p">&gt;(</span> ^wi<span class="p">(</span>^<span class="p">[</span>A<span class="p">)</span>^<span class="p">[</span>
+</code></pre></div>
+<p>Now our old macro turned mapping will run whenever we type <code>&lt;leader&gt;(</code> in normal mode.</p>
+
+  </article>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/08/07/vim-macros/';
+    var disqus_title = 'Vim Macros';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+    <h2>In Lehman's Terms</h2>
+
+    <div>
+      <a href="https://github.com/jdlehman">
+        <span class="jl-Icon-github"></span>
+      </a>
+      <a href="https://twitter.com/inLehmans_Terms">
+        <span class="jl-Icon-twitter"></span>
+      </a>
+      <a href="/feed.xml">
+        <span class="jl-Icon-rss"></span>
+      </a>
+    </div>
+
+    <div>
+      <p></p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+</html>

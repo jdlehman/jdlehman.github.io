@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Modular CSS with SUIT CSS</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+    <link rel="canonical" href="/2014/08/25/modular-css-with-suitcss/">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/app-3df7d04f0eff3788c832d4e8734686e5.css">
+    
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
+
+    <!-- <nav class="site-nav"> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/feed.xml"></a> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/"></a> -->
+    <!--    -->
+    <!-- </nav> -->
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+        <div class="post ">
+
+  <header class="post-header">
+    <h1>Modular CSS with SUIT CSS</h1>
+    <p class="meta">Aug 25, 2014</p>
+  </header>
+
+  <article class="post-content">
+    <p>Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.</p>
+
+<p>Ask yourself the question, &quot;how and why do we apply structure to the code we write?&quot; Now you might wonder, why don&#39;t we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the <a href="http://suitcss.github.io/">SUIT CSS</a> convention.</p>
+
+<h2 id="suit-css-introduction">SUIT CSS Introduction</h2>
+
+<p>Let&#39;s dive right into it. The basic structure of SUIT is as follows:</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.namespace-ComponentName-descendantName--modifierName.is-stateName</span> <span class="p">{}</span>
+
+<span class="nc">.u-utilityName</span> <span class="p">{}</span>
+</code></pre></div>
+<p>It might look weird at first as it is different than the CSS you have written in the past, but bear with me, it&#39;s purpose will become clear. This is not necessarily what each of your class declarations will look like, but is meant to serve as a guide and reference to writing semantic SUIT CSS. Each declaration you make will probably contain parts of the structure above.</p>
+
+<h3 id="breaking-it-down">Breaking it down</h3>
+
+<ul>
+<li><strong>namespace</strong>
+
+<ul>
+<li>The <code>namespace</code> is optional and allows you to write CSS that will not conflict with any other libraries. This is written in camel case.</li>
+</ul></li>
+<li><strong>ComponentName</strong>
+
+<ul>
+<li>The <code>ComponentName</code> is your top level component such as <code>Form</code>. This is written in pascal case.</li>
+</ul></li>
+<li><strong>descendantName</strong>
+
+<ul>
+<li>The <code>descendantName</code> is a part of your component that is applying styles on the components behalf. Your <code>Form</code> component might have a <code>group</code> descendant, <code>Form-group</code>. This is written in camel case and follows the base component with a <code>-</code>.</li>
+</ul></li>
+<li><strong>modifierName</strong>
+
+<ul>
+<li>The <code>modifierName</code> is a presentation class that modifies the base class in some way. Ex: <code>Form--small</code>, <code>Form--large</code>, <code>Btn--primary</code>, etc. This is written in camel case and follows the base component with a <code>--</code>.</li>
+</ul></li>
+<li><strong>is-stateName</strong>
+
+<ul>
+<li>The <code>is-stateName</code> represents the current state of the element (if any). Ex: <code>is-disabled</code>, <code>is-active</code>, etc. This is written in camel case and is unlike the previous examples as it is a separate class added to an element.</li>
+</ul></li>
+<li><strong>u-utilityName</strong>
+
+<ul>
+<li>The <code>u-utilityName</code> is the odd one. The utility class does not apply to a single component, but is general enough in nature that it can add styling to just about any component. Ex: <code>u-inlineBlock</code>, <code>u-floatRight</code>, <code>u-clearfix</code>, etc. <a href="http://www.basscss.com/">BASSCSS</a> has many good example utility classes (though not written in a strict SUIT CSS syntax).</li>
+</ul></li>
+</ul>
+
+<h2 id="a-practical-example">A Practical Example</h2>
+
+<p>Let&#39;s get some SUIT under our belts with an actual example. We will build out the &quot;awesome box&quot; component.</p>
+<div class="highlight"><pre><code class="language-sass" data-lang="sass"><span class="c1">// sass
+</span><span class="nc">.my-AwesomeBox</span> <span class="err">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="no">blue</span><span class="err">;</span>
+  <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="no">black</span><span class="err">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">1rem</span><span class="err">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">250px</span><span class="err">;</span>
+  <span class="c1">// .my-AwesomeBox--small
+</span>  <span class="k">&amp;</span><span class="nt">--small</span> <span class="err">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100px</span><span class="err">;</span>
+  <span class="err">}</span>
+  <span class="c1">// .my-AwesomeBox-title
+</span>  <span class="k">&amp;</span><span class="nt">-title</span> <span class="err">{</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="m">1rem</span><span class="err">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="err">;</span>
+    <span class="c1">// .my-AwesomeBox--large
+</span>    <span class="k">&amp;</span><span class="nt">--large</span> <span class="err">{</span>
+      <span class="nl">font-size</span><span class="p">:</span> <span class="m">2rem</span><span class="err">;</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+  <span class="c1">// .my-AwesomeBox.is-selected
+</span>  <span class="k">&amp;</span><span class="nc">.is-selected</span> <span class="err">{</span>
+    <span class="nl">background-color</span><span class="p">:</span> <span class="no">red</span><span class="err">;</span>
+  <span class="err">}</span>
+<span class="err">}</span>
+
+<span class="nc">.my-u-center</span> <span class="err">{</span>
+  <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="err">;</span>
+<span class="err">}</span>
+</code></pre></div><div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* generated css */</span>
+<span class="nc">.my-AwesomeBox</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="no">blue</span><span class="p">;</span>
+  <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="no">black</span><span class="p">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="n">1rem</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">250px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.my-AwesomeBox--small</span> <span class="p">{</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.my-AwesomeBox-title</span> <span class="p">{</span>
+  <span class="nl">font-size</span><span class="p">:</span> <span class="n">1rem</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.my-AwesomeBox-title--large</span> <span class="p">{</span>
+  <span class="nl">font-size</span><span class="p">:</span> <span class="n">2rem</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.my-AwesomeBox.is-selected</span> <span class="p">{</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.my-u-center</span> <span class="p">{</span>
+  <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><a href="http://sassmeister.com/gist/a166888f44271c291c80">Play with this example on Sassmeister</a></p>
+
+<h2 id="why?">Why?</h2>
+
+<p>While it might feel strange at first glance, give SUIT a shot (or at least another modular CSS variant like <a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">BEM</a>). Writing CSS/Sass in this manner provides a number of great benefits:</p>
+
+<ul>
+<li>Consistency and structure
+
+<ul>
+<li>This is much better than a hodgepodge of arbitrary CSS randomly strung about with no semantic meaning</li>
+<li>Anyone can enter the project and easily understand and contribute</li>
+</ul></li>
+<li>Separation of concerns</li>
+<li>Promotes reuse of code by creating the building blocks for the site with components</li>
+<li><a href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/">Semantic syntax</a></li>
+<li>Composable and extendable CSS
+
+<ul>
+<li>Modularity makes it easy to extend components and compose components to get the sum of their parts</li>
+<li>This is particularly useful for building style frameworks as it allows users of the framework to easily make it their own without fighting the framework</li>
+</ul></li>
+</ul>
+
+  </article>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/08/25/modular-css-with-suitcss/';
+    var disqus_title = 'Modular CSS with SUIT CSS';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+    <h2>In Lehman's Terms</h2>
+
+    <div>
+      <a href="https://github.com/jdlehman">
+        <span class="jl-Icon-github"></span>
+      </a>
+      <a href="https://twitter.com/inLehmans_Terms">
+        <span class="jl-Icon-twitter"></span>
+      </a>
+      <a href="/feed.xml">
+        <span class="jl-Icon-rss"></span>
+      </a>
+    </div>
+
+    <div>
+      <p></p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+</html>

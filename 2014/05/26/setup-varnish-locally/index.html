@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Setup Varnish Locally</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+    <link rel="canonical" href="/2014/05/26/setup-varnish-locally/">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/app-3df7d04f0eff3788c832d4e8734686e5.css">
+    
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
+
+    <!-- <nav class="site-nav"> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/feed.xml"></a> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/"></a> -->
+    <!--    -->
+    <!-- </nav> -->
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+        <div class="post ">
+
+  <header class="post-header">
+    <h1>Setup Varnish Locally</h1>
+    <p class="meta">May 26, 2014</p>
+  </header>
+
+  <article class="post-content">
+    <p>Typically, the best way to ensure that a web application will run correctly in production is to stage it an environment just like production. Most of the time the overhead of setting up caching or other performance improvements is not necessary in development, but there are instances when the development being done directly interacts with or relies upon these components. In these situations it often pays off to take the time to set up &quot;production components&quot; so that changes can be tested prior to pushing changes to a staging or production environment, often a costly extra step.</p>
+
+<p>Today, I am going to focus on setting up <a href="https://www.varnish-cache.org">Varnish Cache</a>, a &quot;caching HTTP reverse proxy&quot;. Varnish allows you to cache responses to quickly serve common pages and provides powerful configuration for response headers and other cache settings.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>If you are using Mac OSX, you can simply use <a href="http://brew.sh/">Homebrew</a> to install Varnish.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">brew install varnish
+</code></pre></div>
+<p>If you are using vanilla Varnish without any other modules, you can skip ahead to the <a href="#usage">usage</a> section. If you do not use brew, continue to follow along and we will install it from source.</p>
+
+<h2 id="installing-modules">Installing Modules</h2>
+
+<p>Installing Varnish modules such as <a href="https://github.com/varnish/libvmod-header">libvmod-header</a> or <a href="https://github.com/lkarsten/libvmod-cookie">libvmod-cookie</a> requires building them from source using Varnish&#39;s source.</p>
+
+<p>First we must build Varnish&#39;s source. Download a Varnish from their website or <a href="https://github.com/varnish/Varnish-Cache">github</a>.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /varnish-cache-source-location
+./autogen.sh
+./configure
+make
+
+<span class="c"># install varnish without brew (optional)</span>
+make install
+</code></pre></div>
+<p><strong><em>Note:</em></strong> If you get an rst2man error during compilation you need to <a href="http://stackoverflow.com/a/12813081">install docutils with pip</a>.</p>
+
+<p>Now that we have built Varnish, we can use it to build our modules. For each module do as follows.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /varnish-module-location
+./autogen.sh
+./configure <span class="nv">VARNISHSRC</span><span class="o">=</span>/path-to-varnish-source
+make
+make install
+</code></pre></div>
+<p>This will install the module binaries to the correct location, allowing you to import the module in your vcls. You can now configure <code>default.vcl</code> to your liking. It is located at <code>/user/local/etc/varnish</code> on OSX.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>If you installed Varnish via brew, you can use <code>launchctl</code> and the <code>plist</code> files to load the service, or you can use the <code>varnishd</code> command via the terminal. I recommend using the terminal initially because this will allow you to see and debug any errors. The property list files will fail silently if there are any errors.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># must run as root</span>
+sudo varnishd -f /usr/local/etc/varnish/default.vcl -s file -a 0.0.0.0:8000
+<span class="c"># help: see available arguments with descriptions</span>
+varnishd -h
+</code></pre></div>
+<p><strong><em>Command Breakdown</em></strong></p>
+
+<ul>
+<li><code>-f</code> Specifies the location of the <code>vcl</code> script to launch Varnish with.</li>
+<li><code>-s</code> Specifies storage options. The file argument stores in <code>/tmp</code> by default. You can specify another location with <code>-s file,/location</code></li>
+<li><code>-a</code> Specifies the address and port that Varnish will run at. You can access your website through Varnish using this address and port.</li>
+</ul>
+
+<p>By now you should be up and running with Varnish locally on your development environment. For more information on Varnish in general and writing vcl scripts, consult the <a href="https://www.varnish-cache.org/docs">documentation</a>.</p>
+
+  </article>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/05/26/setup-varnish-locally/';
+    var disqus_title = 'Setup Varnish Locally';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+    <h2>In Lehman's Terms</h2>
+
+    <div>
+      <a href="https://github.com/jdlehman">
+        <span class="jl-Icon-github"></span>
+      </a>
+      <a href="https://twitter.com/inLehmans_Terms">
+        <span class="jl-Icon-twitter"></span>
+      </a>
+      <a href="/feed.xml">
+        <span class="jl-Icon-rss"></span>
+      </a>
+    </div>
+
+    <div>
+      <p></p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+</html>
