@@ -12,7 +12,7 @@ task :default => :watch
 # Directories
 POSTS = '_posts'
 DRAFTS = '_drafts'
-EXTENSION = 'markdown'
+EXTENSION = 'md'
 
 # Templates
 POST_TEMPLATE = <<-POST
