@@ -1,10 +1,7 @@
-# == Dependencies ==============================================================
 require 'rake'
 require 'fileutils'
 require 'tmpdir'
 require 'jekyll'
-
-# == Configuration =============================================================
 
 # Set "rake watch" as default task
 task :default => :watch
@@ -34,41 +31,6 @@ DATE = Time.now.strftime('%Y-%m-%d')
 GITHUB_REPONAME = 'jdlehman.github.io'
 GITHUB_BRANCH = 'master'
 GITHUB_USER = 'jdlehman'
-
-# == Helpers ===================================================================
-
-def check_title(title)
-  if title.nil? or title.empty?
-    raise 'Please add a title to your file.'
-  end
-end
-
-def transform_to_slug(title, extension)
-  characters = /("|'|!|\?|:|\s\z)/
-  whitespace = /\s/
-  "#{title.gsub(characters,"").gsub(whitespace,"-").downcase}.#{extension}"
-end
-
-def write_file(content, title, directory, filename)
-  parsed_content = "#{content.sub('title:', "title: \"#{title}\"")}"
-  File.write("#{directory}/#{filename}", parsed_content)
-  puts "#{filename} was created in '#{directory}'."
-end
-
-def create_file(directory, filename, content, title)
-  FileUtils.mkdir(directory) unless File.exists?(directory)
-  if File.exists?("#{directory}/#{filename}")
-    raise 'The file already exists.'
-  else
-    write_file(content, title, directory, filename)
-    if EDITOR && !EDITOR.nil?
-      sleep 1
-      system("#{EDITOR} #{directory}/#{filename}")
-    end
-  end
-end
-
-# == Tasks =====================================================================
 
 # rake post['Title']
 desc 'Create a post in _posts'
@@ -193,10 +155,12 @@ namespace :production do
 
       # copy latest production site generation
       cp_r "#{pwd}/_site/.", tmp
+      # prevents github from trying to parse our generated content
+      system 'touch .nojekyll'
 
       # commit and push
       system 'git add .'
-      system "git commit -m '#{sha}: #{commit_message}'"
+      system "git commit -m \"#{sha}: #{commit_message}\""
       system "git push origin master:refs/heads/#{GITHUB_BRANCH}"
     end
   end
@@ -231,4 +195,37 @@ namespace :iconfonts do
     FileUtils.rm_rf(download_zip) if download_zip
   end
 
+end
+
+private
+
+def check_title(title)
+  if title.nil? or title.empty?
+    raise 'Please add a title to your file.'
+  end
+end
+
+def transform_to_slug(title, extension)
+  characters = /("|'|!|\?|:|\s\z)/
+  whitespace = /\s/
+  "#{title.gsub(characters,"").gsub(whitespace,"-").downcase}.#{extension}"
+end
+
+def write_file(content, title, directory, filename)
+  parsed_content = "#{content.sub('title:', "title: \"#{title}\"")}"
+  File.write("#{directory}/#{filename}", parsed_content)
+  puts "#{filename} was created in '#{directory}'."
+end
+
+def create_file(directory, filename, content, title)
+  FileUtils.mkdir(directory) unless File.exists?(directory)
+  if File.exists?("#{directory}/#{filename}")
+    raise 'The file already exists.'
+  else
+    write_file(content, title, directory, filename)
+    if EDITOR && !EDITOR.nil?
+      sleep 1
+      system("#{EDITOR} #{directory}/#{filename}")
+    end
+  end
 end
