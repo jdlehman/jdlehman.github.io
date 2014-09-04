@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sane Vim Working Directories</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+    <link rel="canonical" href="/2014/09/04/sane-vim-working-directories/">
+    
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/app-3df7d04f0eff3788c832d4e8734686e5.css">
+    
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
+
+    <!-- <nav class="site-nav"> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/404.html">404</a> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/feed.xml"></a> -->
+    <!--    -->
+    <!--     <a class="page-link" href="/"></a> -->
+    <!--    -->
+    <!-- </nav> -->
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+        <div class="post ">
+
+  <header class="post-header">
+    <h1>Sane Vim Working Directories</h1>
+    <p class="meta">Sep 4, 2014</p>
+  </header>
+
+  <article class="post-content">
+    <p>Vim&#39;s defaults are rather dated. Without syntax highlighting, line numbers, or a variety of other defaults found in most modern editors, the initial headache is always configuring these basic settings before starting with Vim. Despite the obvious visual settings, there are a number of Vim defaults that are not apparent when you first start learning Vim, or even after you have been using Vim for a while if you were fortunate enough not to run into an issue. For that reason, it took me a while to realize that I was continually fighting with Vim&#39;s default working directory.</p>
+
+<h2 id="vim&#39;s-default-working-directory">Vim&#39;s Default Working Directory</h2>
+
+<p>By default Vim uses the directory that you opened Vim in as the default working directory. You can check the current working directory by running the command, <code>pwd</code> (print working directory). Honestly, I don&#39;t believe this is a bad default. It makes a lot of sense if you open Vim and stay in that project directory for the entirety of your working session, but it begins to breakdown with fairly typical use cases.</p>
+
+<h2 id="why-does-it-matter?">Why does it matter?</h2>
+
+<p>Before we jump into the cases where the default working directory breaks down, why do we even care what Vim uses as the current working directory? The working directory is used for any Vim action that needs to know about the current file structure such as searching and file/directory based commands. This not only includes built in file searching solutions like Vim&#39;s <code>find</code> or <code>grep</code> commands, but also search plugins like <a href="https://github.com/kien/ctrlp.vim">CtrlP</a>, <a href="https://github.com/wincent/command-t">Command-T</a>, and <a href="https://github.com/junegunn/fzf">fzf</a>. If you use any sort of file search or fuzzy search, the working directory affects the outcome of the search. It determines where the searching begins (in combination with the path variable).</p>
+
+<h2 id="where-it-breaks-down">Where it breaks down</h2>
+
+<p>Any of the following cases will prevent you from searching the entire file structure of your desired project.</p>
+
+<ul>
+<li>You open Vim with a nested file/folder within your project.</li>
+<li>You open Vim at your project&#39;s root, but navigate to another project in the file explorer.</li>
+</ul>
+
+<p>While these cases are general, I found them to be extremely common cases that made it frustrating to move around my projects via fuzzy searches and filename searches, which is my normal workflow for jumping between files that are not already in hidden buffers.</p>
+
+<h2 id="a-simple-solution">A simple solution</h2>
+
+<p>A simple way to get around this is to manually change the working directory.</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" change the working directory to the directory of the currently open file</span>
+<span class="k">cd</span> %<span class="p">:</span><span class="k">p</span><span class="p">:</span><span class="k">h</span>
+<span class="c">" change the working directory only for the current window</span>
+<span class="k">lcd</span> %<span class="p">:</span><span class="k">p</span><span class="p">:</span><span class="k">h</span>
+<span class="c">" change the working directory to an explicit directory</span>
+<span class="k">lcd</span> <span class="p">~</span><span class="sr">/projects/</span>myproject
+</code></pre></div>
+<p>You can even use an autocommand to automatically change the working directory for you whenever a buffer is entered.</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim">autocmd <span class="nb">BufEnter</span> * <span class="k">silent</span><span class="p">!</span> <span class="k">lcd</span> %<span class="p">:</span><span class="k">p</span><span class="p">:</span><span class="k">h</span>
+</code></pre></div>
+<p>I found that while this solution can work, it is very limited. I do not always want my working directory to be the directory of the file I am currently editing. If this is nested in a project, it does not help me search on files outside of that nested directory. The alternative, setting the working directory explicitly, is too manual of a process for my liking. There has to be a better way.</p>
+
+<h2 id="a-more-robust-solution">A more robust solution</h2>
+
+<p>Before I get to the Vimscript, let&#39;s outline some rules for a desirable working directory. I want to make use of autocommands so that the working directory changes automatically rather than being a manual process. I also normally work in Git projects, so let&#39;s set the working directory to the root of the Git project if we are within a Git project, otherwise use the directory of the currently open file. Lastly, I want to follow symlinks into their actual directories. This is especially useful for my dotfiles that are in a Git repo, but symlinked to my home directory.</p>
+
+<p>First let&#39;s figure out a way to follow symlinks.</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" follow symlinked file</span>
+<span class="k">function</span><span class="p">!</span> FollowSymlink<span class="p">()</span>
+  <span class="k">let</span> current_file <span class="p">=</span> expand<span class="p">(</span><span class="s1">'%:p'</span><span class="p">)</span>
+  <span class="c">" check if file type is a symlink</span>
+  <span class="k">if</span> getftype<span class="p">(</span>current_file<span class="p">)</span> <span class="p">==</span> <span class="s1">'link'</span>
+    <span class="c">" if it is a symlink resolve to the actual file path</span>
+    <span class="c">"   and open the actual file</span>
+    <span class="k">let</span> actual_file <span class="p">=</span> resolve<span class="p">(</span>current_file<span class="p">)</span>
+    <span class="k">silent</span><span class="p">!</span> execute <span class="s1">'file '</span> <span class="p">.</span> actual_file
+  <span class="k">end</span>
+<span class="k">endfunction</span>
+</code></pre></div>
+<p>The only caveat with this approach is that we will need to use <code>w!</code> instead of just <code>w</code> to save the file for the first time. One extra keystroke is a worthwhile trade off to me. Otherwise I would have to use the file explorer or <code>netrw</code> to find the actual file, which would take much longer.</p>
+
+<p>Now we can use another function to set the working directory for us. It will use the Git project root if it is in a Git project otherwise it will just use the current file&#39;s directory.</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" set working directory to git project root</span>
+<span class="c">" or directory of current file if not git project</span>
+<span class="k">function</span><span class="p">!</span> SetProjectRoot<span class="p">()</span>
+  <span class="c">" default to the current file's directory</span>
+  <span class="k">lcd</span> %<span class="p">:</span><span class="k">p</span><span class="p">:</span><span class="k">h</span>
+  <span class="k">let</span> git_dir <span class="p">=</span> system<span class="p">(</span><span class="s2">"git rev-parse --show-toplevel"</span><span class="p">)</span>
+  <span class="c">" See if the command output starts with 'fatal' (if it does, not in a git repo)</span>
+  <span class="k">let</span> is_not_git_dir <span class="p">=</span> matchstr<span class="p">(</span>git_dir<span class="p">,</span> <span class="s1">'^fatal:.*'</span><span class="p">)</span>
+  <span class="c">" if git project, change local directory to git project root</span>
+  <span class="k">if</span> empty<span class="p">(</span>is_not_git_dir<span class="p">)</span>
+    <span class="k">lcd</span> `<span class="p">=</span>git_dir`
+  <span class="k">endif</span>
+<span class="k">endfunction</span>
+</code></pre></div>
+<p>Now that we have the two pieces we need, we can use these functions in an autocommand to automatically change the working directory for us, we won&#39;t even have to think about it, it will just work.</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" follow symlink and set working directory</span>
+autocmd <span class="nb">BufRead</span> *
+<span class="se">  \</span> <span class="k">call</span> FollowSymlink<span class="p">()</span> <span class="p">|</span>
+<span class="se">  \</span> <span class="k">call</span> SetProjectRoot<span class="p">()</span>
+</code></pre></div>
+<h2 id="the-final-problem">The Final Problem</h2>
+
+<p>You can take the above solution, and it will work in ALMOST every case. The good news is that after a few frustrating months of using a nearly ideal solution, I have finally figured out the missing piece.</p>
+
+<p>The issue with what we have written so far is that the working directory will not be updated when navigating the file system with <code>netrw</code>, Vim&#39;s built in (and buggy) file explorer. The problem is that <code>netrw</code> does not get a <code>BufRead</code> event. In fact, pretty much every autocommand event I tried did not work in <code>netrw</code>. I got around this for a while, by configuring <code>netrw</code> with <code>let g:netrw_keepdir=0</code>. This global setting will keep the working directory the same as the browsing directory while we are using <code>netrw</code>, which is ultimately half of our solution. It still will not respect our Git project directories in the manner we would like.</p>
+
+<p>After a lot of research and failed attempts I finally found a way to debug autocommands. <code>set debugger=9</code> will echo the autocommand events that are registered as well as any functions that are called by these events. The only autocommand that seemed to get called in <code>netrw</code> is the <code>CursorMoved</code> event. Therefore we can hook into this to enable our working directory to remain up to date even in <code>netrw</code>. If anyone knows of another autocommand that <code>netrw</code> listens to, I would love to know!</p>
+<div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" netrw: follow symlink and set working directory</span>
+autocmd <span class="nb">CursorMoved</span> *
+  <span class="c">" short circuit for non-netrw files</span>
+<span class="se">  \</span> <span class="k">if</span> &amp;ft <span class="p">==</span> <span class="s1">'netrw'</span> <span class="p">|</span>
+<span class="se">  \</span>   <span class="k">call</span> FollowSymlink<span class="p">()</span> <span class="p">|</span>
+<span class="se">  \</span>   <span class="k">call</span> SetProjectRoot<span class="p">()</span> <span class="p">|</span>
+<span class="se">  \</span> <span class="k">endif</span>
+</code></pre></div>
+<p>Be sure to set <code>debugger</code> back to 0 otherwise you will find that your productivity has come to a halt because of all of the event logging. Stay tuned as the Vim <code>debugger</code> is likely to become the topic of another blog post.</p>
+
+  </article>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/09/04/sane-vim-working-directories/';
+    var disqus_title = 'Sane Vim Working Directories';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+    <h2>In Lehman's Terms</h2>
+
+    <div>
+      <a href="https://github.com/jdlehman">
+        <span class="jl-Icon-github"></span>
+      </a>
+      <a href="https://twitter.com/inLehmans_Terms">
+        <span class="jl-Icon-twitter"></span>
+      </a>
+      <a href="/feed.xml">
+        <span class="jl-Icon-rss"></span>
+      </a>
+    </div>
+
+    <div>
+      <p></p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+</html>
