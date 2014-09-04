@@ -143,6 +143,7 @@ namespace :production do
   desc "Generate and deploy blog to #{GITHUB_BRANCH}"
   task :deploy, [:commit_message] => [:generate] do |t, args|
     commit_message = args[:commit_message] || `git log -1 --pretty=%B`
+    commit_message = commit_message.gsub('"', "'")
     sha = `git log`.match(/[a-z0-9]{40}/)[0]
     Dir.mktmpdir do |tmp|
       pwd = Dir.pwd
