@@ -154,6 +154,8 @@ namespace :production do
       system "git remote add origin git@github.com:#{GITHUB_USER}/#{GITHUB_REPONAME}.git"
       system "git pull origin #{GITHUB_BRANCH}"
 
+      # ensure that previously generated files that are now deleted do not remain
+      rm_rf Dir.glob("#{tmp}/*")
       # copy latest production site generation
       cp_r "#{pwd}/_site/.", tmp
       # prevents github from trying to parse our generated content
