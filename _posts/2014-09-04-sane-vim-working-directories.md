@@ -104,7 +104,7 @@ After a lot of research and failed attempts I finally found a way to debug autoc
 " netrw: follow symlink and set working directory
 autocmd CursorMoved *
   " short circuit for non-netrw files
-  \ if &ft == 'netrw' |
+  \ if &filetype == 'netrw' |
   \   call FollowSymlink() |
   \   call SetProjectRoot() |
   \ endif
