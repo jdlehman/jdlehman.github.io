@@ -94,7 +94,7 @@ autocmd &lt;span class=&quot;nb&quot;&gt;BufRead&lt;/span&gt; *
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; netrw: follow symlink and set working directory&lt;/span&gt;
 autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
   &lt;span class=&quot;c&quot;&gt;&quot; short circuit for non-netrw files&lt;/span&gt;
-&lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &amp;amp;ft &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;netrw&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &amp;amp;&lt;span class=&quot;k&quot;&gt;filetype&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;netrw&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;
 &lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; FollowSymlink&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;
 &lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; SetProjectRoot&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;
 &lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;endif&lt;/span&gt;

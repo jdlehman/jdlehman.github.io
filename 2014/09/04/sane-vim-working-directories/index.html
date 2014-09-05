@@ -144,7 +144,7 @@ autocmd <span class="nb">BufRead</span> *
 <div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" netrw: follow symlink and set working directory</span>
 autocmd <span class="nb">CursorMoved</span> *
   <span class="c">" short circuit for non-netrw files</span>
-<span class="se">  \</span> <span class="k">if</span> &amp;ft <span class="p">==</span> <span class="s1">'netrw'</span> <span class="p">|</span>
+<span class="se">  \</span> <span class="k">if</span> &amp;<span class="k">filetype</span> <span class="p">==</span> <span class="s1">'netrw'</span> <span class="p">|</span>
 <span class="se">  \</span>   <span class="k">call</span> FollowSymlink<span class="p">()</span> <span class="p">|</span>
 <span class="se">  \</span>   <span class="k">call</span> SetProjectRoot<span class="p">()</span> <span class="p">|</span>
 <span class="se">  \</span> <span class="k">endif</span>
