@@ -209,7 +209,7 @@ def check_title(title)
 end
 
 def transform_to_slug(title, extension)
-  characters = /("|'|!|\?|:|\s\z)/
+  characters = /("|'|!|\?|:|\.|\s\z)/
   whitespace = /\s/
   "#{title.gsub(characters,"").gsub(whitespace,"-").downcase}.#{extension}"
 end
