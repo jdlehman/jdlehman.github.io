@@ -13,17 +13,17 @@ EXTENSION = 'md'
 
 # Templates
 POST_TEMPLATE = <<-POST
-  ---
-  layout: post
-  title:
-  tags:
-  ---
+---
+layout: post
+title:
+tags:
+---
 POST
 PAGE_TEMPLATE = <<-PAGE
-  ---
-  layout: page
-  title:
-  ---
+---
+layout: page
+title:
+---
 PAGE
 
 EDITOR = 'vim'
