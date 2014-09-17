@@ -112,6 +112,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
 
 &lt;p&gt;Ask yourself the question, &amp;quot;how and why do we apply structure to the code we write?&amp;quot; Now you might wonder, why don&amp;#39;t we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the &lt;a href=&quot;http://suitcss.github.io/&quot;&gt;SUIT CSS&lt;/a&gt; convention.&lt;/p&gt;
 
+&lt;p&gt;&lt;img src=&quot;http://fc09.deviantart.net/fs71/f/2012/079/5/7/suit_up_by_mthidell-d4tdnyw.jpg&quot; width=&quot;80%&quot; style=&quot;margin:0 10%&quot;&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;suit-css-introduction&quot;&gt;SUIT CSS Introduction&lt;/h2&gt;
 
 &lt;p&gt;Let&amp;#39;s dive right into it. The basic structure of SUIT is as follows:&lt;/p&gt;
