@@ -1,14 +1,14 @@
 ---
 layout: default
 ---
-<div class="post {{ page.postClass }}">
+<div class="Post {{ page.postClass }}">
 
-  <header class="post-header">
+  <article class="Post-header">
     <h1>{{ page.title }}</h1>
-    <p class="meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-  </header>
+    <p class="Post-meta">{{ page.date | date: "%b %-d, %Y" }} • Jonathan Lehman</p>
+  </article>
 
-  <article class="post-content">
+  <article class="Post-content">
     {{ content }}
   </article>
 

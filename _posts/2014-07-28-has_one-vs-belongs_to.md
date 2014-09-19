@@ -1,7 +1,9 @@
 ---
 layout: post
 title: Database Associations- "Has One" vs "Belongs To"
-tags: rails database
+tags:
+  - rails
+  - database
 ---
 
 ## Which One Goes Where?

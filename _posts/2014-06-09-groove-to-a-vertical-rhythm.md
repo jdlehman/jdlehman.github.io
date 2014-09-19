@@ -1,8 +1,11 @@
 ---
 layout: post
 title:  "Groove to a Vertical Rhythm"
-postClass: vertical-rhythm
-tags: sass css typography
+postClass: VerticalRhythmPost
+tags:
+  - sass
+  - css
+  - typography
 ---
 
 ## Background

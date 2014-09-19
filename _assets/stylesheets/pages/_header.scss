@@ -2,11 +2,11 @@
 // Header
 // ======
 
-.site-header {
+.Site-header {
   // @include span(full);
 }
 
-.jl-title {
+.Site-title {
   @include jl-vertical-rhythm($jl-font-size-title);
   font-family: $jl-font-family-title;
   font-weight: $jl-font-weight-title;
