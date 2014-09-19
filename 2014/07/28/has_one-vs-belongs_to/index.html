@@ -2,19 +2,19 @@
 <html>
 
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Database Associations- "Has One" vs "Belongs To"</title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="description" content="">
-    <link rel="canonical" href="/2014/07/28/has_one-vs-belongs_to/">
-    
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Database Associations- "Has One" vs "Belongs To"</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="">
+  <link rel="canonical" href="/2014/07/28/has_one-vs-belongs_to/">
+  
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/app-6523393964b711ab7d8fade39693faab.css">
-    
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-07f808cdc7f34d3339ce81ced6b6d3ab.css">
+  
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -26,38 +26,34 @@
   </script>
 
 
-
 </head>
 
 
-  <body>
+  <body class="Site">
 
-    <header class="site-header">
+    <header class="Site-header">
+  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
 
-    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
-
-    <!-- <nav class="site-nav"> -->
-    <!--    -->
-    <!--     <a class="page-link" href="/404.html">404</a> -->
-    <!--    -->
-    <!--     <a class="page-link" href="/feed.xml"></a> -->
-    <!--    -->
-    <!--     <a class="page-link" href="/"></a> -->
-    <!--    -->
-    <!-- </nav> -->
+  <!-- <nav class="site-nav"> -->
+  <!--    -->
+  <!--     <a class="page-link" href="/404.html">404</a> -->
+  <!--    -->
+  <!--     <a class="page-link" href="/feed.xml"></a> -->
+  <!--    -->
+  <!--     <a class="page-link" href="/"></a> -->
+  <!--    -->
+  <!-- </nav> -->
 </header>
 
 
-    <div class="page-content">
-      <div class="wrap">
-        <div class="post ">
+    <div class="Post ">
 
-  <header class="post-header">
+  <article class="Post-header">
     <h1>Database Associations- "Has One" vs "Belongs To"</h1>
-    <p class="meta">Jul 28, 2014</p>
-  </header>
+    <p class="Post-meta">Jul 28, 2014 • Jonathan Lehman</p>
+  </article>
 
-  <article class="post-content">
+  <article class="Post-content">
     <h2 id="which-one-goes-where?">Which One Goes Where?</h2>
 
 <p>One of the most confusing database relationship questions for me was always when to use <code>has_one</code> vs <code>belongs_to</code>. The relationship is a simple one-to-one relationship, and if we think about it in terms of the models, it makes a lot of sense. For example, let&#39;s say we have a <code>Dog</code> model and an <code>Owner</code> model. Immediately we can say the <code>Owner has_one Dog</code> and the <code>Dog belongs_to Owner</code>. In this case, the objects are familiar to us from our everyday life and it is easy to figure out. When the objects are more abstract like <code>Foo</code> and <code>Bar</code> it is much more difficult to determine. Let&#39;s hold that thought for a moment.</p>
@@ -123,11 +119,8 @@ WHERE Bar.id = bar.id
 
 
 
-      </div>
-    </div>
 
-    <footer class="site-footer">
-
+    <footer class="Site-footer">
     <h2>In Lehman's Terms</h2>
 
     <div>
@@ -141,13 +134,7 @@ WHERE Bar.id = bar.id
         <span class="jl-Icon-rss"></span>
       </a>
     </div>
-
-    <div>
-      <p></p>
-    </div>
-
   </div>
-
 </footer>
 
 

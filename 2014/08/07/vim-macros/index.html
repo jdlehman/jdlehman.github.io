@@ -2,19 +2,19 @@
 <html>
 
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Vim Macros</title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="description" content="">
-    <link rel="canonical" href="/2014/08/07/vim-macros/">
-    
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Vim Macros</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="">
+  <link rel="canonical" href="/2014/08/07/vim-macros/">
+  
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/app-6523393964b711ab7d8fade39693faab.css">
-    
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-07f808cdc7f34d3339ce81ced6b6d3ab.css">
+  
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -26,38 +26,34 @@
   </script>
 
 
-
 </head>
 
 
-  <body>
+  <body class="Site">
 
-    <header class="site-header">
+    <header class="Site-header">
+  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
 
-    <h1 class="jl-title"><a href="/">In Lehman's Terms</a></h1>
-
-    <!-- <nav class="site-nav"> -->
-    <!--    -->
-    <!--     <a class="page-link" href="/404.html">404</a> -->
-    <!--    -->
-    <!--     <a class="page-link" href="/feed.xml"></a> -->
-    <!--    -->
-    <!--     <a class="page-link" href="/"></a> -->
-    <!--    -->
-    <!-- </nav> -->
+  <!-- <nav class="site-nav"> -->
+  <!--    -->
+  <!--     <a class="page-link" href="/404.html">404</a> -->
+  <!--    -->
+  <!--     <a class="page-link" href="/feed.xml"></a> -->
+  <!--    -->
+  <!--     <a class="page-link" href="/"></a> -->
+  <!--    -->
+  <!-- </nav> -->
 </header>
 
 
-    <div class="page-content">
-      <div class="wrap">
-        <div class="post ">
+    <div class="Post ">
 
-  <header class="post-header">
+  <article class="Post-header">
     <h1>Vim Macros</h1>
-    <p class="meta">Aug 7, 2014</p>
-  </header>
+    <p class="Post-meta">Aug 7, 2014 • Jonathan Lehman</p>
+  </article>
 
-  <article class="post-content">
+  <article class="Post-content">
     <p>One of the big advantages I find to using vim as my editor is the ability to record and replay macros. The recording of a macro begins when <code>q</code> is pressed followed by any other key, which specifies what register the macro is to be stored in. If we use <code>qq</code> the macro will be stored in register <code>q</code>, whereas <code>qt</code> will store the macro in register <code>t</code>. Once the recording is started, all keystrokes are stored into the specified register. Pressing <code>q</code> again will stop the recording. To &quot;playback&quot; the macro, which will just execute the contents of the register as if you were pressing the keystrokes yourself, type <code>@</code> followed by the register in which you stored the macro. <code>@@</code> will playback the most recently played macro.</p>
 
 <p>I find that a good baseline for when a macro might be useful is for repetitious editing or reformatting that cannot easily be accomplished using visual block mode. For example, given the following Ruby method, let&#39;s say I wanted to modify the additional method calls to use parenthesis.</p>
@@ -113,11 +109,8 @@
 
 
 
-      </div>
-    </div>
 
-    <footer class="site-footer">
-
+    <footer class="Site-footer">
     <h2>In Lehman's Terms</h2>
 
     <div>
@@ -131,13 +124,7 @@
         <span class="jl-Icon-rss"></span>
       </a>
     </div>
-
-    <div>
-      <p></p>
-    </div>
-
   </div>
-
 </footer>
 
 
