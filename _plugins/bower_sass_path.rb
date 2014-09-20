@@ -4,44 +4,46 @@ module BowerSassPath
 
   PERMITTED_FILE_EXTENSIONS = ['.scss', '.sass'].freeze
 
-  def self.sass_paths
-    @sass_paths ||= get_sass_paths
-  end
-
-  def self.root
-    @root ||= File.expand_path File.join(File.dirname(__FILE__), '..')
-  end
-
-  def self.bower_path
-    @bower_path ||= File.join(root, 'bower_components')
-  end
-
-  def self.get_sass_paths
-    sass_paths = []
-    Dir["#{bower_path}/**/.bower.json"].each do |f|
-      get_main_paths(f).each do |path|
-        sass_paths << path
-      end
+  class << self
+    def sass_paths
+      @sass_paths ||= get_sass_paths.uniq
     end
-    sass_paths
-  end
 
-  def self.get_main_paths(file_name)
-    base_directory = File.dirname(file_name)
-    bower_json = JSON.parse(File.read(file_name))
+    def root
+      @root ||= File.expand_path File.join(File.dirname(__FILE__), '..')
+    end
 
-    main_files = wrap_in_array(bower_json['main'])
-      .select { |main_file| PERMITTED_FILE_EXTENSIONS.include? File.extname(main_file) }
-      .map { |main_file| "#{base_directory}/#{File.dirname(main_file)}" }
-  end
+    def bower_path
+      @bower_path ||= File.join(root, 'bower_components')
+    end
 
-  def self.wrap_in_array(object)
-    if object.nil?
-      []
-    elsif object.respond_to?(:to_ary)
-      object.to_ary || [object]
-    else
-      [object]
+    def get_sass_paths
+      sass_paths = []
+      Dir["#{bower_path}/**/.bower.json"].each do |f|
+        get_main_paths(f).each do |path|
+          sass_paths << path
+        end
+      end
+      sass_paths
+    end
+
+    def get_main_paths(file_name)
+      base_directory = File.dirname(file_name)
+      bower_json = JSON.parse(File.read(file_name))
+
+      main_files = wrap_in_array(bower_json['main'])
+        .select { |main_file| PERMITTED_FILE_EXTENSIONS.include? File.extname(main_file) }
+        .map { |main_file| "#{base_directory}/#{File.dirname(main_file)}" }
+    end
+
+    def wrap_in_array(object)
+      if object.nil?
+        []
+      elsif object.respond_to?(:to_ary)
+        object.to_ary || [object]
+      else
+        [object]
+      end
     end
   end
 
