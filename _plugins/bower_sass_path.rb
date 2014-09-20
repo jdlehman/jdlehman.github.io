@@ -1,49 +1,54 @@
+require 'json'
+
 module BowerSassPath
 
-  def self.bower_sass_paths
-    @bower_sass_paths ||= get_bower_paths
+  PERMITTED_FILE_EXTENSIONS = ['.scss', '.sass'].freeze
+
+  def self.sass_paths
+    @sass_paths ||= get_sass_paths
   end
 
   def self.root
     @root ||= File.expand_path File.join(File.dirname(__FILE__), '..')
   end
 
-  def self.get_bower_paths
-    bower_paths = []
-    Dir["#{bower_path}/**/.bower.json"].each do |f|
-      bower_paths << parse_bower_main_path(f)
-    end
-    bower_paths
-  end
-
-  def self.parse_bower_main_path(file)
-    "#{trim_file_name_off_path(file)}/#{trim_file_name_off_path(get_property(get_main(file)))}"
-  end
-
-  def self.get_main(file)
-    File.foreach(file).grep(/"main/).join
-  end
-
-  def self.get_property(main)
-    main.match(/"main":.+"(.+)".+$/).captures.first
-  end
-
-  def self.trim_file_name_off_path(abs_path)
-    if abs_path.match(/\//)
-      abs_path.match(/^(.+)\/[^\/]+$/).captures.first
-    else
-      ""
-    end
-  end
-
   def self.bower_path
     @bower_path ||= File.join(root, 'bower_components')
   end
 
-  if ENV.has_key?('SASS_PATH')
-    ENV['SASS_PATH'] = ENV['SASS_PATH'] + File::PATH_SEPARATOR + bower_sass_paths.join(File::PATH_SEPARATOR)
-  else
-    ENV['SASS_PATH'] = bower_sass_paths.join(File::PATH_SEPARATOR)
+  def self.get_sass_paths
+    sass_paths = []
+    Dir["#{bower_path}/**/.bower.json"].each do |f|
+      get_main_paths(f).each do |path|
+        sass_paths << path
+      end
+    end
+    sass_paths
   end
 
+  def self.get_main_paths(file_name)
+    base_directory = File.dirname(file_name)
+    bower_json = JSON.parse(File.read(file_name))
+
+    main_files = wrap_in_array(bower_json['main'])
+      .select { |main_file| PERMITTED_FILE_EXTENSIONS.include? File.extname(main_file) }
+      .map { |main_file| "#{base_directory}/#{File.dirname(main_file)}" }
+  end
+
+  def self.wrap_in_array(object)
+    if object.nil?
+      []
+    elsif object.respond_to?(:to_ary)
+      object.to_ary || [object]
+    else
+      [object]
+    end
+  end
+
+end
+
+if ENV.has_key?('SASS_PATH')
+  ENV['SASS_PATH'] = ENV['SASS_PATH'] + File::PATH_SEPARATOR + BowerSassPath.sass_paths.join(File::PATH_SEPARATOR)
+else
+  ENV['SASS_PATH'] = BowerSassPath.sass_paths.join(File::PATH_SEPARATOR)
 end
