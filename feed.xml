@@ -3,8 +3,8 @@
   <channel>
     <title>In Lehman&#39;s Terms</title>
     <description></description>
-    <link></link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://inlehmansterms.net</link>
+    <atom:link href="http://inlehmansterms.net/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>Single Class vs. Multi Class CSS</title>
@@ -165,8 +165,8 @@
 &lt;p&gt;I highly recommend this &lt;a href=&quot;http://nicolasgallagher.com/about-html-semantics-front-end-architecture/&quot;&gt;article&lt;/a&gt; on HTML semantics by Nicolas Gallagher, which takes a look at semantic CSS, including the multi class vs single class issue.&lt;/p&gt;
 </description>
         <pubDate>Fri, 19 Sep 2014 00:00:00 -0400</pubDate>
-        <link>/2014/09/19/single-class-vs-multi-class-css/</link>
-        <guid isPermaLink="true">/2014/09/19/single-class-vs-multi-class-css/</guid>
+        <link>http://inlehmansterms.net/2014/09/19/single-class-vs-multi-class-css/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/09/19/single-class-vs-multi-class-css/</guid>
       </item>
     
       <item>
@@ -265,8 +265,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
 &lt;p&gt;Be sure to set &lt;code&gt;debugger&lt;/code&gt; back to 0 otherwise you will find that your productivity has come to a halt because of all of the event logging. Stay tuned as the Vim &lt;code&gt;debugger&lt;/code&gt; is likely to become the topic of another blog post.&lt;/p&gt;
 </description>
         <pubDate>Thu, 04 Sep 2014 00:00:00 -0400</pubDate>
-        <link>/2014/09/04/sane-vim-working-directories/</link>
-        <guid isPermaLink="true">/2014/09/04/sane-vim-working-directories/</guid>
+        <link>http://inlehmansterms.net/2014/09/04/sane-vim-working-directories/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/09/04/sane-vim-working-directories/</guid>
       </item>
     
       <item>
@@ -402,8 +402,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 25 Aug 2014 00:00:00 -0400</pubDate>
-        <link>/2014/08/25/modular-css-with-suitcss/</link>
-        <guid isPermaLink="true">/2014/08/25/modular-css-with-suitcss/</guid>
+        <link>http://inlehmansterms.net/2014/08/25/modular-css-with-suitcss/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/08/25/modular-css-with-suitcss/</guid>
       </item>
     
       <item>
@@ -443,8 +443,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
 &lt;p&gt;Now our old macro turned mapping will run whenever we type &lt;code&gt;&amp;lt;leader&amp;gt;(&lt;/code&gt; in normal mode.&lt;/p&gt;
 </description>
         <pubDate>Thu, 07 Aug 2014 00:00:00 -0400</pubDate>
-        <link>/2014/08/07/vim-macros/</link>
-        <guid isPermaLink="true">/2014/08/07/vim-macros/</guid>
+        <link>http://inlehmansterms.net/2014/08/07/vim-macros/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/08/07/vim-macros/</guid>
       </item>
     
       <item>
@@ -494,8 +494,8 @@ WHERE Bar.id = bar.id
 &lt;p&gt;Hopefully now you know where to place the &lt;code&gt;foreign_key&lt;/code&gt; (think of our &lt;code&gt;Owner has_one Dog&lt;/code&gt; example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the &lt;code&gt;foreign_key&lt;/code&gt; on models that are more abstract.&lt;/p&gt;
 </description>
         <pubDate>Mon, 28 Jul 2014 00:00:00 -0400</pubDate>
-        <link>/2014/07/28/has_one-vs-belongs_to/</link>
-        <guid isPermaLink="true">/2014/07/28/has_one-vs-belongs_to/</guid>
+        <link>http://inlehmansterms.net/2014/07/28/has_one-vs-belongs_to/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/07/28/has_one-vs-belongs_to/</guid>
       </item>
     
       <item>
@@ -652,8 +652,8 @@ WHERE Bar.id = bar.id
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 09 Jun 2014 00:00:00 -0400</pubDate>
-        <link>/2014/06/09/groove-to-a-vertical-rhythm/</link>
-        <guid isPermaLink="true">/2014/06/09/groove-to-a-vertical-rhythm/</guid>
+        <link>http://inlehmansterms.net/2014/06/09/groove-to-a-vertical-rhythm/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/06/09/groove-to-a-vertical-rhythm/</guid>
       </item>
     
       <item>
@@ -712,8 +712,8 @@ varnishd -h
 &lt;p&gt;By now you should be up and running with Varnish locally on your development environment. For more information on Varnish in general and writing vcl scripts, consult the &lt;a href=&quot;https://www.varnish-cache.org/docs&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Mon, 26 May 2014 00:00:00 -0400</pubDate>
-        <link>/2014/05/26/setup-varnish-locally/</link>
-        <guid isPermaLink="true">/2014/05/26/setup-varnish-locally/</guid>
+        <link>http://inlehmansterms.net/2014/05/26/setup-varnish-locally/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/05/26/setup-varnish-locally/</guid>
       </item>
     
   </channel>
