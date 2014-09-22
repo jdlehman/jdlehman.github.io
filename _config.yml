@@ -3,6 +3,7 @@ production: false
 title: In Lehman's Terms
 description: ""
 timezone: America/New_York
+url: http://localhost:4000
 usernames:
   disqus: inlehmansterms
   twitter: inLehmans_Terms
