@@ -5,21 +5,26 @@ module BowerSassPath
   PERMITTED_FILE_EXTENSIONS = ['.scss', '.sass'].freeze
 
   class << self
-    def sass_paths
-      @sass_paths ||= get_sass_paths.uniq
+
+    def append_bower_components(bower_directory)
+      sass_paths = get_bower_sass_paths(bower_directory)
+      append_to_sass_path(sass_paths)
     end
 
-    def root
-      @root ||= File.expand_path File.join(File.dirname(__FILE__), '..')
+
+    private
+
+    def append_to_sass_path(*paths)
+      env_path = ENV["SASS_PATH"] || ""
+      new_paths = [env_path.split(File::PATH_SEPARATOR), paths].flatten
+                                                               .compact
+                                                               .uniq
+      ENV["SASS_PATH"] = new_paths.join(File::PATH_SEPARATOR)
     end
 
-    def bower_path
-      @bower_path ||= File.join(root, 'bower_components')
-    end
-
-    def get_sass_paths
+    def get_bower_sass_paths(bower_directory)
       sass_paths = []
-      Dir["#{bower_path}/**/.bower.json"].each do |f|
+      Dir["#{bower_directory}/**/.bower.json"].each do |f|
         get_main_paths(f).each do |path|
           sass_paths << path
         end
@@ -49,8 +54,4 @@ module BowerSassPath
 
 end
 
-if ENV.has_key?('SASS_PATH')
-  ENV['SASS_PATH'] = ENV['SASS_PATH'] + File::PATH_SEPARATOR + BowerSassPath.sass_paths.join(File::PATH_SEPARATOR)
-else
-  ENV['SASS_PATH'] = BowerSassPath.sass_paths.join(File::PATH_SEPARATOR)
-end
+BowerSassPath.append_bower_components('bower_components')
