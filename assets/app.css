@@ -715,11 +715,11 @@ p code, ul code {
 
 /* Literal.Number.Integer.Long */
 body {
-  margin: 1.5rem; }
+  margin: 0 1.5rem; }
   @media (min-width: 64em) {
     body {
       max-width: 860px;
-      margin: 1.5rem auto; } }
+      margin: 0 auto; } }
 
 html, body {
   font-family: "Quattrocento Sans", Arial, sans-serif;
@@ -805,6 +805,8 @@ a {
   flex-direction: column;
   -ms-flex-direction: column;
   min-height: 100vh; }
+  .Site-header {
+    margin-top: 1.5rem; }
   .Site-content {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
@@ -813,6 +815,8 @@ a {
     -moz-flex: 1;
     -ms-flex: 1;
     flex: 1; }
+  .Site-footer {
+    margin-bottom: 1.5rem; }
 
 .Site-title {
   font-size: 3.8147rem;
