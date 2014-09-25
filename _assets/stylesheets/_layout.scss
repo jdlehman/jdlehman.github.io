@@ -3,8 +3,18 @@
   @include flex-direction(column);
   min-height: 100vh;
 
+  // .Site-header
+  @include jl-desc(header) {
+    margin-top: 1.5rem;
+  }
+
   // .Site-content
   @include jl-desc(content) {
     @include flex(1);
+  }
+
+  // .Site-footer
+  @include jl-desc(footer) {
+    margin-bottom: 1.5rem;
   }
 }
