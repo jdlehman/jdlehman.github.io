@@ -3,65 +3,65 @@
   
   
   <url>
-    <loc>http://inlehmansterms.net/2014/09/19/single-class-vs-multi-class-css/</loc>
+    <loc>http://localhost:4000/2014/09/19/single-class-vs-multi-class-css/</loc>
     <lastmod>2014-09-19T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/2014/09/04/sane-vim-working-directories/</loc>
+    <loc>http://localhost:4000/2014/09/04/sane-vim-working-directories/</loc>
     <lastmod>2014-09-04T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/2014/08/25/modular-css-with-suitcss/</loc>
+    <loc>http://localhost:4000/2014/08/25/modular-css-with-suitcss/</loc>
     <lastmod>2014-08-25T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/2014/08/07/vim-macros/</loc>
+    <loc>http://localhost:4000/2014/08/07/vim-macros/</loc>
     <lastmod>2014-08-07T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/2014/07/28/has_one-vs-belongs_to/</loc>
+    <loc>http://localhost:4000/2014/07/28/has_one-vs-belongs_to/</loc>
     <lastmod>2014-07-28T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/2014/06/09/groove-to-a-vertical-rhythm/</loc>
+    <loc>http://localhost:4000/2014/06/09/groove-to-a-vertical-rhythm/</loc>
     <lastmod>2014-06-09T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/2014/05/26/setup-varnish-locally/</loc>
+    <loc>http://localhost:4000/2014/05/26/setup-varnish-locally/</loc>
     <lastmod>2014-05-26T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   
   <url>
-    <loc>http://inlehmansterms.net/404.html</loc>
-    <lastmod>2014-09-22T10:54:02-04:00</lastmod>
+    <loc>http://localhost:4000/404.html</loc>
+    <lastmod>2014-09-24T21:22:09-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://inlehmansterms.net/</loc>
-    <lastmod>2014-09-22T10:54:02-04:00</lastmod>
+    <loc>http://localhost:4000/</loc>
+    <lastmod>2014-09-24T21:22:09-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   
   <url>
-    <loc>http://inlehmansterms.net/google4f3ab6761d67654c.html</loc>
+    <loc>http://localhost:4000/google4f3ab6761d67654c.html</loc>
     <lastmod>2014-09-03T22:38:51Z</lastmod>
     <priority>0.6</priority>
   </url>
