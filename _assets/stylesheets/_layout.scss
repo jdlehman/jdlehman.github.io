@@ -1,0 +1,10 @@
+.Site {
+  @include display(flex);
+  @include flex-direction(column);
+  min-height: 100vh;
+
+  // .Site-content
+  @include jl-desc(content) {
+    @include flex(1);
+  }
+}
