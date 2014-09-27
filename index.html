@@ -4,12 +4,12 @@ layout: default
 
 <article class="Home">
 
-  <article class="PostContainer">
+  <article class="Listings">
     {% assign current_date = site.time | date: '%s' %}
     {% for post in paginator.posts %}
       {% assign post_date = post.date | date: '%s' %}
       {% if post_date <= current_date %}
-        <section class="PostItem">
+        <section class="Listing">
           {% include excerpt.html %}
         </section>
       {% endif %}

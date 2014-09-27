@@ -1,0 +1,7 @@
+.Listings {
+  @include container;
+}
+
+.Listing {
+  @include span(full);
+}

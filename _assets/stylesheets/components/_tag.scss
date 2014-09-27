@@ -1,0 +1,34 @@
+.Tag {
+  // .Tag-title
+  @include jl-desc(title) {
+  }
+
+  // .Tag-item
+  @include jl-desc(item) {
+    // .Tag-item-date
+    @include jl-desc(date) {
+      color: $jl-laurel-green;
+      @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
+    }
+
+    // .Tag-item-postTitle
+    @include jl-desc(postTitle) {
+      @include jl-vertical-rhythm($jl-font-size-l, $bottom-rows: 0);
+    }
+
+    // .Tag-item-text
+    @include jl-desc(text) {
+      @include jl-vertical-rhythm($jl-font-size-base, $bottom-rows: 0);
+    }
+
+    // .Tag-item-allTags
+    @include jl-desc(allTags) {
+      @include jl-vertical-rhythm($jl-font-size-m);
+    }
+
+    // .Tag-item-tag
+    @include jl-desc(tag) {
+      @include jl-vertical-rhythm($jl-font-size-m, $bottom-rows: 0);
+    }
+  }
+}

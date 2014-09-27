@@ -1,7 +1,23 @@
-.PostContainer {
-  @include container;
-}
+.Post {
+  // .Post-header
+  @include jl-desc(header) {
+  }
 
-.PostItem {
-  @include span(full);
+  // .Post-meta
+  @include jl-desc(meta) {
+    color: $jl-laurel-green;
+  }
+
+  // .Post-tags
+  @include jl-desc(tags) {
+    @include jl-vertical-rhythm($jl-font-size-m);
+    color: $jl-laurel-green;
+    // .Post-tags-item
+    @include jl-desc(item) {
+      margin-right: 1rem;
+      &:last-child {
+        margin-right: 0rem;
+      }
+    }
+  }
 }

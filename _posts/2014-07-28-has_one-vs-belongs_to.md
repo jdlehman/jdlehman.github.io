@@ -3,6 +3,7 @@ layout: post
 title: Database Associations- "Has One" vs "Belongs To"
 tags:
   - rails
+  - ruby
   - database
 ---
 

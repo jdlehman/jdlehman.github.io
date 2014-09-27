@@ -1,7 +1,7 @@
 # Site settings
 production: false
 title: In Lehman's Terms
-description: ""
+description: "The technical blog of Jonathan Lehman."
 timezone: America/New_York
 url: http://localhost:4000
 paginate: 4

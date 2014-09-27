@@ -59,6 +59,10 @@ h3 {
   @include jl-vertical-rhythm($jl-font-size-l);
 }
 
+h4 {
+  @include jl-vertical-rhythm($jl-font-size-m);
+}
+
 // -----------
 // Link styles
 // -----------

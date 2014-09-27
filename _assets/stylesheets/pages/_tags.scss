@@ -1,0 +1,6 @@
+.Tags {
+  // .Tags-name
+  @include jl-desc(name) {
+    @include jl-vertical-rhythm($jl-font-size-m);
+  }
+}

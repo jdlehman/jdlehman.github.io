@@ -1,0 +1,16 @@
+---
+layout: page
+title: "Tags"
+---
+<article class="Tags">
+  {% assign sorted_tags = (site.data.tags | sort:0) %}
+  {% for tag in sorted_tags %}
+    {% assign count = 0 %}
+    {% for post in site.posts %}
+      {% if post.tags contains tag[0] %}
+          {% assign count = count|plus:1 %}
+      {% endif %}
+    {% endfor %}
+    <div class="Tags-name"><a href="/tag/{{ tag[0] }}">{{ tag[1].name }}</a> ({{ count }} posts)</div>
+  {% endfor %}
+</article>

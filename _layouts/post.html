@@ -5,9 +5,19 @@ layout: default
 
   <header class="Post-header">
     <h1>{{ page.title }}</h1>
-    <time class="Excerpt-date" pubdate datetime="{{ page.date | date_to_xmlschema }}">
-      <p>{{ page.date | date: "%b %-d, %Y" }} • Jonathan Lehman</p>
-    </time>
+    <section class="Post-meta">
+      <time pubdate datetime="{{ page.date | date_to_xmlschema }}">
+        <span>{{ page.date | date: "%b %-d, %Y" }}</span>
+      </time>
+      <span> • Jonathan Lehman</span>
+    </section>
+    <section class="Post-tags">
+      <span>Tags: </span>
+      {% assign sorted_tags = (page.tags | sort:0) %}
+      {% for tag in sorted_tags %}
+        <a class="Post-tags-item" href="/tag/{{ tag }}">{{ tag }}</a>
+      {% endfor %}
+    </section>
   </header>
 
   <section class="Post-content">

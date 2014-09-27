@@ -1,0 +1,16 @@
+css:
+  name: 'CSS'
+database:
+  name: 'Database'
+rails:
+  name: 'Rails'
+ruby:
+  name: 'Ruby'
+sass:
+  name: 'Sass'
+typography:
+  name: 'Typography'
+varnish:
+  name: 'Varnish'
+vim:
+  name: 'Vim'
