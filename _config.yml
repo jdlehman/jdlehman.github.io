@@ -4,6 +4,8 @@ title: In Lehman's Terms
 description: ""
 timezone: America/New_York
 url: http://localhost:4000
+paginate: 4
+excerpt_separator: <!--more-->
 usernames:
   disqus: inlehmansterms
   twitter: inLehmans_Terms

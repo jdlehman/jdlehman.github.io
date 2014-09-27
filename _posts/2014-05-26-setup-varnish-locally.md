@@ -5,6 +5,8 @@ tags: varnish
 
 Typically, the best way to ensure that a web application will run correctly in production is to stage it an environment just like production. Most of the time the overhead of setting up caching or other performance improvements is not necessary in development, but there are instances when the development being done directly interacts with or relies upon these components. In these situations it often pays off to take the time to set up "production components" so that changes can be tested prior to pushing changes to a staging or production environment, often a costly extra step.
 
+<!--more-->
+
 Today, I am going to focus on setting up [Varnish Cache](https://www.varnish-cache.org), a "caching HTTP reverse proxy". Varnish allows you to cache responses to quickly serve common pages and provides powerful configuration for response headers and other cache settings.
 
 ## Installation

@@ -4,15 +4,19 @@ layout: default
 
 <article class="Home">
 
-  <h1>Posts</h1>
-
-  <ul class="Posts">
-    {% for post in site.posts %}
-      <li class="Post">
-        <span class="Post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="Post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-      </li>
+  <article class="PostContainer">
+    {% assign current_date = site.time | date: '%s' %}
+    {% for post in paginator.posts %}
+      {% assign post_date = post.date | date: '%s' %}
+      {% if post_date <= current_date %}
+        <section class="PostItem">
+          {% include excerpt.html %}
+        </section>
+      {% endif %}
     {% endfor %}
-  </ul>
+
+  </article>
+
+  {% include paginator.html %}
 
 </article>

@@ -13,11 +13,3 @@
 //     )
 //   );
 // }
-
-body {
-  margin: 0 1.5rem;
-  @include jl-breakpoint(lg) {
-    max-width: 860px;
-    margin: 0 auto;
-  }
-}

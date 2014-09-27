@@ -8,6 +8,8 @@ tags:
 
 As I have mentioned previously in my post on [Modular CSS](/2014/08/25/modular-css-with-suitcss/), structuring Sass/CSS is hard. One of the best ways to determine how clean and well structured the resulting CSS within a project is, is to take a look at the markup being used in project. Overly nested elements typically mean overly nested CSS and if you find it difficult to discern the purpose of the classes on those elements, the CSS itself is probably not semantically written. To add insult to injury, the more classes we add to each element, the harder it becomes to read. What if there was a better way? What if we could just write a single class that provides all the styling we need for a given element?
 
+<!--more-->
+
 ## Single Class CSS
 
 Let's give the single class approach a try. To keep it simple we will style a button (for the purposes of this example we will use [SUIT CSS](/2014/08/25/modular-css-with-suitcss/) to give our CSS semantic meaning). We will assume that we might have different types of buttons, or modifications of the same button, so let's write a single class for each type of button we may want on our website.

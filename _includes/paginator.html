@@ -1,0 +1,17 @@
+<article class="Paginator">
+  {% if paginator.previous_page %}
+    <p class="Paginator-newerBtn">
+      {% if paginator.previous_page == 1 %}
+        <a href="/" title="Newer Posts">&#8592; Newer</a>
+      {% else %}
+        <a href="/page{{ paginator.previous_page }}/" title="Newer Posts">&#8592; Newer</a>
+      {% endif %}
+    </p>
+  {% endif %}
+
+  {% if paginator.next_page %}
+    <p class="Paginator-olderBtn">
+      <a href="/page{{ paginator.next_page }}" title="Older Posts">Older &#8594;</a>
+    </p>
+  {% endif %}
+</article>

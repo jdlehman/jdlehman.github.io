@@ -1,17 +1,19 @@
 ---
 layout: default
 ---
-<div class="Post {{ page.postClass }}">
+<article class="Post {{ page.postClass }}">
 
-  <article class="Post-header">
+  <header class="Post-header">
     <h1>{{ page.title }}</h1>
-    <p class="Post-meta">{{ page.date | date: "%b %-d, %Y" }} • Jonathan Lehman</p>
-  </article>
+    <time class="Excerpt-date" pubdate datetime="{{ page.date | date_to_xmlschema }}">
+      <p>{{ page.date | date: "%b %-d, %Y" }} • Jonathan Lehman</p>
+    </time>
+  </header>
 
-  <article class="Post-content">
+  <section class="Post-content">
     {{ content }}
-  </article>
+  </section>
 
-</div>
+</article>
 
 {% include disqus.html %}

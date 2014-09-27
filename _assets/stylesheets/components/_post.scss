@@ -1,0 +1,7 @@
+.PostContainer {
+  @include container;
+}
+
+.PostItem {
+  @include span(full);
+}

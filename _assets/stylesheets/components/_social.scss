@@ -1,0 +1,9 @@
+.Social {
+  text-align: center;
+}
+
+.jl-Icon-github,
+.jl-Icon-twitter,
+.jl-Icon-rss {
+  @include jl-vertical-rhythm(2rem);
+}

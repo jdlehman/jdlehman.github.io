@@ -12,6 +12,8 @@ tags:
 
 Grid frameworks are awesome. They solve a number of problems and enable developers to easily create virtually any layout they imagine. Paired with media queries, responsive layouts become more accessible and great experiences at all screen sizes are becoming more common.
 
+<!--more-->
+
 Grids allow us to be lazy and not think about all the "complex math" they require. In actuality, grid frameworks are simple. Want to take up 6 columns on a 12 column grid? Set the width to 50%. Add some margins and clearfixes, and BOOM. You have yourself a [simple grid framework](https://github.com/mourner/dead-simple-grid).
 
 The purpose of a grid is to arrange our content in a well organized and define way. As humans, we are better at understanding patterns and organized content, and are more likely to read and retain information from such. Translation: great page organization leads to a better user experience. However, just organizing information on a grid-like structure is not enough. If you put too much content on a page it quickly becomes cluttered and unreadable again. The mere structure of a grid is not enough. Like anything, it must also be used wisely. The emergence of simple designs shows the importance of not only the content, but the white space around it. Readability is end-goal of typographic work.

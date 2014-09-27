@@ -1,0 +1,14 @@
+.Paginator {
+  @include container;
+  @include span(full);
+
+  // .Paginator-newerBtn
+  @include jl-desc(newerBtn) {
+    @include span(first 1);
+  }
+
+  // .Paginator-olderBtn
+  @include jl-desc(olderBtn) {
+    @include span(last 1);
+  }
+}

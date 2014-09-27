@@ -1,0 +1,22 @@
+.Site-header {
+  @include span(full);
+  @include jl-breakpoint(lg) {
+    @include push(3);
+    width: span(9);
+  }
+  @include jl-breakpoint(xl) {
+    @include push(4);
+    width: span(8);
+  }
+  margin-top: 1.5rem;
+
+  // .Site-header-title
+  @include jl-desc(title) {
+    @include jl-vertical-rhythm($jl-font-size-title);
+    font-family: $jl-font-family-title;
+    font-weight: $jl-font-weight-title;
+    &:hover a {
+      color: $jl-myrtle-green;
+    }
+  }
+}

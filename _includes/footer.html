@@ -1,16 +1,11 @@
 <footer class="Site-footer">
-    <h2>{{ site.title }}</h2>
+  <article class="Site-footer-social">
+    {% include social.html %}
+  </article>
 
-    <div>
-      <a href="https://github.com/{{ site.usernames.github }}">
-        <span class="jl-Icon-github"></span>
-      </a>
-      <a href="https://twitter.com/{{ site.usernames.twitter }}">
-        <span class="jl-Icon-twitter"></span>
-      </a>
-      <a href="{{ "/feed.xml" | prepend: site.baseurl }}">
-        <span class="jl-Icon-rss"></span>
-      </a>
-    </div>
-  </div>
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; {{ site.time | date: "%Y" }} Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-{{ site.time | date: "%Y" }} Jonathan Lehman. All rights reserved.</div> -->
+  </article>
 </footer>

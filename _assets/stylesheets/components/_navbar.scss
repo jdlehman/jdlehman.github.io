@@ -1,0 +1,54 @@
+.Navbar {
+  @include display(flex);
+  @include flex-wrap(nowrap);
+  @include span(full);
+  @include jl-breakpoint(lg) {
+    @include span(3);
+    display: block;
+    position: fixed;
+  }
+  position: static;
+
+  // .Navbar-social
+  @include jl-desc(social) {
+    display: none;
+    @include jl-breakpoint(lg) {
+      display: block;
+    }
+  }
+
+  // .Navbar-gravatar
+  @include jl-desc(gravatar) {
+    text-align: center;
+    display: none;
+    @include jl-breakpoint(lg) {
+      display: block;
+    }
+    & img {
+      border-radius: 50%;
+      border: 3px solid $jl-laurel-green;
+    }
+  }
+
+  // .Navbar-link
+  @include jl-desc(link) {
+    @include jl-vertical-rhythm($jl-font-size-m);
+    @include jl-breakpoint(lg) {
+      @include span(full);
+      margin: 2px 0;
+    }
+    background-color: lighten($jl-laurel-green, 10%);
+    color: $jl-myrtle-green;
+    border-radius: 5px;
+    margin-right: 2rem;
+    padding: 0.5rem;
+    &:last-child {
+      margin-right: 0rem;
+    }
+    &:hover {
+      background-color: $jl-khaki;
+      color: $jl-myrtle-green;
+    }
+  }
+
+}

@@ -7,9 +7,15 @@
 
     {% include header.html %}
 
-    <div class="Site-content">
-      {{ content }}
-    </div>
+    <main class="Site-main">
+      <article class="Site-navbar">
+        {% include navbar.html %}
+      </article>
+
+      <article class="Site-content">
+        {{ content }}
+      </article>
+    </main>
 
     {% include footer.html %}
 

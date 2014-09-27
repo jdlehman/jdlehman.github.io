@@ -1,0 +1,14 @@
+.Excerpt {
+  // .Excerpt-date
+  @include jl-desc(date) {
+  }
+
+  // .Excerpt-title
+  @include jl-desc(title) {
+  }
+
+  // .Excerpt-text
+  @include jl-desc(text) {
+    text-align: justify;
+  }
+}

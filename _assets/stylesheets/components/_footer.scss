@@ -1,0 +1,21 @@
+.Site-footer {
+  @include span(full);
+  @include jl-breakpoint(lg) {
+    @include push(3);
+    width: span(9);
+  }
+  margin-bottom: 1.5rem;
+
+  // .Site-footer-social
+  @include jl-desc(social) {
+    display: block;
+    @include jl-breakpoint(lg) {
+      display: none;
+    }
+  }
+
+  // .Site-footer-copyright
+  @include jl-desc(copyright) {
+    text-align: center;
+  }
+}
