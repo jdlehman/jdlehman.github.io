@@ -125,7 +125,7 @@ namespace :production do
       sleep 3
       system("open http://localhost:#{port}/")
     end
-    Rake::Task[:watch].invoke
+    system 'jekyll serve --watch --config _config_production.yml'
   end
 
   # rake production:generate
