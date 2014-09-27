@@ -23,32 +23,55 @@
   <body class="Site">
 
     <header class="Site-header">
-  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
-
-  <!-- <nav class="site-nav"> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/404.html">404</a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/feed.xml"></a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/"></a> -->
-  <!--    -->
-  <!-- </nav> -->
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
 </header>
 
 
-    <div class="Site-content">
-      <div class="Post ">
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <!-- <a href="#" class="Navbar-link">Talks</a> -->
 
-  <article class="Post-header">
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
     <h1>Database Associations- "Has One" vs "Belongs To"</h1>
-    <p class="Post-meta">Jul 28, 2014 • Jonathan Lehman</p>
-  </article>
+    <time class="Excerpt-date" pubdate datetime="2014-07-28T00:00:00-04:00">
+      <p>Jul 28, 2014 • Jonathan Lehman</p>
+    </time>
+  </header>
 
-  <article class="Post-content">
+  <section class="Post-content">
     <h2 id="which-one-goes-where?">Which One Goes Where?</h2>
 
 <p>One of the most confusing database relationship questions for me was always when to use <code>has_one</code> vs <code>belongs_to</code>. The relationship is a simple one-to-one relationship, and if we think about it in terms of the models, it makes a lot of sense. For example, let&#39;s say we have a <code>Dog</code> model and an <code>Owner</code> model. Immediately we can say the <code>Owner has_one Dog</code> and the <code>Dog belongs_to Owner</code>. In this case, the objects are familiar to us from our everyday life and it is easy to figure out. When the objects are more abstract like <code>Foo</code> and <code>Bar</code> it is much more difficult to determine. Let&#39;s hold that thought for a moment.</p>
+
+<!--more-->
 
 <p>The trickiest part of this whole ordeal for me was always figuring out which model object has the <code>foreign_key</code> on it, the <code>id</code> of the other model with which it is associated. This <code>foreign_key</code> is actually the only difference between the <code>has_one</code> and <code>belongs_to</code> semantic naming in a one-to-one relationship. The question is, does it go on the model that <code>belongs_to</code> the other or the one that <code>has_one</code> of the first prior? Let&#39;s go back to my original example with the <code>Owner</code> and the <code>Dog</code>. In this case, the <code>Owner has_one Dog</code>. In real life, most dogs are required to wear collars with some identification, typically the owner&#39;s name and address, in case the dog gets lost. Did you catch that? The dog has the owner&#39;s id on it, or relating it back to our database model, the <code>foreign_key</code>! Since <code>Dog belongs_to Owner</code>, the <code>foreign_key</code> will be on the <code>Dog</code> model, meaning the object that <code>belongs_to</code> the other will always have the <code>foreign_key</code> that makes the association. This example makes it easy to remember where the <code>foreign_key</code> belongs, but we still do not know how to determine which object belongs to the other in a more abstract case.</p>
 
@@ -90,30 +113,37 @@ WHERE Bar.id = bar.id
 
 <p>Hopefully now you know where to place the <code>foreign_key</code> (think of our <code>Owner has_one Dog</code> example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the <code>foreign_key</code> on models that are more abstract.</p>
 
-  </article>
+  </section>
 
-</div>
-
-
+</article>
 
 
-    </div>
+
+
+      </article>
+    </main>
 
     <footer class="Site-footer">
-    <h2>In Lehman's Terms</h2>
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
 
-    <div>
-      <a href="https://github.com/jdlehman">
-        <span class="jl-Icon-github"></span>
-      </a>
-      <a href="https://twitter.com/inLehmans_Terms">
-        <span class="jl-Icon-twitter"></span>
-      </a>
-      <a href="/feed.xml">
-        <span class="jl-Icon-rss"></span>
-      </a>
-    </div>
-  </div>
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
 </footer>
 
 

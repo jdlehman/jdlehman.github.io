@@ -23,30 +23,53 @@
   <body class="Site">
 
     <header class="Site-header">
-  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
-
-  <!-- <nav class="site-nav"> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/404.html">404</a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/feed.xml"></a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/"></a> -->
-  <!--    -->
-  <!-- </nav> -->
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
 </header>
 
 
-    <div class="Site-content">
-      <div class="Post ">
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <!-- <a href="#" class="Navbar-link">Talks</a> -->
 
-  <article class="Post-header">
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
     <h1>Vim Macros</h1>
-    <p class="Post-meta">Aug 7, 2014 • Jonathan Lehman</p>
-  </article>
+    <time class="Excerpt-date" pubdate datetime="2014-08-07T00:00:00-04:00">
+      <p>Aug 7, 2014 • Jonathan Lehman</p>
+    </time>
+  </header>
 
-  <article class="Post-content">
+  <section class="Post-content">
     <p>One of the big advantages I find to using vim as my editor is the ability to record and replay macros. The recording of a macro begins when <code>q</code> is pressed followed by any other key, which specifies what register the macro is to be stored in. If we use <code>qq</code> the macro will be stored in register <code>q</code>, whereas <code>qt</code> will store the macro in register <code>t</code>. Once the recording is started, all keystrokes are stored into the specified register. Pressing <code>q</code> again will stop the recording. To &quot;playback&quot; the macro, which will just execute the contents of the register as if you were pressing the keystrokes yourself, type <code>@</code> followed by the register in which you stored the macro. <code>@@</code> will playback the most recently played macro.</p>
+
+<!--more-->
 
 <p>I find that a good baseline for when a macro might be useful is for repetitious editing or reformatting that cannot easily be accomplished using visual block mode. For example, given the following Ruby method, let&#39;s say I wanted to modify the additional method calls to use parenthesis.</p>
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">my_method</span>
@@ -80,30 +103,37 @@
 </code></pre></div>
 <p>Now our old macro turned mapping will run whenever we type <code>&lt;leader&gt;(</code> in normal mode.</p>
 
-  </article>
+  </section>
 
-</div>
-
-
+</article>
 
 
-    </div>
+
+
+      </article>
+    </main>
 
     <footer class="Site-footer">
-    <h2>In Lehman's Terms</h2>
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
 
-    <div>
-      <a href="https://github.com/jdlehman">
-        <span class="jl-Icon-github"></span>
-      </a>
-      <a href="https://twitter.com/inLehmans_Terms">
-        <span class="jl-Icon-twitter"></span>
-      </a>
-      <a href="/feed.xml">
-        <span class="jl-Icon-rss"></span>
-      </a>
-    </div>
-  </div>
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
 </footer>
 
 

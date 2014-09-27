@@ -23,30 +23,53 @@
   <body class="Site">
 
     <header class="Site-header">
-  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
-
-  <!-- <nav class="site-nav"> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/404.html">404</a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/feed.xml"></a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/"></a> -->
-  <!--    -->
-  <!-- </nav> -->
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
 </header>
 
 
-    <div class="Site-content">
-      <div class="Post ">
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <!-- <a href="#" class="Navbar-link">Talks</a> -->
 
-  <article class="Post-header">
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
     <h1>Setup Varnish Locally</h1>
-    <p class="Post-meta">May 26, 2014 • Jonathan Lehman</p>
-  </article>
+    <time class="Excerpt-date" pubdate datetime="2014-05-26T00:00:00-04:00">
+      <p>May 26, 2014 • Jonathan Lehman</p>
+    </time>
+  </header>
 
-  <article class="Post-content">
+  <section class="Post-content">
     <p>Typically, the best way to ensure that a web application will run correctly in production is to stage it an environment just like production. Most of the time the overhead of setting up caching or other performance improvements is not necessary in development, but there are instances when the development being done directly interacts with or relies upon these components. In these situations it often pays off to take the time to set up &quot;production components&quot; so that changes can be tested prior to pushing changes to a staging or production environment, often a costly extra step.</p>
+
+<!--more-->
 
 <p>Today, I am going to focus on setting up <a href="https://www.varnish-cache.org">Varnish Cache</a>, a &quot;caching HTTP reverse proxy&quot;. Varnish allows you to cache responses to quickly serve common pages and provides powerful configuration for response headers and other cache settings.</p>
 
@@ -99,30 +122,37 @@ varnishd -h
 
 <p>By now you should be up and running with Varnish locally on your development environment. For more information on Varnish in general and writing vcl scripts, consult the <a href="https://www.varnish-cache.org/docs">documentation</a>.</p>
 
-  </article>
+  </section>
 
-</div>
-
-
+</article>
 
 
-    </div>
+
+
+      </article>
+    </main>
 
     <footer class="Site-footer">
-    <h2>In Lehman's Terms</h2>
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
 
-    <div>
-      <a href="https://github.com/jdlehman">
-        <span class="jl-Icon-github"></span>
-      </a>
-      <a href="https://twitter.com/inLehmans_Terms">
-        <span class="jl-Icon-twitter"></span>
-      </a>
-      <a href="/feed.xml">
-        <span class="jl-Icon-rss"></span>
-      </a>
-    </div>
-  </div>
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
 </footer>
 
 

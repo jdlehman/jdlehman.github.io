@@ -23,30 +23,53 @@
   <body class="Site">
 
     <header class="Site-header">
-  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
-
-  <!-- <nav class="site-nav"> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/404.html">404</a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/feed.xml"></a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/"></a> -->
-  <!--    -->
-  <!-- </nav> -->
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
 </header>
 
 
-    <div class="Site-content">
-      <div class="Post ">
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <!-- <a href="#" class="Navbar-link">Talks</a> -->
 
-  <article class="Post-header">
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
     <h1>Modular CSS with SUIT CSS</h1>
-    <p class="Post-meta">Aug 25, 2014 • Jonathan Lehman</p>
-  </article>
+    <time class="Excerpt-date" pubdate datetime="2014-08-25T00:00:00-04:00">
+      <p>Aug 25, 2014 • Jonathan Lehman</p>
+    </time>
+  </header>
 
-  <article class="Post-content">
+  <section class="Post-content">
     <p>Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.</p>
+
+<!--more-->
 
 <p>Ask yourself the question, &quot;how and why do we apply structure to the code we write?&quot; Now you might wonder, why don&#39;t we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the <a href="http://suitcss.github.io/">SUIT CSS</a> convention.</p>
 
@@ -176,30 +199,37 @@
 </ul></li>
 </ul>
 
-  </article>
+  </section>
 
-</div>
-
-
+</article>
 
 
-    </div>
+
+
+      </article>
+    </main>
 
     <footer class="Site-footer">
-    <h2>In Lehman's Terms</h2>
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
 
-    <div>
-      <a href="https://github.com/jdlehman">
-        <span class="jl-Icon-github"></span>
-      </a>
-      <a href="https://twitter.com/inLehmans_Terms">
-        <span class="jl-Icon-twitter"></span>
-      </a>
-      <a href="/feed.xml">
-        <span class="jl-Icon-rss"></span>
-      </a>
-    </div>
-  </div>
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
 </footer>
 
 

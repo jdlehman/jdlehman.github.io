@@ -10,6 +10,8 @@
         <title>Single Class vs. Multi Class CSS</title>
         <description>&lt;p&gt;As I have mentioned previously in my post on &lt;a href=&quot;/2014/08/25/modular-css-with-suitcss/&quot;&gt;Modular CSS&lt;/a&gt;, structuring Sass/CSS is hard. One of the best ways to determine how clean and well structured the resulting CSS within a project is, is to take a look at the markup being used in project. Overly nested elements typically mean overly nested CSS and if you find it difficult to discern the purpose of the classes on those elements, the CSS itself is probably not semantically written. To add insult to injury, the more classes we add to each element, the harder it becomes to read. What if there was a better way? What if we could just write a single class that provides all the styling we need for a given element?&lt;/p&gt;
 
+&lt;!--more--&gt;
+
 &lt;h2 id=&quot;single-class-css&quot;&gt;Single Class CSS&lt;/h2&gt;
 
 &lt;p&gt;Let&amp;#39;s give the single class approach a try. To keep it simple we will style a button (for the purposes of this example we will use &lt;a href=&quot;/2014/08/25/modular-css-with-suitcss/&quot;&gt;SUIT CSS&lt;/a&gt; to give our CSS semantic meaning). We will assume that we might have different types of buttons, or modifications of the same button, so let&amp;#39;s write a single class for each type of button we may want on our website.&lt;/p&gt;
@@ -173,6 +175,8 @@
         <title>Sane Vim Working Directories</title>
         <description>&lt;p&gt;Vim&amp;#39;s defaults are rather dated. Without syntax highlighting, line numbers, or a variety of other defaults found in most modern editors, the initial headache is always configuring these basic settings before starting with Vim. Despite the obvious visual settings, there are a number of Vim defaults that are not apparent when you first start learning Vim, or even after you have been using Vim for a while if you were fortunate enough not to run into an issue. For that reason, it took me a while to realize that I was continually fighting with Vim&amp;#39;s default working directory.&lt;/p&gt;
 
+&lt;!--more--&gt;
+
 &lt;h2 id=&quot;vim&amp;#39;s-default-working-directory&quot;&gt;Vim&amp;#39;s Default Working Directory&lt;/h2&gt;
 
 &lt;p&gt;By default Vim uses the directory that you opened Vim in as the default working directory. You can check the current working directory by running the command, &lt;code&gt;pwd&lt;/code&gt; (print working directory). Honestly, I don&amp;#39;t believe this is a bad default. It makes a lot of sense if you open Vim and stay in that project directory for the entirety of your working session, but it begins to breakdown with fairly typical use cases.&lt;/p&gt;
@@ -272,6 +276,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
       <item>
         <title>Modular CSS with SUIT CSS</title>
         <description>&lt;p&gt;Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;Ask yourself the question, &amp;quot;how and why do we apply structure to the code we write?&amp;quot; Now you might wonder, why don&amp;#39;t we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the &lt;a href=&quot;http://suitcss.github.io/&quot;&gt;SUIT CSS&lt;/a&gt; convention.&lt;/p&gt;
 
@@ -410,6 +416,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
         <title>Vim Macros</title>
         <description>&lt;p&gt;One of the big advantages I find to using vim as my editor is the ability to record and replay macros. The recording of a macro begins when &lt;code&gt;q&lt;/code&gt; is pressed followed by any other key, which specifies what register the macro is to be stored in. If we use &lt;code&gt;qq&lt;/code&gt; the macro will be stored in register &lt;code&gt;q&lt;/code&gt;, whereas &lt;code&gt;qt&lt;/code&gt; will store the macro in register &lt;code&gt;t&lt;/code&gt;. Once the recording is started, all keystrokes are stored into the specified register. Pressing &lt;code&gt;q&lt;/code&gt; again will stop the recording. To &amp;quot;playback&amp;quot; the macro, which will just execute the contents of the register as if you were pressing the keystrokes yourself, type &lt;code&gt;@&lt;/code&gt; followed by the register in which you stored the macro. &lt;code&gt;@@&lt;/code&gt; will playback the most recently played macro.&lt;/p&gt;
 
+&lt;!--more--&gt;
+
 &lt;p&gt;I find that a good baseline for when a macro might be useful is for repetitious editing or reformatting that cannot easily be accomplished using visual block mode. For example, given the following Ruby method, let&amp;#39;s say I wanted to modify the additional method calls to use parenthesis.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;my_method&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;run_something&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;
@@ -452,6 +460,8 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
         <description>&lt;h2 id=&quot;which-one-goes-where?&quot;&gt;Which One Goes Where?&lt;/h2&gt;
 
 &lt;p&gt;One of the most confusing database relationship questions for me was always when to use &lt;code&gt;has_one&lt;/code&gt; vs &lt;code&gt;belongs_to&lt;/code&gt;. The relationship is a simple one-to-one relationship, and if we think about it in terms of the models, it makes a lot of sense. For example, let&amp;#39;s say we have a &lt;code&gt;Dog&lt;/code&gt; model and an &lt;code&gt;Owner&lt;/code&gt; model. Immediately we can say the &lt;code&gt;Owner has_one Dog&lt;/code&gt; and the &lt;code&gt;Dog belongs_to Owner&lt;/code&gt;. In this case, the objects are familiar to us from our everyday life and it is easy to figure out. When the objects are more abstract like &lt;code&gt;Foo&lt;/code&gt; and &lt;code&gt;Bar&lt;/code&gt; it is much more difficult to determine. Let&amp;#39;s hold that thought for a moment.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;The trickiest part of this whole ordeal for me was always figuring out which model object has the &lt;code&gt;foreign_key&lt;/code&gt; on it, the &lt;code&gt;id&lt;/code&gt; of the other model with which it is associated. This &lt;code&gt;foreign_key&lt;/code&gt; is actually the only difference between the &lt;code&gt;has_one&lt;/code&gt; and &lt;code&gt;belongs_to&lt;/code&gt; semantic naming in a one-to-one relationship. The question is, does it go on the model that &lt;code&gt;belongs_to&lt;/code&gt; the other or the one that &lt;code&gt;has_one&lt;/code&gt; of the first prior? Let&amp;#39;s go back to my original example with the &lt;code&gt;Owner&lt;/code&gt; and the &lt;code&gt;Dog&lt;/code&gt;. In this case, the &lt;code&gt;Owner has_one Dog&lt;/code&gt;. In real life, most dogs are required to wear collars with some identification, typically the owner&amp;#39;s name and address, in case the dog gets lost. Did you catch that? The dog has the owner&amp;#39;s id on it, or relating it back to our database model, the &lt;code&gt;foreign_key&lt;/code&gt;! Since &lt;code&gt;Dog belongs_to Owner&lt;/code&gt;, the &lt;code&gt;foreign_key&lt;/code&gt; will be on the &lt;code&gt;Dog&lt;/code&gt; model, meaning the object that &lt;code&gt;belongs_to&lt;/code&gt; the other will always have the &lt;code&gt;foreign_key&lt;/code&gt; that makes the association. This example makes it easy to remember where the &lt;code&gt;foreign_key&lt;/code&gt; belongs, but we still do not know how to determine which object belongs to the other in a more abstract case.&lt;/p&gt;
 
@@ -503,6 +513,8 @@ WHERE Bar.id = bar.id
         <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
 
 &lt;p&gt;Grid frameworks are awesome. They solve a number of problems and enable developers to easily create virtually any layout they imagine. Paired with media queries, responsive layouts become more accessible and great experiences at all screen sizes are becoming more common.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;Grids allow us to be lazy and not think about all the &amp;quot;complex math&amp;quot; they require. In actuality, grid frameworks are simple. Want to take up 6 columns on a 12 column grid? Set the width to 50%. Add some margins and clearfixes, and BOOM. You have yourself a &lt;a href=&quot;https://github.com/mourner/dead-simple-grid&quot;&gt;simple grid framework&lt;/a&gt;.&lt;/p&gt;
 
@@ -659,6 +671,8 @@ WHERE Bar.id = bar.id
       <item>
         <title>Setup Varnish Locally</title>
         <description>&lt;p&gt;Typically, the best way to ensure that a web application will run correctly in production is to stage it an environment just like production. Most of the time the overhead of setting up caching or other performance improvements is not necessary in development, but there are instances when the development being done directly interacts with or relies upon these components. In these situations it often pays off to take the time to set up &amp;quot;production components&amp;quot; so that changes can be tested prior to pushing changes to a staging or production environment, often a costly extra step.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;Today, I am going to focus on setting up &lt;a href=&quot;https://www.varnish-cache.org&quot;&gt;Varnish Cache&lt;/a&gt;, a &amp;quot;caching HTTP reverse proxy&amp;quot;. Varnish allows you to cache responses to quickly serve common pages and provides powerful configuration for response headers and other cache settings.&lt;/p&gt;
 

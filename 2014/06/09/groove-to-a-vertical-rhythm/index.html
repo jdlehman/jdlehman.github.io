@@ -23,32 +23,55 @@
   <body class="Site">
 
     <header class="Site-header">
-  <h1 class="Site-title"><a href="/">In Lehman's Terms</a></h1>
-
-  <!-- <nav class="site-nav"> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/404.html">404</a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/feed.xml"></a> -->
-  <!--    -->
-  <!--     <a class="page-link" href="/"></a> -->
-  <!--    -->
-  <!-- </nav> -->
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
 </header>
 
 
-    <div class="Site-content">
-      <div class="Post VerticalRhythmPost">
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <!-- <a href="#" class="Navbar-link">Talks</a> -->
 
-  <article class="Post-header">
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post VerticalRhythmPost">
+
+  <header class="Post-header">
     <h1>Groove to a Vertical Rhythm</h1>
-    <p class="Post-meta">Jun 9, 2014 • Jonathan Lehman</p>
-  </article>
+    <time class="Excerpt-date" pubdate datetime="2014-06-09T00:00:00-04:00">
+      <p>Jun 9, 2014 • Jonathan Lehman</p>
+    </time>
+  </header>
 
-  <article class="Post-content">
+  <section class="Post-content">
     <h2 id="background">Background</h2>
 
 <p>Grid frameworks are awesome. They solve a number of problems and enable developers to easily create virtually any layout they imagine. Paired with media queries, responsive layouts become more accessible and great experiences at all screen sizes are becoming more common.</p>
+
+<!--more-->
 
 <p>Grids allow us to be lazy and not think about all the &quot;complex math&quot; they require. In actuality, grid frameworks are simple. Want to take up 6 columns on a 12 column grid? Set the width to 50%. Add some margins and clearfixes, and BOOM. You have yourself a <a href="https://github.com/mourner/dead-simple-grid">simple grid framework</a>.</p>
 
@@ -197,30 +220,37 @@
 <li><a href="http://typecast.com/blog/4-simple-steps-to-vertical-rhythm">4 Simple STeps to Vertical Rhythm</a></li>
 </ul>
 
-  </article>
+  </section>
 
-</div>
-
-
+</article>
 
 
-    </div>
+
+
+      </article>
+    </main>
 
     <footer class="Site-footer">
-    <h2>In Lehman's Terms</h2>
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
 
-    <div>
-      <a href="https://github.com/jdlehman">
-        <span class="jl-Icon-github"></span>
-      </a>
-      <a href="https://twitter.com/inLehmans_Terms">
-        <span class="jl-Icon-twitter"></span>
-      </a>
-      <a href="/feed.xml">
-        <span class="jl-Icon-rss"></span>
-      </a>
-    </div>
-  </div>
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
 </footer>
 
 

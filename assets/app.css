@@ -714,13 +714,6 @@ p code, ul code {
   color: #de935f; }
 
 /* Literal.Number.Integer.Long */
-body {
-  margin: 0 1.5rem; }
-  @media (min-width: 64em) {
-    body {
-      max-width: 860px;
-      margin: 0 auto; } }
-
 html, body {
   font-family: "Quattrocento Sans", Arial, sans-serif;
   font-size: 16px;
@@ -805,9 +798,7 @@ a {
   flex-direction: column;
   -ms-flex-direction: column;
   min-height: 100vh; }
-  .Site-header {
-    margin-top: 1.5rem; }
-  .Site-content {
+  .Site-main {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     box-flex: 1;
@@ -815,21 +806,203 @@ a {
     -moz-flex: 1;
     -ms-flex: 1;
     flex: 1; }
-  .Site-footer {
-    margin-bottom: 1.5rem; }
+  .Site-navbar {
+    width: 95%;
+    float: left;
+    margin-left: 2.5%;
+    margin-right: 2.5%; }
+    @media (min-width: 64em) {
+      .Site-navbar {
+        width: 23.33333%;
+        float: left;
+        margin-left: 0.83333%;
+        margin-right: 0.83333%; } }
+  .Site-content {
+    width: 95%;
+    float: left;
+    margin-left: 2.5%;
+    margin-right: 2.5%; }
+    @media (min-width: 64em) {
+      .Site-content {
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-left: 25.83333%;
+        width: 73.33333%; }
+        .Site-content:after {
+          content: " ";
+          display: block;
+          clear: both; } }
+    @media (min-width: 90em) {
+      .Site-content {
+        margin-left: 34.16667%;
+        width: 65%; } }
 
-.Site-title {
-  font-size: 3.8147rem;
-  line-height: 4.5rem;
-  margin-top: 0rem;
-  margin-bottom: 1.5rem;
-  font-family: "Abril Fatface", Helvetica, sans-serif;
-  font-weight: 700; }
+.Site-header {
+  width: 95%;
+  float: left;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  margin-top: 1.5rem; }
+  @media (min-width: 64em) {
+    .Site-header {
+      margin-left: 25.83333%;
+      width: 73.33333%; } }
+  @media (min-width: 90em) {
+    .Site-header {
+      margin-left: 34.16667%;
+      width: 65%; } }
+  .Site-header-title {
+    font-size: 3.8147rem;
+    line-height: 4.5rem;
+    margin-top: 0rem;
+    margin-bottom: 1.5rem;
+    font-family: "Abril Fatface", Helvetica, sans-serif;
+    font-weight: 700; }
+    .Site-header-title:hover a {
+      color: #466964; }
+
+.Navbar {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: single;
+  -moz-box-lines: single;
+  box-lines: single;
+  -webkit-flex-wrap: nowrap;
+  -moz-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  width: 95%;
+  float: left;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  position: static; }
+  @media (min-width: 64em) {
+    .Navbar {
+      width: 23.33333%;
+      float: left;
+      margin-left: 0.83333%;
+      margin-right: 0.83333%;
+      display: block;
+      position: fixed; } }
+  .Navbar-social {
+    display: none; }
+    @media (min-width: 64em) {
+      .Navbar-social {
+        display: block; } }
+  .Navbar-gravatar {
+    text-align: center;
+    display: none; }
+    @media (min-width: 64em) {
+      .Navbar-gravatar {
+        display: block; } }
+    .Navbar-gravatar img {
+      border-radius: 50%;
+      border: 3px solid #6c8c84; }
+  .Navbar-link {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    margin-top: 0rem;
+    margin-bottom: 1.5rem;
+    background-color: #88a39c;
+    color: #466964;
+    border-radius: 5px;
+    margin-right: 2rem;
+    padding: 0.5rem; }
+    @media (min-width: 64em) {
+      .Navbar-link {
+        width: 98.33333%;
+        float: left;
+        margin-left: 0.83333%;
+        margin-right: 0.83333%;
+        margin: 2px 0; } }
+    .Navbar-link:last-child {
+      margin-right: 0rem; }
+    .Navbar-link:hover {
+      background-color: #d1d1bc;
+      color: #466964; }
+
+.Site-footer {
+  width: 95%;
+  float: left;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  margin-bottom: 1.5rem; }
+  @media (min-width: 64em) {
+    .Site-footer {
+      margin-left: 25.83333%;
+      width: 73.33333%; } }
+  .Site-footer-social {
+    display: block; }
+    @media (min-width: 64em) {
+      .Site-footer-social {
+        display: none; } }
+  .Site-footer-copyright {
+    text-align: center; }
+
+.Social {
+  text-align: center; }
 
 .jl-Icon-github,
 .jl-Icon-twitter,
 .jl-Icon-rss {
-  font-size: 2rem; }
+  font-size: 2rem;
+  line-height: 3rem;
+  margin-top: 0rem;
+  margin-bottom: 1.5rem; }
+
+.PostContainer {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto; }
+  .PostContainer:after {
+    content: " ";
+    display: block;
+    clear: both; }
+
+.PostItem {
+  width: 95%;
+  float: left;
+  margin-left: 2.5%;
+  margin-right: 2.5%; }
+
+.Paginator {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  float: left;
+  margin-left: 2.5%;
+  margin-right: 2.5%; }
+  .Paginator:after {
+    content: " ";
+    display: block;
+    clear: both; }
+  .Paginator-newerBtn {
+    width: 20%;
+    float: left;
+    margin-left: 2.5%;
+    margin-right: 2.5%; }
+  .Paginator-olderBtn {
+    width: 20%;
+    float: right;
+    margin-left: 2.5%;
+    margin-right: 2.5%; }
+
+.Excerpt-date {
+  color: #6c8c84; }
+.Excerpt-title {
+  font-size: 1.95313rem;
+  line-height: 3rem;
+  margin-top: 0rem;
+  margin-bottom: 0rem; }
+.Excerpt-text {
+  text-align: justify; }
 
 .VerticalRhythmPost {
   background: url(http://basehold.it/i/24); }
