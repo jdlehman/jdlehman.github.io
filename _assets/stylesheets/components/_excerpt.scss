@@ -1,10 +1,12 @@
 .Excerpt {
   // .Excerpt-date
   @include jl-desc(date) {
+    color: $jl-laurel-green;
   }
 
   // .Excerpt-title
   @include jl-desc(title) {
+    @include jl-vertical-rhythm($jl-font-size-xl, $bottom-rows: 0);
   }
 
   // .Excerpt-text
