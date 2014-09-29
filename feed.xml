@@ -277,7 +277,7 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
         <title>Modular CSS with SUIT CSS</title>
         <description>&lt;p&gt;Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.&lt;/p&gt;
 
-&lt;!--more--&gt;
+&lt;!--more--&gt; 
 
 &lt;p&gt;Ask yourself the question, &amp;quot;how and why do we apply structure to the code we write?&amp;quot; Now you might wonder, why don&amp;#39;t we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the &lt;a href=&quot;http://suitcss.github.io/&quot;&gt;SUIT CSS&lt;/a&gt; convention.&lt;/p&gt;
 
@@ -344,7 +344,7 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
 &lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-title&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// .my-AwesomeBox--large
+    &lt;span class=&quot;c1&quot;&gt;// .my-AwesomeBox-title--large
 &lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--large&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
       &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
