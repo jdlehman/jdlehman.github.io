@@ -142,6 +142,10 @@ namespace :production do
   # rake production:deploy['commit message']
   desc "Generate and deploy blog to #{GITHUB_BRANCH}"
   task :deploy, [:commit_message] => [:generate] do |t, args|
+    commit_message = args[:commit_message] || `git log -1 --pretty=%B`
+    commit_message = commit_message.gsub('"', "'")
+    sha = `git log`.match(/[a-z0-9]{40}/)[0]
+
     Dir.mktmpdir do |tmp|
       pwd = Dir.pwd
       Dir.chdir tmp
@@ -150,10 +154,6 @@ namespace :production do
       system 'git init'
       system "git remote add origin git@github.com:#{GITHUB_USER}/#{GITHUB_REPONAME}.git"
       system "git pull origin #{GITHUB_BRANCH}"
-
-      commit_message = args[:commit_message] || `git log -1 --pretty=%B`
-      commit_message = commit_message.gsub('"', "'")
-      sha = `git log`.match(/[a-z0-9]{40}/)[0]
 
       # ensure that previously generated files that are now deleted do not remain
       rm_rf Dir.glob("#{tmp}/*")
