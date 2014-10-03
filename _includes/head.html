@@ -3,12 +3,35 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% if page.title %}{{ site.title | append:" - " | append:page.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="{{ site.description }}">
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
+  <link rel="canonical" href="{{page.url | replace:'index.html','' | prepend: site.url}}">
   <link rel="alternate" type="application/rss+xml" href="{{ site.url }}/feed.xml">
+  <meta name="robots" content="{{page.index}}INDEX,{{page.follow}}FOLLOW">
+
   {% if page.url == "/404.html" %}
     <meta http-equiv="refresh" content="3; url=/">
   {% endif %}
+
+  {% if page.description %}
+    <meta name="description" content="{{page.description}}">
+  {% elsif post.excerpt %}
+    <meta name="description" content="{{post.excerpt}}">
+  {% else %}
+    <meta name="description" content="{{site.description}}">
+  {% endif %}
+
+  {% if page.tags %}
+    <meta name="keywords" content="{{page.tags | join: ','}}">
+  {% else %}
+    {% capture tag_list %}
+      {% for tag in site.data.tags %}{{tag | map: 'name'}} {% endfor %}
+    {% endcapture %}
+    <meta name="keywords" content="{{tag_list | split: ' ' | join: ','}}">
+  {% endif %}
+
+  {% if page.date %}
+    <meta http-equiv="date" content="{{page.date |date: '%A, %d  %Y %H:%M:%S GMT'}}">
+  {% endif %}
+
   <!-- Custom CSS -->
   {% stylesheet app %}
 </head>

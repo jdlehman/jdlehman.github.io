@@ -1,19 +1,21 @@
 ---
 layout: post
+title: "The Path to a New Style Framework"
 tags:
   - sass
   - css
 ---
 
-This blog post is inspired by a few talks I have given recently about the process to creating CustomInk's new style framework and the decisions involved in the process.
+This blog post is inspired by a few [talks](http://slides.com/jonathanlehman/an-adventure-in-style#/) I have given recently about the process to creating CustomInk's new style framework and the decisions involved in the process.
 
-Now as a disclaimer to everything that will follow, the current framework has been doing its job and doing it well for the past 5 years. The inevitable truth is that the web has changed, technology has changed, and CustomInk has changed in those 5 years. The previous style framework was not designed with knowledge of these changes, nor could it be. However, the issue is not with the inevitable, it is the fact that 
+Now as a disclaimer to everything that will follow, the current framework has been doing its job and doing it well for the past 5 years. The inevitable truth is that the web has changed, technology has changed, and CustomInk has changed in those 5 years. The previous style framework was not designed with knowledge of these changes, nor could it be. However, the issue is not with the inevitable, it is the fact that the old framework was too heavy handed and not flexible enough to change and evolve in the ways we needed.
 
 # The Problem
 
-The existing homegrown style framework at CustomInk is dated.
+The existing homegrown style framework at CustomInk is dated. It is very opinionated and made too many assumptions without providing "escape hatches" to handle unforeseen situations or use cases that may arise.
 
-* Existing homegrown style framework dated
+The pain points had become substantial enough that it was clear that something had to be done.
+
   * over opinionated with no "escape hatches" -- made too many assumptions (cant guarantee assumptions hold in the future)
 -- monolithic, cyclic layout references in rails, forces layouts on you (too oppinionated, hard to update/maintain)
 
@@ -25,7 +27,7 @@ The existing homegrown style framework at CustomInk is dated.
 -- Using existing frameworks is easy to get going, but might bring in a lot of source that is not needed, how easy is it to extend? what if it is no longer maintained?
 
 # StyleBitz
-* We decided to roll our own (StyleBitz) -- include images
+* We decided to roll our own (StyleBitz)
 * Use Bourbon, Susy, and Breakpoint-Sass as a basis -- rather than building everything from scratch we use predefined tools
 * Goals
   * Provide the basic building blocks -- minimal, do not add things until there is pain, a reason. do not add things by speculation
