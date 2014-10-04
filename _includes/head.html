@@ -13,8 +13,8 @@
 
   {% if page.description %}
     <meta name="description" content="{{page.description}}">
-  {% elsif post.excerpt %}
-    <meta name="description" content="{{post.excerpt}}">
+  {% elsif page.tags %}
+    <meta name="description" content="{{page.content | markdownify | strip_html | truncatewords:50}}">
   {% else %}
     <meta name="description" content="{{site.description}}">
   {% endif %}
