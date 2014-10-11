@@ -14,3 +14,5 @@ varnish:
   name: 'Varnish'
 vim:
   name: 'Vim'
+html:
+  name: 'HTML'

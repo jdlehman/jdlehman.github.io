@@ -3,9 +3,8 @@
 // ====
 
 // vertical rhythm debug
-// html {
-//   @include jl-responsive(
-//     (background: url(http://basehold.it/i/24)),
+// html, body {
+//   @include jl-responsive( (background: url(http://basehold.it/i/24)),
 //     (
 //       md: url(http://basehold.it/i/27),
 //       lg: url(http://basehold.it/i/30),

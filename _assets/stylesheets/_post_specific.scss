@@ -13,3 +13,64 @@
     )
   );
 }
+
+.ResponsiveTablePost {
+  .Table {
+    $light-color: $jl-khaki;
+    $dark-color: $jl-laurel-green;
+
+    @include jl-vertical-rhythm($jl-font-size-base);
+    @include display(flex);
+    @include flex-flow(column nowrap);
+    @include justify-content(space-between);
+    border: 1px solid $dark-color;
+    line-height: 1.5;
+
+    // .Table-header
+    &-header {
+      display: none;
+      @include jl-breakpoint(md) {
+        font-weight: 700;
+        background-color: $dark-color;
+      }
+    }
+    // .Table-row
+    &-row {
+      width: 100%;
+      &:nth-of-type(even) { background-color: $dark-color; }
+      &:nth-of-type(odd) { background-color: $light-color; }
+      @include jl-breakpoint(md) {
+        @include display(flex);
+        @include flex-flow(row nowrap);
+        &:nth-of-type(even) { background-color: $light-color; }
+        &:nth-of-type(odd) { background-color: $dark-color; }
+      }
+      // .Table-row-item
+      &-item {
+        @include display(flex);
+        @include flex-flow(row nowrap);
+        @include flex-grow(1);
+        @include flex-basis(0);
+        @include word-wrap;
+        padding: 0.5em;
+        word-break: break-word;
+        &:before {
+          content: attr(data-header);
+          width: 30%;
+          font-weight: 700;
+        }
+        @include jl-breakpoint(md) {
+          border: 1px solid $light-color;
+          padding: 0.5em;
+          &:before { content: none; }
+        }
+      }
+    }
+  }
+
+  @for $i from 1 through 10 {
+    .u-Flex-grow#{$i} {
+      @include flex-grow($i);
+    }
+  }
+}
