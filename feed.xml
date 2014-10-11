@@ -7,6 +7,216 @@
     <atom:link href="http://inlehmansterms.net/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Responsive Tables with Flexbox</title>
+        <description>&lt;p&gt;HTML tables can be frustrating to use. They require a lot of boilerplate and nested HTML to solve such a simple problem. Let&amp;#39;s explore an alternative approach using divs and &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes&quot;&gt;Flexbox&lt;/a&gt;. This will give us the benefit of being able to create responsive tables that look great on all screen sizes.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;First off, the solution will be written with &lt;a href=&quot;http://sass-lang.com/&quot;&gt;Sass&lt;/a&gt; in a modular fashion using &lt;a href=&quot;/2014/08/25/modular-css-with-suitcss/&quot;&gt;SUIT CSS&lt;/a&gt;. We will use a few Sass libraries to aid us in our task. &lt;a href=&quot;http://bourbon.io/&quot;&gt;Bourbon&lt;/a&gt; for help generating the necessary Flexbox CSS vendor prefixes, and &lt;a href=&quot;http://breakpoint-sass.com/&quot;&gt;Breakpoint&lt;/a&gt; to help with our media queries. If you prefer to work in CSS, feel free to copy the generated CSS from the links to the &lt;a href=&quot;http://sassmeister.com/gist/b38aca96fc6024a28514&quot;&gt;Sassmeister&lt;/a&gt; examples.&lt;/p&gt;
+
+&lt;p&gt;All we need is 3 basic classes to construct our &lt;code&gt;Table&lt;/code&gt; component. First, we need the &lt;code&gt;Table&lt;/code&gt; class, which will use Flexbox to make all its children (rows) flow by column. Next we need a &lt;code&gt;Table-row&lt;/code&gt; class, which will use Flexbox to make all its children (row items/ columns) flow by row without wrapping. Finally, we need the &lt;code&gt;Table-row-item&lt;/code&gt; class, which is essentially a cell in the table component. Now all we need is a &lt;code&gt;Table-header&lt;/code&gt; class that we can add to any row element to give it the styling of a header. Given these criteria, we can write the HTML and Sass for our component as shown below.&lt;/p&gt;
+
+&lt;div class=&quot;Table&quot;&gt;
+  &lt;div class=&quot;Table-row Table-header&quot;&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header4&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;Table-row&quot;&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header1&quot;&gt;row1 col1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header2&quot;&gt;row1 col2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header3&quot;&gt;row1 col3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header4&quot;&gt;row1 col4&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;Table-row&quot;&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header1&quot;&gt;row2 col1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header2&quot;&gt;row2 col2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header3&quot;&gt;row2 col3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header4&quot;&gt;row2 col4&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;Table-row&quot;&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header1&quot;&gt;row3 col1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header2&quot;&gt;row3 col2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header3&quot;&gt;row3 col3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header4&quot;&gt;row3 col4&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row Table-header&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header2&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header3&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header4&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header2&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header3&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header4&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;k&quot;&gt;@import&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;bourbon/bourbon&quot;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;@import&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;breakpoint&quot;;&lt;/span&gt;
+
+&lt;span class=&quot;nc&quot;&gt;.Table&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$dark-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#f2f2f2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$light-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$md&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;500px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;flex-flow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;column&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nowrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;justify-content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;space-between&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1px&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dark-color&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.5rem&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// .Table-header
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-header&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$md&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;font-weight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;700&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dark-color&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// .Table-row
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-row&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nth-of-type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dark-color&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nth-of-type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$light-color&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$md&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;flex-flow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nowrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nth-of-type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$light-color&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nth-of-type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dark-color&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// .Table-row-item
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-item&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;flex-flow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nowrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;flex-grow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;flex-basis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;word-wrap&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.5em&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;word-break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;break-word&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:before&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data-header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;30%&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;font-weight&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;700&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;breakpoint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$md&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1px&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#fff&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;.5em&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/b38aca96fc6024a28514&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Given this implementation, we can easily create responsive tables. Each row simply splits the number of items into it, into equal columns. This gives us the flexibility to create tables with rows that have disparate numbers of columns. However, this same benefit also has a shortcoming.&lt;/p&gt;
+
+&lt;p&gt;The problem with our table component is that every column is the same width. What happens if we have columns that contain data that we want to be wider or smaller in relation to the other columns? Luckily, Flexbox also makes this concern easy to implement. We can simply add some utility classes to set the Flexbox grow rate for different columns.&lt;/p&gt;
+
+&lt;div class=&quot;Table&quot;&gt;
+  &lt;div class=&quot;Table-row Table-header&quot;&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow2&quot;&gt;Long Header1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header4&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow3&quot;&gt;Longer Header5&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header6&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot;&gt;Header7&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;Table-row&quot;&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow2&quot; data-header=&quot;Header1&quot;&gt;row1 col1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header2&quot;&gt;row1 col2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header3&quot;&gt;row1 col3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header4&quot;&gt;row1 col4&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow3&quot; data-header=&quot;Header5&quot;&gt;row1 col5&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header6&quot;&gt;row1 col6&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header7&quot;&gt;row1 col7&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;Table-row&quot;&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow2&quot; data-header=&quot;Header1&quot;&gt;row2 col1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header2&quot;&gt;row2 col2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header3&quot;&gt;row2 col3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header4&quot;&gt;row2 col4&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow3&quot; data-header=&quot;Header5&quot;&gt;row2 col5&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header6&quot;&gt;row2 col6&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header7&quot;&gt;row2 col7&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;Table-row&quot;&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow2&quot; data-header=&quot;Header1&quot;&gt;row3 col1&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header2&quot;&gt;row3 col2&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header3&quot;&gt;row3 col3&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header4&quot;&gt;row3 col4&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item u-Flex-grow3&quot; data-header=&quot;Header5&quot;&gt;row3 col5&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header6&quot;&gt;row3 col6&lt;/div&gt;
+    &lt;div class=&quot;Table-row-item&quot; data-header=&quot;Header7&quot;&gt;row3 col7&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sass&quot; data-lang=&quot;sass&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// generate Flexbox grow-rate utility classes
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;@for&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;through&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nc&quot;&gt;.u-Flex-grow&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;@include&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;flex-grow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row Table-header&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow2&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Long Header1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow3&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Longer Header5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header6&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Header7&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow2&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header2&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header3&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header4&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow3&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header5&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header6&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col6&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header7&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row1 col7&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow2&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header2&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header3&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header4&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow3&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header5&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header6&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col6&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header7&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row2 col7&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow2&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header2&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header3&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col3&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header4&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item u-Flex-grow3&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header5&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header6&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col6&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Table-row-item&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-header=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Header7&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;row3 col7&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/de4eab2113204729ea50&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 11 Oct 2014 00:00:00 -0400</pubDate>
+        <link>http://inlehmansterms.net/2014/10/11/responsive-tables-with-flexbox/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/10/11/responsive-tables-with-flexbox/</guid>
+      </item>
+    
+      <item>
         <title>Single Class vs. Multi Class CSS</title>
         <description>&lt;p&gt;As I have mentioned previously in my post on &lt;a href=&quot;/2014/08/25/modular-css-with-suitcss/&quot;&gt;Modular CSS&lt;/a&gt;, structuring Sass/CSS is hard. One of the best ways to determine how clean and well structured the resulting CSS within a project is, is to take a look at the markup being used in project. Overly nested elements typically mean overly nested CSS and if you find it difficult to discern the purpose of the classes on those elements, the CSS itself is probably not semantically written. To add insult to injury, the more classes we add to each element, the harder it becomes to read. What if there was a better way? What if we could just write a single class that provides all the styling we need for a given element?&lt;/p&gt;
 
