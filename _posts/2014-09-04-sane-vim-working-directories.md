@@ -100,7 +100,7 @@ You can take the above solution, and it will work in ALMOST every case. The good
 
 The issue with what we have written so far is that the working directory will not be updated when navigating the file system with `netrw`, Vim's built in (and buggy) file explorer. The problem is that `netrw` does not get a `BufRead` event. In fact, pretty much every autocommand event I tried did not work in `netrw`. I got around this for a while, by configuring `netrw` with `let g:netrw_keepdir=0`. This global setting will keep the working directory the same as the browsing directory while we are using `netrw`, which is ultimately half of our solution. It still will not respect our Git project directories in the manner we would like.
 
-After a lot of research and failed attempts I finally found a way to debug autocommands. `set debugger=9` will echo the autocommand events that are registered as well as any functions that are called by these events. The only autocommand that seemed to get called in `netrw` is the `CursorMoved` event. Therefore we can hook into this to enable our working directory to remain up to date even in `netrw`. If anyone knows of another autocommand that `netrw` listens to, I would love to know!
+After a lot of research and failed attempts I finally found a way to debug autocommands. `set verbose=9` will echo the autocommand events that are registered as well as any functions that are called by these events. The only autocommand that seemed to get called in `netrw` is the `CursorMoved` event. Therefore we can hook into this to enable our working directory to remain up to date even in `netrw`. If anyone knows of another autocommand that `netrw` listens to, I would love to know!
 
 ```vim
 " netrw: follow symlink and set working directory
@@ -112,4 +112,4 @@ autocmd CursorMoved *
   \ endif
 ```
 
-Be sure to set `debugger` back to 0 otherwise you will find that your productivity has come to a halt because of all of the event logging. Stay tuned as the Vim `debugger` is likely to become the topic of another blog post.
+Be sure to set `verbose` back to 0 otherwise you will find that your productivity has come to a halt because of all of the event logging. Stay tuned as the Vim `verbose` is likely to become the topic of another blog post.
