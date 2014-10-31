@@ -8,10 +8,10 @@ tags:
 
 Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.
 
-<!--more--> 
+<!--more-->
 Ask yourself the question, "how and why do we apply structure to the code we write?" Now you might wonder, why don't we apply these same rules and considerations to the CSS (and Sass) that we write? There is no reason to skimp on our style architecture. One way we can bring clarity and structure is by writing modular CSS with the [SUIT CSS](http://suitcss.github.io/) convention.
 
-<img src="http://fc09.deviantart.net/fs71/f/2012/079/5/7/suit_up_by_mthidell-d4tdnyw.jpg" width="80%" style="margin:0 10%">
+<img src="http://fc09.deviantart.net/fs71/f/2012/079/5/7/suit_up_by_mthidell-d4tdnyw.jpg" class="jl-Image">
 
 ## SUIT CSS Introduction
 

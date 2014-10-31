@@ -1,0 +1,9 @@
+.jl-Image {
+  max-width: 100%;
+  @include jl-breakpoint(md) {
+    display: block;
+    max-width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
