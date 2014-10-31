@@ -1,13 +1,13 @@
 // SUIT CSS descendant selector helper. Keeps CSS flat at root.
 @mixin jl-desc($names...) {
   @each $name in $names {
-    @at-root &-#{$name} { @content; }
+    &-#{$name} { @content; }
   }
 }
 
 // SUIT CSS modifier selector helper. Keeps CSS flat at root.
 @mixin jl-mod($names...) {
   @each $name in $names {
-    @at-root &--#{$name} { @content; }
+    &--#{$name} { @content; }
   }
 }
