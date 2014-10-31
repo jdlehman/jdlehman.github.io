@@ -18,6 +18,12 @@ layout: post
 title:
 tags:
 ---
+
+Excerpt
+
+<!--more-->
+
+After excerpt
 POST
 PAGE_TEMPLATE = <<-PAGE
 ---
