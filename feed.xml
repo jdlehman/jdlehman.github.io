@@ -7,6 +7,113 @@
     <atom:link href="http://inlehmansterms.net/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Debugging Vim</title>
+        <description>&lt;p&gt;Though the documentation in Vim is fairly comprehensive, it is sometimes difficult to find the information for which you are searching. Another serious problem is that Vimscript is a difficult language to learn/use. Whether you are just copying snippets you found online, or aspiring to write some code of your own in Vimscript, you will inevitably hit problems that you can&amp;#39;t figure out. Google and StackOverflow may fail you. For problems like these it is useful to understand how to debug in Vim.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png&quot; class=&quot;jl-Image&quot;&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;This post will serve mostly as a reference and primer for your built in debugging options in Vim. The first thing I will go over is Vimscript&amp;#39;s built in debugger, which you can use via the &lt;code&gt;debug&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;h2 id=&quot;vimscript&amp;#39;s-debugger&quot;&gt;Vimscript&amp;#39;s Debugger&lt;/h2&gt;
+
+&lt;p&gt;You can start up Vim in its debug mode with the &lt;code&gt;-D&lt;/code&gt; argument.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; opens vim in debug mode&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;D somefile&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is useful for seeing what is run when Vim initializes and might help give you a better idea of everything that happens when you open Vim. You can use this to walk through the Vimscript in your &lt;code&gt;vimrc&lt;/code&gt; that runs when an instance of Vim initializes. I will explain how to use the debugger momentarily.&lt;/p&gt;
+
+&lt;p&gt;If you are interested in profiling your Vim&amp;#39;s startup, you may be interested in starting Vim with the &lt;code&gt;startuptime&lt;/code&gt; option, which will write to a file you specify with timestamps and information about what Vim is loading. You can use this to find bottlenecks or problematic plugins that might be causing Vim to be slow.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; this will write startup info to a file: vim.log&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;--&lt;/span&gt;startuptime &lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;how-to-use-the-debugger&quot;&gt;How to Use the Debugger&lt;/h3&gt;
+
+&lt;p&gt;Before we jump into how to use the debugger, you should also know that you can do more than just start up Vim in debug mode as that would not be terribly useful. You can also call the &lt;code&gt;debug&lt;/code&gt; command from within Vim to debug Vimscript functions or commands that have already been sourced.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; debug a command&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;debug&lt;/span&gt; CommandName
+
+&lt;span class=&quot;c&quot;&gt;&quot; debug a fucntion&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;debug&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; FunctionName&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;arg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once you are in debug mode, you will see a prompt (&lt;code&gt;&amp;gt;&lt;/code&gt;) in your status bar. This is where you can control and interact with the debugger.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;cont&lt;/code&gt;&lt;/strong&gt;: continue execution until the next breakpoint (if one exists)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;quit&lt;/code&gt;&lt;/strong&gt;: stop current execution, but still stops at the next breakpoint&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;step&lt;/code&gt;&lt;/strong&gt;: execute the current command and come back to debug mode when it is finished&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;next&lt;/code&gt;&lt;/strong&gt;: like &lt;code&gt;step&lt;/code&gt; except it also steps over function calls and sourced files&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;interrupt&lt;/code&gt;&lt;/strong&gt;: like quit, but returns to debug mode for the next command&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;finish&lt;/code&gt;&lt;/strong&gt;: finishes the current script or function and returns to debug mode for the next command&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You should note that each of these debug commands has the shorthand of the first letter of the word [c, q, s, n, i, f] and hitting enter (&lt;code&gt;&amp;lt;CR&amp;gt;&lt;/code&gt;) will execute the previous command again.&lt;/p&gt;
+
+&lt;p&gt;The last thing you need to know is how to manage breakpoints to your Vimscript. You can add a breakpoint with the &lt;code&gt;breakadd&lt;/code&gt; command, delete it with the &lt;code&gt;breakdel&lt;/code&gt; command, and see all breakpoints with &lt;code&gt;breaklist&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Adding Breakpoints&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; bracketed [] arguments are optional&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;&quot; add breakpoint to function&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakadd&lt;/span&gt; func &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;lineNumber&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; functionName
+&lt;span class=&quot;c&quot;&gt;&quot; add breakpoint to file&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakadd&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;lineNumber&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; fileName
+&lt;span class=&quot;c&quot;&gt;&quot; add breakpoint to current line of current file&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakadd&lt;/span&gt; here
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Deleting Breakpoints&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; bracketed [] arguments are optional&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;&quot; delete breakpoint number from breaklist output&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakdel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;number&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; delete all breakpoints&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakdel&lt;/span&gt; *
+&lt;span class=&quot;c&quot;&gt;&quot; delete breakpoint on function&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakdel&lt;/span&gt; func &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;lineNumber&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; functionName
+&lt;span class=&quot;c&quot;&gt;&quot; delete breakpoint on file&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakdel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;lineNumber&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; fileName
+&lt;span class=&quot;c&quot;&gt;&quot; delete breakpoint at current line of current file&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;breakdel&lt;/span&gt; here
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://vimdoc.sourceforge.net/htmldoc/repeat.html#:debug&quot;&gt;Read the documentation for &lt;code&gt;debug&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;general-debugging-with-verbose&quot;&gt;General Debugging with Verbose&lt;/h2&gt;
+
+&lt;p&gt;Other than the &lt;code&gt;debug&lt;/code&gt; command, Vim also has a &lt;code&gt;verbose&lt;/code&gt; command that provides logging when actions take place in Vim, which can also be useful for debugging, especially things like autocommands. I recently used verbose to determine what autocommands I could leverage to hook into netrw (&lt;a href=&quot;/2014/09/04/sane-vim-working-directories/&quot;&gt;see post&lt;/a&gt;). Using verbose is as simple as:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; set verbose command&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;9&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;&quot; set verbose on startup&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;V &lt;span class=&quot;m&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;text
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can set verbose to any value from 0-15, where 0 is no extra output, and 15 gives you output for everything Vim is doing. Each number progressively adds more output and insight into what Vim is doing:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 1  When the viminfo file is read or written.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 2  When a file is &quot;:source&quot;&#39;ed.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 5  Every searched tags file and include file.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 8  Files for which a group of autocommands is executed.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 9  Every executed autocommand.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 12 Every executed function.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 13 When an exception is thrown, caught, finished, or discarded.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 14 Anything pending in a &quot;:finally&quot; clause.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 15 Every executed Ex command (truncated at 200 characters).&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It will not take much playing around with verbose to become overwhelmed by the amount of output showing up in the status bar. Each message interrupts the flow of Vim, and may make it difficult to do anything. To get around this you can send verbose output to a file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; verbosefile&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;filename&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Lastly, you can run verbose for just a single command using &lt;code&gt;[count]verbose&lt;/code&gt;, which is useful if you only want to see what Vim is doing behind the scenes for one small action.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;verbose&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; MyFunction&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;http://vimdoc.sourceforge.net/htmldoc/options.html#&amp;#x27;verbose&amp;#x27;&quot;&gt;Read the documentation for &lt;code&gt;verbose&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now you should have a good idea of where to begin when debugging and logging output in Vim. Though Vimscript may not be the most enjoyable language to work with, it comes with tools like &lt;code&gt;verbose&lt;/code&gt; and &lt;code&gt;debug&lt;/code&gt; to help you fight the bane of each Vim developer&amp;#39;s existence, Vimscript.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 31 Oct 2014 00:00:00 -0400</pubDate>
+        <link>http://inlehmansterms.net/2014/10/31/debugging-vim/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/10/31/debugging-vim/</guid>
+      </item>
+    
+      <item>
         <title>Responsive Tables with Flexbox</title>
         <description>&lt;p&gt;HTML tables can be frustrating to use. They require a lot of boilerplate and nested HTML to solve such a simple problem. Let&amp;#39;s explore an alternative approach using divs and &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes&quot;&gt;Flexbox&lt;/a&gt;. This will give us the benefit of being able to create responsive tables that look great on all screen sizes.&lt;/p&gt;
 

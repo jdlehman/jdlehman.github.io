@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Debugging Vim - In Lehman's Terms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="http://inlehmansterms.net/2014/10/31/debugging-vim/">
+  <link rel="alternate" type="application/rss+xml" href="http://inlehmansterms.net/feed.xml">
+  <meta name="robots" content="INDEX,FOLLOW">
+
+  
+
+  
+    <meta name="description" content="Though the documentation in Vim is fairly comprehensive, it is sometimes difficult to find the information for which you are searching. Another serious problem is that Vimscript is a difficult language to learn/use. Whether you are just copying snippets you found online, or aspiring to write some code of your...">
+  
+
+  
+    <meta name="keywords" content="vim">
+  
+
+  
+    <meta http-equiv="date" content="Friday, 31  2014 00:00:00 GMT">
+  
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-479a031613d8e2619d377b84d2a684b1.css">
+</head>
+
+
+  <body class="Site">
+
+    <header class="Site-header">
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
+</header>
+
+
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <a href="/tags" class="Navbar-link">Tags</a>
+
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
+    <h1>Debugging Vim</h1>
+    <section class="Post-meta">
+      <time pubdate datetime="2014-10-31T00:00:00-04:00">
+        <span>Oct 31, 2014</span>
+      </time>
+      <span> • Jonathan Lehman</span>
+    </section>
+    <section class="Post-tags">
+      <span>Tags: </span>
+      
+      
+        <a class="Post-tags-item" href="/tag/vim">vim</a>
+      
+    </section>
+  </header>
+
+  <section class="Post-content">
+    <p>Though the documentation in Vim is fairly comprehensive, it is sometimes difficult to find the information for which you are searching. Another serious problem is that Vimscript is a difficult language to learn/use. Whether you are just copying snippets you found online, or aspiring to write some code of your own in Vimscript, you will inevitably hit problems that you can&#39;t figure out. Google and StackOverflow may fail you. For problems like these it is useful to understand how to debug in Vim.</p>
+
+<p><img src="http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png" class="jl-Image"></p>
+
+<!--more-->
+
+<p>This post will serve mostly as a reference and primer for your built in debugging options in Vim. The first thing I will go over is Vimscript&#39;s built in debugger, which you can use via the <code>debug</code> command.</p>
+
+<h2 id="vimscript&#39;s-debugger">Vimscript&#39;s Debugger</h2>
+
+<p>You can start up Vim in its debug mode with the <code>-D</code> argument.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" opens vim in debug mode</span>
+<span class="k">vim</span> <span class="p">-</span>D somefile<span class="p">.</span>txt
+</code></pre></div>
+<p>This is useful for seeing what is run when Vim initializes and might help give you a better idea of everything that happens when you open Vim. You can use this to walk through the Vimscript in your <code>vimrc</code> that runs when an instance of Vim initializes. I will explain how to use the debugger momentarily.</p>
+
+<p>If you are interested in profiling your Vim&#39;s startup, you may be interested in starting Vim with the <code>startuptime</code> option, which will write to a file you specify with timestamps and information about what Vim is loading. You can use this to find bottlenecks or problematic plugins that might be causing Vim to be slow.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" this will write startup info to a file: vim.log</span>
+<span class="k">vim</span> <span class="p">--</span>startuptime <span class="k">vim</span><span class="p">.</span>log
+</code></pre></div>
+<h3 id="how-to-use-the-debugger">How to Use the Debugger</h3>
+
+<p>Before we jump into how to use the debugger, you should also know that you can do more than just start up Vim in debug mode as that would not be terribly useful. You can also call the <code>debug</code> command from within Vim to debug Vimscript functions or commands that have already been sourced.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" debug a command</span>
+<span class="k">debug</span> CommandName
+
+<span class="c">" debug a fucntion</span>
+<span class="k">debug</span> <span class="k">call</span> FunctionName<span class="p">(</span><span class="k">arg</span><span class="p">)</span>
+</code></pre></div>
+<p>Once you are in debug mode, you will see a prompt (<code>&gt;</code>) in your status bar. This is where you can control and interact with the debugger.</p>
+
+<ul>
+<li><strong><code>cont</code></strong>: continue execution until the next breakpoint (if one exists)</li>
+<li><strong><code>quit</code></strong>: stop current execution, but still stops at the next breakpoint</li>
+<li><strong><code>step</code></strong>: execute the current command and come back to debug mode when it is finished</li>
+<li><strong><code>next</code></strong>: like <code>step</code> except it also steps over function calls and sourced files</li>
+<li><strong><code>interrupt</code></strong>: like quit, but returns to debug mode for the next command</li>
+<li><strong><code>finish</code></strong>: finishes the current script or function and returns to debug mode for the next command</li>
+</ul>
+
+<p>You should note that each of these debug commands has the shorthand of the first letter of the word [c, q, s, n, i, f] and hitting enter (<code>&lt;CR&gt;</code>) will execute the previous command again.</p>
+
+<p>The last thing you need to know is how to manage breakpoints to your Vimscript. You can add a breakpoint with the <code>breakadd</code> command, delete it with the <code>breakdel</code> command, and see all breakpoints with <code>breaklist</code>.</p>
+
+<p><strong>Adding Breakpoints</strong></p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" bracketed [] arguments are optional</span>
+
+<span class="c">" add breakpoint to function</span>
+<span class="k">breakadd</span> func <span class="p">[</span>lineNumber<span class="p">]</span> functionName
+<span class="c">" add breakpoint to file</span>
+<span class="k">breakadd</span> <span class="k">file</span> <span class="p">[</span>lineNumber<span class="p">]</span> fileName
+<span class="c">" add breakpoint to current line of current file</span>
+<span class="k">breakadd</span> here
+</code></pre></div>
+<p><strong>Deleting Breakpoints</strong></p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" bracketed [] arguments are optional</span>
+
+<span class="c">" delete breakpoint number from breaklist output</span>
+<span class="k">breakdel</span> <span class="k">number</span>
+<span class="c">" delete all breakpoints</span>
+<span class="k">breakdel</span> *
+<span class="c">" delete breakpoint on function</span>
+<span class="k">breakdel</span> func <span class="p">[</span>lineNumber<span class="p">]</span> functionName
+<span class="c">" delete breakpoint on file</span>
+<span class="k">breakdel</span> <span class="k">file</span> <span class="p">[</span>lineNumber<span class="p">]</span> fileName
+<span class="c">" delete breakpoint at current line of current file</span>
+<span class="k">breakdel</span> here
+</code></pre></div>
+<p><a href="http://vimdoc.sourceforge.net/htmldoc/repeat.html#:debug">Read the documentation for <code>debug</code></a></p>
+
+<h2 id="general-debugging-with-verbose">General Debugging with Verbose</h2>
+
+<p>Other than the <code>debug</code> command, Vim also has a <code>verbose</code> command that provides logging when actions take place in Vim, which can also be useful for debugging, especially things like autocommands. I recently used verbose to determine what autocommands I could leverage to hook into netrw (<a href="/2014/09/04/sane-vim-working-directories/">see post</a>). Using verbose is as simple as:</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" set verbose command</span>
+<span class="k">set</span> <span class="k">verbose</span><span class="p">=</span><span class="m">9</span>
+
+<span class="c">" set verbose on startup</span>
+<span class="k">vim</span> <span class="p">-</span>V <span class="m">9</span> <span class="k">file</span><span class="p">.</span>text
+</code></pre></div>
+<p>You can set verbose to any value from 0-15, where 0 is no extra output, and 15 gives you output for everything Vim is doing. Each number progressively adds more output and insight into what Vim is doing:</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" &gt;= 1  When the viminfo file is read or written.</span>
+<span class="c">" &gt;= 2  When a file is ":source"'ed.</span>
+<span class="c">" &gt;= 5  Every searched tags file and include file.</span>
+<span class="c">" &gt;= 8  Files for which a group of autocommands is executed.</span>
+<span class="c">" &gt;= 9  Every executed autocommand.</span>
+<span class="c">" &gt;= 12 Every executed function.</span>
+<span class="c">" &gt;= 13 When an exception is thrown, caught, finished, or discarded.</span>
+<span class="c">" &gt;= 14 Anything pending in a ":finally" clause.</span>
+<span class="c">" &gt;= 15 Every executed Ex command (truncated at 200 characters).</span>
+</code></pre></div>
+<p>It will not take much playing around with verbose to become overwhelmed by the amount of output showing up in the status bar. Each message interrupts the flow of Vim, and may make it difficult to do anything. To get around this you can send verbose output to a file:</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="k">set</span> verbosefile<span class="p">=</span>filename<span class="p">.</span>txt
+</code></pre></div>
+<p>Lastly, you can run verbose for just a single command using <code>[count]verbose</code>, which is useful if you only want to see what Vim is doing behind the scenes for one small action.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="p">:</span><span class="m">12</span><span class="k">verbose</span> <span class="k">call</span> MyFunction<span class="p">()</span>
+</code></pre></div>
+<p><a href="http://vimdoc.sourceforge.net/htmldoc/options.html#&#x27;verbose&#x27;">Read the documentation for <code>verbose</code></a></p>
+
+<p>Now you should have a good idea of where to begin when debugging and logging output in Vim. Though Vimscript may not be the most enjoyable language to work with, it comes with tools like <code>verbose</code> and <code>debug</code> to help you fight the bane of each Vim developer&#39;s existence, Vimscript.</p>
+
+  </section>
+
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/10/31/debugging-vim/';
+    var disqus_title = 'Debugging Vim';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </article>
+    </main>
+
+    <footer class="Site-footer">
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
+</footer>
+
+    <!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+
+
+  </body>
+</html>
