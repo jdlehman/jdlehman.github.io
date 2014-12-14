@@ -28,7 +28,7 @@ git diff
 # ++>>>>>>> Branch1 branch
 ```
 
-Notice the output of `git diff`. There might be many conflicts within the file, I am just showing one for brevity. Since this is a rebase, the `HEAD` is the branch we are rebasing with (`master`). If I want to take all of the changes for a file from `branch1` I can run `git checkout --theirs filename`, rather than dealing with it manually. Likewise, if I want to accept all the changes from `master` I can use `git checkout --ours filename`.
+Notice the output of `git diff`. There might be many conflicts within the file, I am just showing one for brevity. Since this is a rebase, the `HEAD` is the branch we are rebasing with (`master`). If I want to take all of the changes for a file from `branch1`, the current branch, I can run `git checkout --theirs filename`, rather than dealing with it manually. Likewise, if I want to accept all the changes from `master`, the branch with which I am rebasing, I can use `git checkout --ours filename`.
 
 It is important to note that the meaning of `ours` and `theirs` is reversed from its normal meaning when being used for a rebase. This is because rebasing replays the current branch's commits one at a time on top of the branch we want to rebase with. In our case, `branch1`'s commits are being replayed on top of `master`. This makes `master` the "base" branch in this case, which is the reason that `ours` will take the changes from `master` instead of `branch1`.
 
