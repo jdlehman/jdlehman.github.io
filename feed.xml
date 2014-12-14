@@ -7,6 +7,88 @@
     <atom:link href="http://inlehmansterms.net/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Resolving Git Merge Conflicts</title>
+        <description>&lt;p&gt;Merge conflicts are no stranger to anyone that uses some form of version control. Git does a great job at auto-merging conflicts, but there are many instances when Git cannot determine what must be done automatically and a manual merge is required. Though this can be a pain at times, Git provides many useful tools to help with more difficult merges. Specifically options like &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; allow us to tell Git what strategy to use when handling merge conflicts so we do not have to merge them manually.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Let&amp;#39;s assume we have a branch, &lt;code&gt;branch1&lt;/code&gt;, that has diverged from our master branch. Since &lt;code&gt;branch1&lt;/code&gt; split from the master branch both &lt;code&gt;branch1&lt;/code&gt; and &lt;code&gt;master&lt;/code&gt; have both made changes to the same line of the same file. This means that there will be merge conflicts that Git cannot resolve for us.&lt;/p&gt;
+
+&lt;h2 id=&quot;resolving-conflicts-in-the-middle-of-a-rebase&quot;&gt;Resolving conflicts in the middle of a rebase&lt;/h2&gt;
+
+&lt;p&gt;If we are trying to rebase our branch with the new changes in master we might do something like the following.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;git checkout branch1
+git rebase master
+
+git diff
+
+&lt;span class=&quot;c&quot;&gt;# ++&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# + Master change&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ++=======&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# + Branch1 change&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ++&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; Branch1 branch&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Notice the output of &lt;code&gt;git diff&lt;/code&gt;. There might be many conflicts within the file, I am just showing one for brevity. Since this is a rebase, the &lt;code&gt;HEAD&lt;/code&gt; is the branch we are rebasing with (&lt;code&gt;master&lt;/code&gt;). If I want to take all of the changes for a file from &lt;code&gt;branch1&lt;/code&gt; I can run &lt;code&gt;git checkout --theirs filename&lt;/code&gt;, rather than dealing with it manually. Likewise, if I want to accept all the changes from &lt;code&gt;master&lt;/code&gt; I can use &lt;code&gt;git checkout --ours filename&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It is important to note that the meaning of &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; is reversed from its normal meaning when being used for a rebase. This is because rebasing replays the current branch&amp;#39;s commits one at a time on top of the branch we want to rebase with. In our case, &lt;code&gt;branch1&lt;/code&gt;&amp;#39;s commits are being replayed on top of &lt;code&gt;master&lt;/code&gt;. This makes &lt;code&gt;master&lt;/code&gt; the &amp;quot;base&amp;quot; branch in this case, which is the reason that &lt;code&gt;ours&lt;/code&gt; will take the changes from &lt;code&gt;master&lt;/code&gt; instead of &lt;code&gt;branch1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;resolving-conflicts-in-the-middle-of-a-merge&quot;&gt;Resolving conflicts in the middle of a merge&lt;/h2&gt;
+
+&lt;p&gt;As noted above, the semantics of &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; change when being used in a rebase. If we are trying to resolve conflicts in the middle of a merge, we can use &lt;code&gt;ours&lt;/code&gt; to accept changes from the branch we are currently on and &lt;code&gt;theirs&lt;/code&gt; to accept changes from the branch we are merging in.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s assume that we are trying to perform a merge as follows.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;git checkout master
+git merge branch1
+
+git diff
+
+&lt;span class=&quot;c&quot;&gt;# ++&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# + Master change&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ++=======&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# + Branch1 change&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ++&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; Branch1 branch&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This time, the &lt;code&gt;HEAD&lt;/code&gt; is our current branch, &lt;code&gt;master&lt;/code&gt;. If we want to accept all the changes for a particular file from our current branch we can use &lt;code&gt;git checkout --ours filename&lt;/code&gt;. Otherwise, I can accept all the changes from the branch I am merging in using &lt;code&gt;git checkout --theirs filename&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;choosing-a-merge-strategy-beforehand&quot;&gt;Choosing a merge strategy beforehand&lt;/h2&gt;
+
+&lt;p&gt;You may have noticed that resolving merge conflicts with &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; in the middle of a rebase or merge is the same, except that the semantics of what &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; refer to are different. Both use a flag on &lt;code&gt;git checkout&lt;/code&gt; to choose what must be done per file. This is very useful if you were not planning on having merge conflicts and they pop up in the middle of a rebase/merge or if you want to use a different strategy depending on the file. This means for one file you could use &lt;code&gt;ours&lt;/code&gt;, another &lt;code&gt;theirs&lt;/code&gt;, and another could be done manually.&lt;/p&gt;
+
+&lt;p&gt;In instances that you know that you always want to resolve merge conflicts in the same way, you can choose a merge strategy (such as &lt;code&gt;ours&lt;/code&gt; or &lt;code&gt;theirs&lt;/code&gt;) before performing the rebase or merge. The default merge strategy is a recursive merge. You can also specify the algorithm to use for a recursive merge (patience, minimal, histogram, or myers), but we will not cover those in this post.&lt;/p&gt;
+
+&lt;p&gt;You can choose the merge strategy with the &lt;code&gt;--strategy &amp;lt;strategy-name&amp;gt;&lt;/code&gt; option, or &lt;code&gt;-s &amp;lt;strategy-name&amp;gt;&lt;/code&gt; for short.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;##########&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# REBASING&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##########&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# a rebase that wants to resolve all conflicts&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# by taking the current branch&#39;s changes&lt;/span&gt;
+git rebase -s theirs rebase_branch
+&lt;span class=&quot;c&quot;&gt;# a rebase that wants to resolve all conflicts&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# with the rebase_branch changes&lt;/span&gt;
+git rebase -s ours rebase_branch
+
+&lt;span class=&quot;c&quot;&gt;#########&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# MERGING&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#########&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# a merge that wants to resolve all conflicts&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# by taking the current branch&#39;s changes&lt;/span&gt;
+git rebase -s ours merge_branch
+&lt;span class=&quot;c&quot;&gt;# a merge that wants to resolve all conflicts&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# with the merge_branch changes&lt;/span&gt;
+git rebase -s theirs merge_branch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you should be able to add the &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; options to your Git merge resolution arsenal. Whenever you find yourself taking all of the changes from a single branch, that should be your queue to use &lt;code&gt;ours&lt;/code&gt; or &lt;code&gt;theirs&lt;/code&gt;. And don&amp;#39;t forget that the meaning of &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; changes within a rebase.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 14 Dec 2014 00:00:00 -0500</pubDate>
+        <link>http://inlehmansterms.net/2014/12/14/resolving-conflicts-in-git-with-ours-and-theirs/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2014/12/14/resolving-conflicts-in-git-with-ours-and-theirs/</guid>
+      </item>
+    
+      <item>
         <title>Debugging Vim</title>
         <description>&lt;p&gt;Though the documentation in Vim is fairly comprehensive, it is sometimes difficult to find the information for which you are searching. Another serious problem is that Vimscript is a difficult language to learn/use. Whether you are just copying snippets you found online, or aspiring to write some code of your own in Vimscript, you will inevitably hit problems that you can&amp;#39;t figure out. Google and StackOverflow may fail you. For problems like these it is useful to understand how to debug in Vim.&lt;/p&gt;
 

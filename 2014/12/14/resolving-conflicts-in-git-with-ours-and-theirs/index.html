@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Resolving Git Merge Conflicts - In Lehman's Terms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="http://inlehmansterms.net/2014/12/14/resolving-conflicts-in-git-with-ours-and-theirs/">
+  <link rel="alternate" type="application/rss+xml" href="http://inlehmansterms.net/feed.xml">
+  <meta name="robots" content="INDEX,FOLLOW">
+
+  
+
+  
+    <meta name="description" content="Merge conflicts are no stranger to anyone that uses some form of version control. Git does a great job at auto-merging conflicts, but there are many instances when Git cannot determine what must be done automatically and a manual merge is required. Though this can be a pain at times,...">
+  
+
+  
+    <meta name="keywords" content="git">
+  
+
+  
+    <meta http-equiv="date" content="Sunday, 14  2014 00:00:00 GMT">
+  
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-84101f80b16f11b09b254d4de1fa98e3.css">
+</head>
+
+
+  <body class="Site">
+
+    <header class="Site-header">
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
+</header>
+
+
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <a href="/tags" class="Navbar-link">Tags</a>
+
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
+    <h1>Resolving Git Merge Conflicts</h1>
+    <section class="Post-meta">
+      <time pubdate datetime="2014-12-14T00:00:00-05:00">
+        <span>Dec 14, 2014</span>
+      </time>
+      <span> • Jonathan Lehman</span>
+    </section>
+    <section class="Post-tags">
+      <span>Tags: </span>
+      
+      
+        <a class="Post-tags-item" href="/tag/git">git</a>
+      
+    </section>
+  </header>
+
+  <section class="Post-content">
+    <p>Merge conflicts are no stranger to anyone that uses some form of version control. Git does a great job at auto-merging conflicts, but there are many instances when Git cannot determine what must be done automatically and a manual merge is required. Though this can be a pain at times, Git provides many useful tools to help with more difficult merges. Specifically options like <code>ours</code> and <code>theirs</code> allow us to tell Git what strategy to use when handling merge conflicts so we do not have to merge them manually.</p>
+
+<!--more-->
+
+<p>Let&#39;s assume we have a branch, <code>branch1</code>, that has diverged from our master branch. Since <code>branch1</code> split from the master branch both <code>branch1</code> and <code>master</code> have both made changes to the same line of the same file. This means that there will be merge conflicts that Git cannot resolve for us.</p>
+
+<h2 id="resolving-conflicts-in-the-middle-of-a-rebase">Resolving conflicts in the middle of a rebase</h2>
+
+<p>If we are trying to rebase our branch with the new changes in master we might do something like the following.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">git checkout branch1
+git rebase master
+
+git diff
+
+<span class="c"># ++&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="c"># + Master change</span>
+<span class="c"># ++=======</span>
+<span class="c"># + Branch1 change</span>
+<span class="c"># ++&gt;&gt;&gt;&gt;&gt;&gt;&gt; Branch1 branch</span>
+</code></pre></div>
+<p>Notice the output of <code>git diff</code>. There might be many conflicts within the file, I am just showing one for brevity. Since this is a rebase, the <code>HEAD</code> is the branch we are rebasing with (<code>master</code>). If I want to take all of the changes for a file from <code>branch1</code> I can run <code>git checkout --theirs filename</code>, rather than dealing with it manually. Likewise, if I want to accept all the changes from <code>master</code> I can use <code>git checkout --ours filename</code>.</p>
+
+<p>It is important to note that the meaning of <code>ours</code> and <code>theirs</code> is reversed from its normal meaning when being used for a rebase. This is because rebasing replays the current branch&#39;s commits one at a time on top of the branch we want to rebase with. In our case, <code>branch1</code>&#39;s commits are being replayed on top of <code>master</code>. This makes <code>master</code> the &quot;base&quot; branch in this case, which is the reason that <code>ours</code> will take the changes from <code>master</code> instead of <code>branch1</code>.</p>
+
+<h2 id="resolving-conflicts-in-the-middle-of-a-merge">Resolving conflicts in the middle of a merge</h2>
+
+<p>As noted above, the semantics of <code>ours</code> and <code>theirs</code> change when being used in a rebase. If we are trying to resolve conflicts in the middle of a merge, we can use <code>ours</code> to accept changes from the branch we are currently on and <code>theirs</code> to accept changes from the branch we are merging in.</p>
+
+<p>Let&#39;s assume that we are trying to perform a merge as follows.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">git checkout master
+git merge branch1
+
+git diff
+
+<span class="c"># ++&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="c"># + Master change</span>
+<span class="c"># ++=======</span>
+<span class="c"># + Branch1 change</span>
+<span class="c"># ++&gt;&gt;&gt;&gt;&gt;&gt;&gt; Branch1 branch</span>
+</code></pre></div>
+<p>This time, the <code>HEAD</code> is our current branch, <code>master</code>. If we want to accept all the changes for a particular file from our current branch we can use <code>git checkout --ours filename</code>. Otherwise, I can accept all the changes from the branch I am merging in using <code>git checkout --theirs filename</code>.</p>
+
+<h2 id="choosing-a-merge-strategy-beforehand">Choosing a merge strategy beforehand</h2>
+
+<p>You may have noticed that resolving merge conflicts with <code>ours</code> and <code>theirs</code> in the middle of a rebase or merge is the same, except that the semantics of what <code>ours</code> and <code>theirs</code> refer to are different. Both use a flag on <code>git checkout</code> to choose what must be done per file. This is very useful if you were not planning on having merge conflicts and they pop up in the middle of a rebase/merge or if you want to use a different strategy depending on the file. This means for one file you could use <code>ours</code>, another <code>theirs</code>, and another could be done manually.</p>
+
+<p>In instances that you know that you always want to resolve merge conflicts in the same way, you can choose a merge strategy (such as <code>ours</code> or <code>theirs</code>) before performing the rebase or merge. The default merge strategy is a recursive merge. You can also specify the algorithm to use for a recursive merge (patience, minimal, histogram, or myers), but we will not cover those in this post.</p>
+
+<p>You can choose the merge strategy with the <code>--strategy &lt;strategy-name&gt;</code> option, or <code>-s &lt;strategy-name&gt;</code> for short.</p>
+
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="c">##########</span>
+<span class="c"># REBASING</span>
+<span class="c">##########</span>
+
+<span class="c"># a rebase that wants to resolve all conflicts</span>
+<span class="c"># by taking the current branch's changes</span>
+git rebase -s theirs rebase_branch
+<span class="c"># a rebase that wants to resolve all conflicts</span>
+<span class="c"># with the rebase_branch changes</span>
+git rebase -s ours rebase_branch
+
+<span class="c">#########</span>
+<span class="c"># MERGING</span>
+<span class="c">#########</span>
+
+<span class="c"># a merge that wants to resolve all conflicts</span>
+<span class="c"># by taking the current branch's changes</span>
+git rebase -s ours merge_branch
+<span class="c"># a merge that wants to resolve all conflicts</span>
+<span class="c"># with the merge_branch changes</span>
+git rebase -s theirs merge_branch
+</code></pre></div>
+<p>Now you should be able to add the <code>ours</code> and <code>theirs</code> options to your Git merge resolution arsenal. Whenever you find yourself taking all of the changes from a single branch, that should be your queue to use <code>ours</code> or <code>theirs</code>. And don&#39;t forget that the meaning of <code>ours</code> and <code>theirs</code> changes within a rebase.</p>
+
+  </section>
+
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2014/12/14/resolving-conflicts-in-git-with-ours-and-theirs/';
+    var disqus_title = 'Resolving Git Merge Conflicts';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </article>
+    </main>
+
+    <footer class="Site-footer">
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014 Jonathan Lehman. All rights reserved.</div>
+    <!-- <div>&copy; 2014-2014 Jonathan Lehman. All rights reserved.</div> -->
+  </article>
+</footer>
+
+    <!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+
+
+  </body>
+</html>

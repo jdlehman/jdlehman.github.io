@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://inlehmansterms.net/2014/12/14/resolving-conflicts-in-git-with-ours-and-theirs/</loc>
+    <lastmod>2014-12-14T00:00:00-05:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://inlehmansterms.net/2014/10/31/debugging-vim/</loc>
     <lastmod>2014-10-31T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
@@ -59,84 +65,21 @@
   
   <url>
     <loc>http://inlehmansterms.net/404.html</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
+    <lastmod>2014-12-14T16:50:49-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
+    <lastmod>2014-12-14T16:50:49-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tags/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/varnish/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/sass/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/css/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/typography/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/rails/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/ruby/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/database/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/vim/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://inlehmansterms.net/tag/html/</loc>
-    <lastmod>2014-11-01T00:15:55-04:00</lastmod>
+    <lastmod>2014-12-14T16:50:49-05:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
