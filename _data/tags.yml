@@ -16,3 +16,5 @@ vim:
   name: 'Vim'
 html:
   name: 'HTML'
+git:
+  name: 'Git'
