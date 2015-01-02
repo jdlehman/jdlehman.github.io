@@ -3,6 +3,11 @@ layout: post
 title: Resolving Git Merge Conflicts
 tags:
   - git
+keywords:
+  - conflict
+  - merge
+  - resolve
+  - rebase
 ---
 
 Merge conflicts are no stranger to anyone that uses some form of version control. Git does a great job at auto-merging conflicts, but there are many instances when Git cannot determine what must be done automatically and a manual merge is required. Though this can be a pain at times, Git provides many useful tools to help with more difficult merges. Specifically options like `ours` and `theirs` allow us to tell Git what strategy to use when handling merge conflicts so we do not have to merge them manually.

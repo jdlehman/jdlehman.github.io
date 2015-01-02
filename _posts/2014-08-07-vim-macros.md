@@ -1,6 +1,11 @@
 ---
 layout: post
 tags: vim
+keywords:
+  - macros
+  - viml
+  - vimscript
+  - editor
 ---
 
 One of the big advantages I find to using vim as my editor is the ability to record and replay macros. The recording of a macro begins when `q` is pressed followed by any other key, which specifies what register the macro is to be stored in. If we use `qq` the macro will be stored in register `q`, whereas `qt` will store the macro in register `t`. Once the recording is started, all keystrokes are stored into the specified register. Pressing `q` again will stop the recording. To "playback" the macro, which will just execute the contents of the register as if you were pressing the keystrokes yourself, type `@` followed by the register in which you stored the macro. `@@` will playback the most recently played macro.

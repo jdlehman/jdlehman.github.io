@@ -20,7 +20,9 @@
   {% endif %}
 
   {% if page.tags %}
-    <meta name="keywords" content="{{page.tags | join: ','}}">
+    <meta name="keywords" content="{{page.tags | join: ','}},{{page.keywords | join: ','}}">
+  {% elsif page.keywords %}
+    <meta name="keywords" content="{{page.keywords | join: ','}}">
   {% else %}
     {% capture tag_list %}
       {% for tag in site.data.tags %}{{tag | map: 'name'}} {% endfor %}

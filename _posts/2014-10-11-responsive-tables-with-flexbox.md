@@ -6,6 +6,11 @@ tags:
   - css
   - sass
   - html
+keywords:
+  - responsive
+  - flexbox
+  - code snippet
+  - example
 ---
 
 HTML tables can be frustrating to use. They require a lot of boilerplate and nested HTML to solve such a simple problem. Let's explore an alternative approach using divs and [Flexbox](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes). This will give us the benefit of being able to create responsive tables that look great on all screen sizes.

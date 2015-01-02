@@ -5,6 +5,10 @@ tags:
   - rails
   - ruby
   - database
+keywords:
+  - associations
+  - relationships
+  - db
 ---
 
 ## Which One Goes Where?

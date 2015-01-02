@@ -3,6 +3,9 @@ layout: post
 title: "Debugging Vim"
 tags:
   - vim
+keywords:
+  - debug
+  - vimscript
 ---
 
 Though the documentation in Vim is fairly comprehensive, it is sometimes difficult to find the information for which you are searching. Another serious problem is that Vimscript is a difficult language to learn/use. Whether you are just copying snippets you found online, or aspiring to write some code of your own in Vimscript, you will inevitably hit problems that you can't figure out. Google and StackOverflow may fail you. For problems like these it is useful to understand how to debug in Vim.

@@ -4,6 +4,13 @@ title: "Single Class vs. Multi Class CSS"
 tags:
   - sass
   - css
+keywords:
+  - single class
+  - multi class
+  - style
+  - architecture
+  - structure
+  - composition
 ---
 
 As I have mentioned previously in my post on [Modular CSS](/2014/08/25/modular-css-with-suitcss/), structuring Sass/CSS is hard. One of the best ways to determine how clean and well structured the resulting CSS within a project is, is to take a look at the markup being used in project. Overly nested elements typically mean overly nested CSS and if you find it difficult to discern the purpose of the classes on those elements, the CSS itself is probably not semantically written. To add insult to injury, the more classes we add to each element, the harder it becomes to read. What if there was a better way? What if we could just write a single class that provides all the styling we need for a given element?

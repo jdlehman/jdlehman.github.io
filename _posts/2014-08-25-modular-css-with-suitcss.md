@@ -4,6 +4,12 @@ title: "Modular CSS with SUIT CSS"
 tags:
   - css
   - sass
+keywords:
+  - modular
+  - suit css
+  - style
+  - architecture
+  - structure
 ---
 
 Structuring CSS is hard. I have worked on many projects where the CSS was just an afterthought, a hack to get the page to look a particular way. With the increasing interest in frontend tools and development, these days are behind us.

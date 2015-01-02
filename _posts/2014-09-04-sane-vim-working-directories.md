@@ -1,6 +1,10 @@
 ---
 layout: post
 tags: vim
+keywords:
+  - current directory
+  - search
+  - root
 ---
 
 Vim's defaults are rather dated. Without syntax highlighting, line numbers, or a variety of other defaults found in most modern editors, the initial headache is always configuring these basic settings before starting with Vim. Despite the obvious visual settings, there are a number of Vim defaults that are not apparent when you first start learning Vim, or even after you have been using Vim for a while if you were fortunate enough not to run into an issue. For that reason, it took me a while to realize that I was continually fighting with Vim's default working directory.

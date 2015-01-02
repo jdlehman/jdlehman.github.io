@@ -5,7 +5,12 @@ postClass: VerticalRhythmPost
 tags:
   - sass
   - css
+keywords:
+  - vertical rhythm
+  - grid
   - typography
+  - style
+  - design
 ---
 
 ## Background
