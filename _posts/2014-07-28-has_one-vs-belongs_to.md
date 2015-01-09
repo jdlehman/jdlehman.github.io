@@ -57,8 +57,7 @@ To do the inverse, get a `Foo` for a given `Bar`, the SQL would look something l
 -- assume an instance bar of Bar already exists
 SELECT *
 FROM Foo
-INNER JOIN Bar ON Foo.id = Bar.foo_id
-WHERE Bar.id = bar.id
+WHERE id = bar.foo_id
 ```
 
 ```ruby
@@ -66,7 +65,5 @@ WHERE Bar.id = bar.id
 bar = Bar.first
 bar.foo
 ```
-
-As you can see, the `has_one` query is much simpler and more performant in general than the `belongs_to` query as it does not require a join. This means if we will typically be accessing `Foo` objects through a given `Bar` instance, it would be wise to make this case the more performant one,  the `has_one` case. Therefore a good general rule is to make the "dominant" object, the object that will typically be driving logic and asking for the associated other model, the `has_one` model. The other will naturally be the `belongs_to` model in this one-to-one association example. Keep in mind that while the "dominant" model might be doing most of the driving, the association is still there making it fairly easy to go the other way as well.
 
 Hopefully now you know where to place the `foreign_key` (think of our `Owner has_one Dog` example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the `foreign_key` on models that are more abstract.
