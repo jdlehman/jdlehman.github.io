@@ -126,14 +126,11 @@ WHERE foo_id = foo.id
 -- assume an instance bar of Bar already exists
 SELECT *
 FROM Foo
-INNER JOIN Bar ON Foo.id = Bar.foo_id
-WHERE Bar.id = bar.id
+WHERE id = bar.foo_id
 </code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Rails Active Record equivalent will call the above SQL behind the scenes</span>
 <span class="n">bar</span> <span class="o">=</span> <span class="no">Bar</span><span class="p">.</span><span class="nf">first</span>
 <span class="n">bar</span><span class="p">.</span><span class="nf">foo</span>
 </code></pre></div>
-<p>As you can see, the <code>has_one</code> query is much simpler and more performant in general than the <code>belongs_to</code> query as it does not require a join. This means if we will typically be accessing <code>Foo</code> objects through a given <code>Bar</code> instance, it would be wise to make this case the more performant one,  the <code>has_one</code> case. Therefore a good general rule is to make the &quot;dominant&quot; object, the object that will typically be driving logic and asking for the associated other model, the <code>has_one</code> model. The other will naturally be the <code>belongs_to</code> model in this one-to-one association example. Keep in mind that while the &quot;dominant&quot; model might be doing most of the driving, the association is still there making it fairly easy to go the other way as well.</p>
-
 <p>Hopefully now you know where to place the <code>foreign_key</code> (think of our <code>Owner has_one Dog</code> example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the <code>foreign_key</code> on models that are more abstract.</p>
 
   </section>

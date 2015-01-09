@@ -892,14 +892,11 @@ WHERE foo_id = foo.id
 -- assume an instance bar of Bar already exists
 SELECT *
 FROM Foo
-INNER JOIN Bar ON Foo.id = Bar.foo_id
-WHERE Bar.id = bar.id
+WHERE id = bar.foo_id
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Rails Active Record equivalent will call the above SQL behind the scenes&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As you can see, the &lt;code&gt;has_one&lt;/code&gt; query is much simpler and more performant in general than the &lt;code&gt;belongs_to&lt;/code&gt; query as it does not require a join. This means if we will typically be accessing &lt;code&gt;Foo&lt;/code&gt; objects through a given &lt;code&gt;Bar&lt;/code&gt; instance, it would be wise to make this case the more performant one,  the &lt;code&gt;has_one&lt;/code&gt; case. Therefore a good general rule is to make the &amp;quot;dominant&amp;quot; object, the object that will typically be driving logic and asking for the associated other model, the &lt;code&gt;has_one&lt;/code&gt; model. The other will naturally be the &lt;code&gt;belongs_to&lt;/code&gt; model in this one-to-one association example. Keep in mind that while the &amp;quot;dominant&amp;quot; model might be doing most of the driving, the association is still there making it fairly easy to go the other way as well.&lt;/p&gt;
-
 &lt;p&gt;Hopefully now you know where to place the &lt;code&gt;foreign_key&lt;/code&gt; (think of our &lt;code&gt;Owner has_one Dog&lt;/code&gt; example) as well as the underlying reasons that this makes sense. You should also have a good sense of the SQL required to get the association in both directions and understand where to put the &lt;code&gt;foreign_key&lt;/code&gt; on models that are more abstract.&lt;/p&gt;
 </description>
         <pubDate>Mon, 28 Jul 2014 00:00:00 -0400</pubDate>
