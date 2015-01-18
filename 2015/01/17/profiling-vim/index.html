@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Profiling Vim - In Lehman's Terms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="http://inlehmansterms.net/2015/01/17/profiling-vim/">
+  <link rel="alternate" type="application/rss+xml" href="http://inlehmansterms.net/feed.xml">
+  <meta name="robots" content="INDEX,FOLLOW">
+
+  
+
+  
+    <meta name="description" content="Now that you have mastered debugging in Vim and gotten all of your Vimscript working as expected, you might be wondering about the performance of those functions? What are the bottlenecks of your Vimscript functions? How long exactly does it take Vim to startup and what is the time breakdown...">
+  
+
+  
+    <meta name="keywords" content="vim,vimscript,profiling,performance,speed">
+  
+
+  
+    <meta http-equiv="date" content="Saturday, 17  2015 00:00:00 GMT">
+  
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-84101f80b16f11b09b254d4de1fa98e3.css">
+</head>
+
+
+  <body class="Site">
+
+    <header class="Site-header">
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
+</header>
+
+
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <a href="/tags" class="Navbar-link">Tags</a>
+
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
+    <h1>Profiling Vim</h1>
+    <section class="Post-meta">
+      <time pubdate datetime="2015-01-17T00:00:00-05:00">
+        <span>Jan 17, 2015</span>
+      </time>
+      <span> • Jonathan Lehman</span>
+    </section>
+    <section class="Post-tags">
+      <span>Tags: </span>
+      
+      
+        <a class="Post-tags-item" href="/tag/vim">vim</a>
+      
+    </section>
+  </header>
+
+  <section class="Post-content">
+    <p>Now that you have mastered <a href="/2014/10/31/debugging-vim/">debugging in Vim</a> and gotten all of your Vimscript working as expected, you might be wondering about the performance of those functions? What are the bottlenecks of your Vimscript functions? How long exactly does it take Vim to startup and what is the time breakdown for it to source each of the files and plugins that it needs? How do all those plugins you included in your <code>.vimrc</code> affect Vim&#39;s load time or performance? If you said yes to any of those questions, you are in luck, Vim provides a profiling command for getting timing information related to your Vimscript&#39;s performance.</p>
+
+<!--more-->
+
+<h2 id="profiling-startup-time">Profiling Startup Time</h2>
+
+<p>The simplest profiling you can begin with is to get a breakdown of Vim&#39;s startup process. You can use the <code>startuptime</code> flag when starting Vim to generate a log file with timestamps on how long it takes Vim to start up and source its various files and plugins.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="c"># Stores results in a file called vim.log</span>
+vim --startuptime vim.log
+</code></pre></div>
+<p>This will produce a log file similar to following. The total time for my <a href="https://github.com/jdlehman/dotfiles/tree/master/vim">Vim setup</a> to startup is 57.952 milliseconds to give you some sort of reference point. How long does yours take?</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="c"># Example statuptime output</span>
+
+<span class="nb">times </span><span class="k">in </span>msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.008  000.008: --- VIM STARTING ---
+000.077  000.069: Allocated generic buffers
+000.360  000.283: locale <span class="nb">set
+</span>000.364  000.004: clipboard setup
+000.373  000.009: window checked
+000.815  000.442: inits 1
+000.821  000.006: parsing arguments
+000.822  000.001: expanding arguments
+003.446  002.624: shell init
+003.714  000.268: Termcap init
+003.731  000.017: inits 2
+003.849  000.118: init highlight
+005.193  000.972  000.972: sourcing /Users/me/.vim/autoload/plug.vim
+007.167  000.022  000.022: sourcing /usr/local/share/vim/vim74/ftoff.vim
+007.942  000.042  000.042: sourcing /Users/me/.vim/plugged/vim-mustache-handlebars/ftdetect/mustache.vim
+
+...
+</code></pre></div>
+<h2 id="profiling-vimscript-functions/files">Profiling Vimscript Functions/Files</h2>
+
+<p>While getting information on Vim&#39;s startup might be interesting, startup only happens when we first launch Vim and while a slow startup time might be annoying, what affects getting work done more is the actual performance while Vim is running. To measure this performance, Vim&#39;s <code>profile</code> command allows us to log time spent executing functions and/or scripts.</p>
+
+<p>The first thing you must do before profiling anything is to tell Vim to start profiling and to set the file to log output to. As with anything related to profiling, you will use the <code>profile</code> command, passing it arguments for your intended purpose.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" start profiler and log output to output.log</span>
+profile <span class="k">start</span> output<span class="p">.</span>log
+</code></pre></div>
+<p>Note that you can always pause profiling with <code>profile pause</code> and start it again with <code>profile continue</code>.</p>
+
+<h3 id="profiling-functions">Profiling Functions</h3>
+
+<p>To begin profiling a function (or multiple functions) you can use the <code>profile func</code> command that takes a regular expression pattern to specify the function or functions that you want to profile. <code>*</code> will profile all functions, but be warned you will have quite a bit of output to sift through. It is important to note that you can use the <code>profile func</code> command multiple times; each time will add another function to the list of functions being profiled. This holds true of the <code>profile file</code> command as well.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" begin profiling a function called CloseBuffer</span>
+profile func CloseBuffer
+</code></pre></div>
+<h3 id="profiling-files">Profiling Files</h3>
+
+<p>To begin profiling a file, you can use the <code>profile file</code> command that also takes a regular expression pattern to specify the file or files that you want to profile. You should note that profiling only starts when the file is loaded AFTER running the <code>profile</code> command. This means that using a <code>profile</code> command within the script file will not work as intended.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" begin profiling a file called myfile.vim</span>
+profile <span class="k">file</span> myfile<span class="p">.</span><span class="k">vim</span>
+<span class="c">" you can source the file manually to get the profiler to pick it up</span>
+source myfile<span class="p">.</span><span class="k">vim</span>
+</code></pre></div>
+<p>It is important to note that <code>profile file file.vim</code> will only profile the script <code>file.vim</code>. If there are functions within <code>file.vim</code> that you would also like to be profiled, you can use the <code>profile! file</code> command (notice the added exclamation point).</p>
+
+<h3 id="removing-profiles">Removing Profiles</h3>
+
+<p>To remove a file or function from being profiled (perhaps you are finished profiling it and wish to stop logging profile output for it) you can use the <code>profdel</code> command.</p>
+<div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" stop profiling all files and functions</span>
+<span class="k">profdel</span> *
+<span class="c">" stop profiling files matching the regex</span>
+<span class="k">profdel</span> <span class="k">file</span> file1<span class="p">.</span><span class="k">vim</span>
+<span class="c">" stop profiling functions matching the regex</span>
+<span class="k">profdel</span> func myfunc
+</code></pre></div>
+<h3 id="sample-profile-output">Sample Profile Output</h3>
+
+<p>The following is sample profiling output for the function <code>CloseHiddenBuffers()</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">FUNCTION  CloseHiddenBuffers<span class="o">()</span>
+Called 2 <span class="nb">times
+</span>Total <span class="nb">time</span>:   0.023797
+ Self <span class="nb">time</span>:   0.023308
+
+count  total <span class="o">(</span>s<span class="o">)</span>   self <span class="o">(</span>s<span class="o">)</span>
+                                <span class="s2">" store ids of visible buffers
+    2              0.000017     let visible_buffers = {}
+    4              0.000030     for tab_id in range(1, tabpagenr('</span><span class="nv">$'</span><span class="s2">))
+    4              0.000015       for buffer_id in tabpagebuflist(tab_id)
+    2              0.000013         let visible_buffers[buffer_id] = 1
+    2              0.000005       endfor
+    2              0.000001     endfor
+
+                                "</span> close buffers that are not <span class="k">in </span>visible dictionary
+   31              0.000093     <span class="k">for </span>buffer_id <span class="k">in </span>range<span class="o">(</span>1, bufnr<span class="o">(</span><span class="s1">'$'</span><span class="o">))</span>
+   29              0.000184       <span class="k">if </span>bufloaded<span class="o">(</span>buffer_id<span class="o">)</span> <span class="o">&amp;&amp;</span> !has_key<span class="o">(</span>visible_buffers, buffer_id<span class="o">)</span>
+   18   0.023249   0.022760         execute <span class="s1">'bd '</span> . buffer_id
+   18              0.000057       endif
+   29              0.000025     endfor
+
+FUNCTIONS SORTED ON TOTAL TIME
+count  total <span class="o">(</span>s<span class="o">)</span>   self <span class="o">(</span>s<span class="o">)</span>  <span class="k">function
+    </span>2   0.023797   0.023308  CloseHiddenBuffers<span class="o">()</span>
+
+FUNCTIONS SORTED ON SELF TIME
+count  total <span class="o">(</span>s<span class="o">)</span>   self <span class="o">(</span>s<span class="o">)</span>  <span class="k">function
+    </span>2   0.023797   0.023308  CloseHiddenBuffers<span class="o">()</span>
+</code></pre></div>
+<p>You will notice that the output provides a breakdown of how long it took to execute each line in the function as well as cumulative timings and counts for the number of times the function or lines in the function were called. The &quot;total&quot; time is the time spent in the function while the &quot;self&quot; time does not include time spent in:</p>
+
+<ul>
+<li>other user defined functions</li>
+<li>sourced scripts</li>
+<li>executed autocommands</li>
+<li>external commands like shell commands</li>
+</ul>
+
+<h3 id="gotchas">Gotchas</h3>
+
+<ul>
+<li>Time waiting for user input is not counted.</li>
+<li>Accuracy is based on the <code>gettimeofday()</code> system function, which may be accurate to 1/100 of a second.</li>
+<li>Profiling is done for each line. If you have multiple commands on a line that you would like to profile, you must split the line into multiple lines to get profiling information for the individual commands.</li>
+<li>You might notice that the timings do not add up perfectly. This is due to overhead in Vim.</li>
+<li>The &quot;self&quot; time is incorrect when a function is called recursively (calls itself).</li>
+<li>Functions that are deleted with the <code>delfunc</code> command before Vim exits will not produce profiling information in the profile log.</li>
+</ul>
+
+  </section>
+
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2015/01/17/profiling-vim/';
+    var disqus_title = 'Profiling Vim';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </article>
+    </main>
+
+    <footer class="Site-footer">
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014-2015 Jonathan Lehman. All rights reserved.</div>
+  </article>
+</footer>
+
+    <!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+
+
+  </body>
+</html>

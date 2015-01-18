@@ -7,6 +7,136 @@
     <atom:link href="http://inlehmansterms.net/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Profiling Vim</title>
+        <description>&lt;p&gt;Now that you have mastered &lt;a href=&quot;/2014/10/31/debugging-vim/&quot;&gt;debugging in Vim&lt;/a&gt; and gotten all of your Vimscript working as expected, you might be wondering about the performance of those functions? What are the bottlenecks of your Vimscript functions? How long exactly does it take Vim to startup and what is the time breakdown for it to source each of the files and plugins that it needs? How do all those plugins you included in your &lt;code&gt;.vimrc&lt;/code&gt; affect Vim&amp;#39;s load time or performance? If you said yes to any of those questions, you are in luck, Vim provides a profiling command for getting timing information related to your Vimscript&amp;#39;s performance.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;profiling-startup-time&quot;&gt;Profiling Startup Time&lt;/h2&gt;
+
+&lt;p&gt;The simplest profiling you can begin with is to get a breakdown of Vim&amp;#39;s startup process. You can use the &lt;code&gt;startuptime&lt;/code&gt; flag when starting Vim to generate a log file with timestamps on how long it takes Vim to start up and source its various files and plugins.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Stores results in a file called vim.log&lt;/span&gt;
+vim --startuptime vim.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This will produce a log file similar to following. The total time for my &lt;a href=&quot;https://github.com/jdlehman/dotfiles/tree/master/vim&quot;&gt;Vim setup&lt;/a&gt; to startup is 57.952 milliseconds to give you some sort of reference point. How long does yours take?&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Example statuptime output&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.008  000.008: --- VIM STARTING ---
+000.077  000.069: Allocated generic buffers
+000.360  000.283: locale &lt;span class=&quot;nb&quot;&gt;set
+&lt;/span&gt;000.364  000.004: clipboard setup
+000.373  000.009: window checked
+000.815  000.442: inits 1
+000.821  000.006: parsing arguments
+000.822  000.001: expanding arguments
+003.446  002.624: shell init
+003.714  000.268: Termcap init
+003.731  000.017: inits 2
+003.849  000.118: init highlight
+005.193  000.972  000.972: sourcing /Users/me/.vim/autoload/plug.vim
+007.167  000.022  000.022: sourcing /usr/local/share/vim/vim74/ftoff.vim
+007.942  000.042  000.042: sourcing /Users/me/.vim/plugged/vim-mustache-handlebars/ftdetect/mustache.vim
+
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;profiling-vimscript-functions/files&quot;&gt;Profiling Vimscript Functions/Files&lt;/h2&gt;
+
+&lt;p&gt;While getting information on Vim&amp;#39;s startup might be interesting, startup only happens when we first launch Vim and while a slow startup time might be annoying, what affects getting work done more is the actual performance while Vim is running. To measure this performance, Vim&amp;#39;s &lt;code&gt;profile&lt;/code&gt; command allows us to log time spent executing functions and/or scripts.&lt;/p&gt;
+
+&lt;p&gt;The first thing you must do before profiling anything is to tell Vim to start profiling and to set the file to log output to. As with anything related to profiling, you will use the &lt;code&gt;profile&lt;/code&gt; command, passing it arguments for your intended purpose.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; start profiler and log output to output.log&lt;/span&gt;
+profile &lt;span class=&quot;k&quot;&gt;start&lt;/span&gt; output&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Note that you can always pause profiling with &lt;code&gt;profile pause&lt;/code&gt; and start it again with &lt;code&gt;profile continue&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;profiling-functions&quot;&gt;Profiling Functions&lt;/h3&gt;
+
+&lt;p&gt;To begin profiling a function (or multiple functions) you can use the &lt;code&gt;profile func&lt;/code&gt; command that takes a regular expression pattern to specify the function or functions that you want to profile. &lt;code&gt;*&lt;/code&gt; will profile all functions, but be warned you will have quite a bit of output to sift through. It is important to note that you can use the &lt;code&gt;profile func&lt;/code&gt; command multiple times; each time will add another function to the list of functions being profiled. This holds true of the &lt;code&gt;profile file&lt;/code&gt; command as well.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; begin profiling a function called CloseBuffer&lt;/span&gt;
+profile func CloseBuffer
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;profiling-files&quot;&gt;Profiling Files&lt;/h3&gt;
+
+&lt;p&gt;To begin profiling a file, you can use the &lt;code&gt;profile file&lt;/code&gt; command that also takes a regular expression pattern to specify the file or files that you want to profile. You should note that profiling only starts when the file is loaded AFTER running the &lt;code&gt;profile&lt;/code&gt; command. This means that using a &lt;code&gt;profile&lt;/code&gt; command within the script file will not work as intended.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; begin profiling a file called myfile.vim&lt;/span&gt;
+profile &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt; myfile&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; you can source the file manually to get the profiler to pick it up&lt;/span&gt;
+source myfile&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It is important to note that &lt;code&gt;profile file file.vim&lt;/code&gt; will only profile the script &lt;code&gt;file.vim&lt;/code&gt;. If there are functions within &lt;code&gt;file.vim&lt;/code&gt; that you would also like to be profiled, you can use the &lt;code&gt;profile! file&lt;/code&gt; command (notice the added exclamation point).&lt;/p&gt;
+
+&lt;h3 id=&quot;removing-profiles&quot;&gt;Removing Profiles&lt;/h3&gt;
+
+&lt;p&gt;To remove a file or function from being profiled (perhaps you are finished profiling it and wish to stop logging profile output for it) you can use the &lt;code&gt;profdel&lt;/code&gt; command.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; stop profiling all files and functions&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;profdel&lt;/span&gt; *
+&lt;span class=&quot;c&quot;&gt;&quot; stop profiling files matching the regex&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;profdel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt; file1&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;&quot; stop profiling functions matching the regex&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;profdel&lt;/span&gt; func myfunc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;sample-profile-output&quot;&gt;Sample Profile Output&lt;/h3&gt;
+
+&lt;p&gt;The following is sample profiling output for the function &lt;code&gt;CloseHiddenBuffers()&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;FUNCTION  CloseHiddenBuffers&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+Called 2 &lt;span class=&quot;nb&quot;&gt;times
+&lt;/span&gt;Total &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;:   0.023797
+ Self &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;:   0.023308
+
+count  total &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   self &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                                &lt;span class=&quot;s2&quot;&gt;&quot; store ids of visible buffers
+    2              0.000017     let visible_buffers = {}
+    4              0.000030     for tab_id in range(1, tabpagenr(&#39;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&#39;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;))
+    4              0.000015       for buffer_id in tabpagebuflist(tab_id)
+    2              0.000013         let visible_buffers[buffer_id] = 1
+    2              0.000005       endfor
+    2              0.000001     endfor
+
+                                &quot;&lt;/span&gt; close buffers that are not &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;visible dictionary
+   31              0.000093     &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;buffer_id &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;range&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1, bufnr&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;$&#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+   29              0.000184       &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;bufloaded&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;buffer_id&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; !has_key&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;visible_buffers, buffer_id&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+   18   0.023249   0.022760         execute &lt;span class=&quot;s1&quot;&gt;&#39;bd &#39;&lt;/span&gt; . buffer_id
+   18              0.000057       endif
+   29              0.000025     endfor
+
+FUNCTIONS SORTED ON TOTAL TIME
+count  total &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   self &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;function
+    &lt;/span&gt;2   0.023797   0.023308  CloseHiddenBuffers&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+FUNCTIONS SORTED ON SELF TIME
+count  total &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   self &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;function
+    &lt;/span&gt;2   0.023797   0.023308  CloseHiddenBuffers&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You will notice that the output provides a breakdown of how long it took to execute each line in the function as well as cumulative timings and counts for the number of times the function or lines in the function were called. The &amp;quot;total&amp;quot; time is the time spent in the function while the &amp;quot;self&amp;quot; time does not include time spent in:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;other user defined functions&lt;/li&gt;
+&lt;li&gt;sourced scripts&lt;/li&gt;
+&lt;li&gt;executed autocommands&lt;/li&gt;
+&lt;li&gt;external commands like shell commands&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;gotchas&quot;&gt;Gotchas&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Time waiting for user input is not counted.&lt;/li&gt;
+&lt;li&gt;Accuracy is based on the &lt;code&gt;gettimeofday()&lt;/code&gt; system function, which may be accurate to 1/100 of a second.&lt;/li&gt;
+&lt;li&gt;Profiling is done for each line. If you have multiple commands on a line that you would like to profile, you must split the line into multiple lines to get profiling information for the individual commands.&lt;/li&gt;
+&lt;li&gt;You might notice that the timings do not add up perfectly. This is due to overhead in Vim.&lt;/li&gt;
+&lt;li&gt;The &amp;quot;self&amp;quot; time is incorrect when a function is called recursively (calls itself).&lt;/li&gt;
+&lt;li&gt;Functions that are deleted with the &lt;code&gt;delfunc&lt;/code&gt; command before Vim exits will not produce profiling information in the profile log.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 17 Jan 2015 00:00:00 -0500</pubDate>
+        <link>http://inlehmansterms.net/2015/01/17/profiling-vim/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2015/01/17/profiling-vim/</guid>
+      </item>
+    
+      <item>
         <title>Resolving Git Merge Conflicts</title>
         <description>&lt;p&gt;Merge conflicts are no stranger to anyone that uses some form of version control. Git does a great job at auto-merging conflicts, but there are many instances when Git cannot determine what must be done automatically and a manual merge is required. Though this can be a pain at times, Git provides many useful tools to help with more difficult merges. Specifically options like &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; allow us to tell Git what strategy to use when handling merge conflicts so we do not have to merge them manually.&lt;/p&gt;
 
