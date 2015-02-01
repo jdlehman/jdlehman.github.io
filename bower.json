@@ -15,7 +15,7 @@
   ],
   "private": true,
   "dependencies": {
-    "susy": "~2.1",
+    "susy": "~2.2",
     "bourbon": "~4.0",
     "compass-breakpoint": "~2.4",
     "normalize-scss": "~3.0",
