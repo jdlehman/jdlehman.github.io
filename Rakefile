@@ -17,6 +17,7 @@ POST_TEMPLATE = <<-POST
 layout: post
 title:
 tags:
+keywords:
 ---
 
 Excerpt
