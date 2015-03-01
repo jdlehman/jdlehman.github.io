@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>JavaScript Function Memoization - In Lehman's Terms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="http://inlehmansterms.net/2015/03/01/javascript-memoization/">
+  <link rel="alternate" type="application/rss+xml" href="http://inlehmansterms.net/feed.xml">
+  <meta name="robots" content="INDEX,FOLLOW">
+
+  
+
+  
+    <meta name="description" content="In this post I am going to walk through when you might want to use memoization for your JavaScript functions and how you can easily memoize any function. Before we can go much further, let&#39;s define what memoization is. What is memoization? Memoization is an optimization technique where expensive function...">
+  
+
+  
+    <meta name="keywords" content="javascript,performance,js,memoization,function,example,code">
+  
+
+  
+    <meta http-equiv="date" content="Sunday, 01  2015 00:00:00 GMT">
+  
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-135e73aca9e0611311efcb9af8e2e5f3.css">
+</head>
+
+
+  <body class="Site">
+
+    <header class="Site-header">
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
+</header>
+
+
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <a href="/tags" class="Navbar-link">Tags</a>
+
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
+    <h1>JavaScript Function Memoization</h1>
+    <section class="Post-meta">
+      <time pubdate datetime="2015-03-01T00:00:00-05:00">
+        <span>Mar 1, 2015</span>
+      </time>
+      <span> • Jonathan Lehman</span>
+    </section>
+    <section class="Post-tags">
+      <span>Tags: </span>
+      
+      
+        <a class="Post-tags-item" href="/tag/javascript">javascript</a>
+      
+        <a class="Post-tags-item" href="/tag/performance">performance</a>
+      
+    </section>
+  </header>
+
+  <section class="Post-content">
+    <p>In this post I am going to walk through when you might want to use memoization for your JavaScript functions and how you can easily memoize any function. Before we can go much further, let&#39;s define what memoization is.</p>
+
+<!--more-->
+
+<h2 id="what-is-memoization?">What is memoization?</h2>
+
+<p>Memoization is an optimization technique where expensive function calls are cached such that the result can be immediately returned the next time the function is called with the same arguments. This method of optimization is not unique to JavaScript and is quite common in many programming languages. It is especially useful in recursive functions as calls are more likely to call with the same arguments while recursing. Take a recursive <code>factorial</code> function for example:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">factorial</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">num</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span> <span class="p">};</span>
+  <span class="k">return</span> <span class="nx">num</span> <span class="o">*</span> <span class="nx">factorial</span><span class="p">(</span><span class="nx">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If we call <code>factorial(3)</code>, the function calls <code>factorial(3)</code>, <code>factorial(2)</code>, and <code>factorial(1)</code> will be called. If we memoize this function, another call to <code>factorial(3)</code> will not need to recurse, it can simply return the result that it has cached. The real benefit is if we call <code>factorial(4)</code>, we will short circuit our recursion, because <code>factorial(3)</code> is already cached, so we do not need to recurse any further, we can just use that result.</p>
+
+<h2 id="sounds-great,-sign-me-up!">Sounds great, sign me up!</h2>
+
+<p>We can simply create a <code>memoize</code> function that takes another function and modifies it to memoize calls.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">memoize</span><span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">cache</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">cache</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">cache</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+      <span class="nx">cache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+      <span class="k">return</span> <span class="nx">val</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Now we can easily memoize any pure function, like our <code>factorial</code> function.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">factorial</span> <span class="o">=</span> <span class="nx">memoize</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'working for factorial('</span> <span class="o">+</span> <span class="nx">num</span> <span class="o">+</span> <span class="s1">')'</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">num</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span> <span class="p">};</span>
+  <span class="k">return</span> <span class="nx">num</span> <span class="o">*</span> <span class="nx">factorial</span><span class="p">(</span><span class="nx">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// first call</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+<span class="c1">//=&gt; working for factorial(3)</span>
+<span class="c1">//=&gt; working for factorial(2)</span>
+<span class="c1">//=&gt; working for factorial(1)</span>
+<span class="c1">//=&gt; 6</span>
+
+<span class="c1">// successive calls</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span> <span class="c1">//=&gt; 6</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span> <span class="c1">//=&gt; 6</span>
+
+<span class="c1">// short circuit higher factorial calls</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">factorial</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="c1">//=&gt; working for factorial(4)</span>
+<span class="c1">//=&gt; 24</span>
+</code></pre></div>
+<p><a href="https://babeljs.io/repl/#?experimental=true&amp;playground=true&amp;evaluate=true&amp;loose=false&amp;spec=false&amp;code=function%20memoize(func)%20%7B%0A%20%20var%20cache%20%3D%20%7B%7D%3B%0A%20%20return%20function()%20%7B%0A%20%20%20%20var%20key%20%3D%20JSON.stringify(arguments)%3B%0A%20%20%20%20if(cache%5Bkey%5D)%20%7B%0A%20%20%20%20%20%20return%20cache%5Bkey%5D%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20var%20val%20%3D%20func.apply(this%2C%20arguments)%3B%0A%20%20%20%20%20%20cache%5Bkey%5D%20%3D%20val%3B%0A%20%20%20%20%20%20return%20val%3B%0A%20%20%20%20%7D%0A%20%20%7D%3B%0A%7D%0Avar%20factorial%20%3D%20memoize(%0A%20%20function(num)%20%7B%0A%20%20%20%20console.log(&#x27;working%20for%20factorial(&#x27;%20%2B%20num%20%2B%20&#x27;)&#x27;)%3B%0A%20%20%20%20if(num%20%3D%3D%3D%201)%20%7B%20return%201%20%7D%3B%0A%20%20%20%20return%20num%20*%20factorial(num%20-%201)%3B%0A%20%20%7D%0A)%3B%0A%0Aconsole.log(factorial(3))%3B%0Aconsole.log(factorial(3))%3B%0Aconsole.log(factorial(4))%3B">Play with this example in Babel</a></p>
+
+<h2 id="advanced-usage">Advanced usage</h2>
+
+<p>Right now we have memoization working by simply wrapping a given function with our <code>memoization</code> function. The results are cached for calls with the same arguments. This is great, but what if the arguments are not our only dependencies. What if we are memoizing a method on an object and that method relies on both the arguments AND other properties on the object? How do we account for other dependencies? If we do not do anything different, memoizing a function might actually cause it to produce incorrect values (if the other dependencies have changed). We need a way to invalidate the cache for these dependencies as well.</p>
+
+<p>The good news is that we can easily take other dependencies into account. Earlier you might have been wondering why I am using <code>JSON.stringify</code> to create my cache keys, and soon you will see how this helps make it extremely easy to add any number of dependencies in addition to a functions arguments.</p>
+
+<p>Let&#39;s say we have a <code>Person</code> model with a firstName and lastName as well as a method, <code>fullName</code>, that takes an optional argument, title and outputs the person&#39;s full name.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">firstName</span><span class="p">,</span> <span class="nx">lastName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">=</span> <span class="nx">firstName</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">=</span> <span class="nx">lastName</span><span class="p">;</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">memoize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">};</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">fullName</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">memoize</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">title</span> <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">lastName</span><span class="p">;</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>All we need to do to memoize this function on the <code>Person</code> object, is to update the <code>memoize</code> function to take a second argument, <code>depsFunc</code>. <code>depsFunc</code> will be a function that returns an array of the dependencies. We can then use <code>depsFunc</code> as well as <code>func</code> to calculate the unique key in our hash.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">firstName</span><span class="p">,</span> <span class="nx">lastName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">=</span> <span class="nx">firstName</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">=</span> <span class="nx">lastName</span><span class="p">;</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">memoize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">depsFunc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">cache</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">([</span><span class="nx">depsFunc</span><span class="p">(),</span> <span class="nx">arguments</span><span class="p">]);</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">cache</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">cache</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+        <span class="nx">cache</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">val</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">fullName</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">memoize</span><span class="p">(</span>
+    <span class="c1">// calculation</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'working...'</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">title</span> <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">' '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">lastName</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="c1">// dependencies</span>
+    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">firstName</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">lastName</span><span class="p">];</span>
+    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// create a new Person</span>
+<span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s1">'Jonathan'</span><span class="p">,</span> <span class="s1">'Lehman'</span><span class="p">);</span>
+
+<span class="c1">// first call to our memoized function does the work</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">fullName</span><span class="p">(</span><span class="s1">'Mr.'</span><span class="p">));</span>
+<span class="c1">//=&gt; working</span>
+<span class="c1">//=&gt; Mr. Jonathan Lehman</span>
+
+<span class="c1">// successive calls</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">fullName</span><span class="p">(</span><span class="s1">'Mr.'</span><span class="p">));</span>
+<span class="c1">//=&gt; Mr. Jonathan Lehman</span>
+
+<span class="c1">// work must be done if dependencies or arguments change</span>
+
+<span class="c1">// change arguments</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">fullName</span><span class="p">(</span><span class="s1">'Mister'</span><span class="p">));</span>
+<span class="c1">//=&gt; work</span>
+<span class="c1">//=&gt; Mister Jonathan Lehman</span>
+
+<span class="c1">// change deps</span>
+<span class="nx">person1</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">=</span> <span class="s1">'Jon'</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">fullName</span><span class="p">(</span><span class="s1">'Mr.'</span><span class="p">));</span>
+<span class="c1">//=&gt; work</span>
+<span class="c1">//=&gt; Mr. Jon Lehman</span>
+</code></pre></div>
+<p><a href="https://babeljs.io/repl/#?experimental=true&amp;playground=true&amp;evaluate=true&amp;loose=false&amp;spec=false&amp;code=function%20Person(firstName%2C%20lastName)%20%7B%0A%20%20this.firstName%20%3D%20firstName%3B%0A%20%20this.lastName%20%3D%20lastName%3B%0A%20%20%0A%20%20this.memoize%20%3D%20function(func%2C%20depsFunc)%20%7B%0A%20%20%20%20var%20cache%20%3D%20%7B%7D%3B%0A%20%20%20%20return%20function()%20%7B%0A%20%20%20%20%20%20var%20key%20%3D%20JSON.stringify(%5BdepsFunc()%2C%20arguments%5D)%3B%0A%20%20%20%20%20%20if(cache%5Bkey%5D)%20%7B%0A%20%20%20%20%20%20%20%20return%20cache%5Bkey%5D%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20else%20%7B%0A%20%20%20%20%20%20%20%20var%20val%20%3D%20func.apply(this%2C%20arguments)%3B%0A%20%20%20%20%20%20%20%20cache%5Bkey%5D%20%3D%20val%3B%0A%20%20%20%20%20%20%20%20return%20val%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%3B%0A%20%20%7D%0A%20%20%0A%20%20this.fullName%20%3D%20this.memoize(%0A%20%20%20%20%2F%2F%20calculation%0A%20%20%20%20function(title)%20%7B%0A%20%20%20%20%20%20console.log(&#x27;working...&#x27;)%3B%0A%20%20%20%20%20%20return%20title%20%2B%20&#x27;%20&#x27;%20%2B%20this.firstName%20%2B%20&#x27;%20&#x27;%20%2B%20this.lastName%3B%0A%20%20%20%20%7D%2C%20%0A%20%20%20%20%2F%2F%20dependencies%0A%20%20%20%20function()%20%7B%20%0A%20%20%20%20%20%20return%20%5Bthis.firstName%2C%20this.lastName%5D%3B%20%0A%20%20%20%20%7D.bind(this))%3B%0A%7D%0A%0Avar%20person%20%3D%20new%20Person(&#x27;Jonathan&#x27;%2C%20&#x27;Lehman&#x27;)%3B%0Aconsole.log(person.fullName(&#x27;Mr.&#x27;))%3B%0Aconsole.log(person.fullName(&#x27;Mr.&#x27;))%3B%0Aconsole.log(person.fullName(&#x27;Mister&#x27;))%3B%0Aperson.firstName%20%3D%20&#x27;Jon&#x27;%3B%0Aconsole.log(person.fullName(&#x27;Mr.&#x27;))%3B">Play with this example in Babel</a></p>
+
+<h2 id="careful,-memoization-is-not-a-magic-bullet">Careful, memoization is not a magic bullet</h2>
+
+<p>Keep in mind that memoization does not make sense for all function calls. There is a higher memory overhead since we must store our cached results so that we can later recall them as well as an added complexity of using memoization, so it really only makes sense for functions that are computationally expensive.</p>
+
+<p>Also, memoization does not work well for functions that are not pure, that is functions that have side effects. Memoizing only allows us to cache a result, so any other side effects get lost on successive calls. That said, you can get around this constraint, by returning a function that includes your side effects that you will need to execute after getting the result.</p>
+
+  </section>
+
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2015/03/01/javascript-memoization/';
+    var disqus_title = 'JavaScript Function Memoization';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </article>
+    </main>
+
+    <footer class="Site-footer">
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014-2015 Jonathan Lehman. All rights reserved.</div>
+  </article>
+</footer>
+
+    <!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+
+
+  </body>
+</html>
