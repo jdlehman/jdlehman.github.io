@@ -5,10 +5,10 @@ postClass: VerticalRhythmPost
 tags:
   - sass
   - css
+  - typography
 keywords:
   - vertical rhythm
   - grid
-  - typography
   - style
   - design
 ---
