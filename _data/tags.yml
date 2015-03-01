@@ -18,3 +18,7 @@ html:
   name: 'HTML'
 git:
   name: 'Git'
+javascript:
+  name: 'JavaScript'
+performance:
+  name: 'Performance'
