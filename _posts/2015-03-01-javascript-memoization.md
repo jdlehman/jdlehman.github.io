@@ -79,9 +79,9 @@ console.log(factorial(4));
 
 ## Advanced usage
 
-Right now we have memoization working by simply wrapping a given function with our `memoization` function. The results are cached for calls with the same arguments. This is great, but what if the arguments are not our only dependencies. What if we are memoizing a method on an object and that method relies on both the arguments AND other properties on the object? How do we account for other dependencies? If we do not do anything different, memoizing a function might actually cause it to produce incorrect values (if the other dependencies have changed). We need a way to invalidate the cache for these dependencies as well.
+Right now we have memoization working by simply wrapping a given function with our `memoization` function. The results are cached for calls with the same arguments. This is great, but what if the arguments are not our only dependencies. What if we are memoizing a method on an object and that method relies on both the arguments AND other properties on the object? How do we account for these other dependencies? If we do not do anything different, memoizing a function might actually cause it to produce incorrect values (if the other dependencies have changed). We need a way to invalidate the cache for these dependencies as well.
 
-The good news is that we can easily take other dependencies into account. Earlier you might have been wondering why I am using `JSON.stringify` to create my cache keys, and soon you will see how this helps make it extremely easy to add any number of dependencies in addition to a functions arguments.
+The good news is that we can easily take other dependencies into account. Earlier you might have been wondering why I am using `JSON.stringify` to create my cache keys, and soon you will see how this helps make it extremely easy to add any number of dependencies in addition to a function's arguments.
 
 Let's say we have a `Person` model with a firstName and lastName as well as a method, `fullName`, that takes an optional argument, title and outputs the person's full name.
 
