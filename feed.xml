@@ -353,10 +353,10 @@ git rebase -s ours rebase_branch
 
 &lt;span class=&quot;c&quot;&gt;# a merge that wants to resolve all conflicts&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# by taking the current branch&#39;s changes&lt;/span&gt;
-git rebase -s ours merge_branch
+git merge -s ours merge_branch
 &lt;span class=&quot;c&quot;&gt;# a merge that wants to resolve all conflicts&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# with the merge_branch changes&lt;/span&gt;
-git rebase -s theirs merge_branch
+git merge -s theirs merge_branch
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now you should be able to add the &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; options to your Git merge resolution arsenal. Whenever you find yourself taking all of the changes from a single branch, that should be your queue to use &lt;code&gt;ours&lt;/code&gt; or &lt;code&gt;theirs&lt;/code&gt;. And don&amp;#39;t forget that the meaning of &lt;code&gt;ours&lt;/code&gt; and &lt;code&gt;theirs&lt;/code&gt; changes within a rebase.&lt;/p&gt;
 </description>

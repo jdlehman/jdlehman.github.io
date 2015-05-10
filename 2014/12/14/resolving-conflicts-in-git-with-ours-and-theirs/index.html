@@ -154,10 +154,10 @@ git rebase -s ours rebase_branch
 
 <span class="c"># a merge that wants to resolve all conflicts</span>
 <span class="c"># by taking the current branch's changes</span>
-git rebase -s ours merge_branch
+git merge -s ours merge_branch
 <span class="c"># a merge that wants to resolve all conflicts</span>
 <span class="c"># with the merge_branch changes</span>
-git rebase -s theirs merge_branch
+git merge -s theirs merge_branch
 </code></pre></div>
 <p>Now you should be able to add the <code>ours</code> and <code>theirs</code> options to your Git merge resolution arsenal. Whenever you find yourself taking all of the changes from a single branch, that should be your queue to use <code>ours</code> or <code>theirs</code>. And don&#39;t forget that the meaning of <code>ours</code> and <code>theirs</code> changes within a rebase.</p>
 
