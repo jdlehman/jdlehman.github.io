@@ -85,10 +85,10 @@ git rebase -s ours rebase_branch
 
 # a merge that wants to resolve all conflicts
 # by taking the current branch's changes
-git rebase -s ours merge_branch
+git merge -s ours merge_branch
 # a merge that wants to resolve all conflicts
 # with the merge_branch changes
-git rebase -s theirs merge_branch
+git merge -s theirs merge_branch
 ```
 
 Now you should be able to add the `ours` and `theirs` options to your Git merge resolution arsenal. Whenever you find yourself taking all of the changes from a single branch, that should be your queue to use `ours` or `theirs`. And don't forget that the meaning of `ours` and `theirs` changes within a rebase.
