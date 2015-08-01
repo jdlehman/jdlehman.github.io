@@ -22,3 +22,11 @@ javascript:
   name: 'JavaScript'
 performance:
   name: 'Performance'
+tools:
+  name: 'Tools'
+unix:
+  name: 'Unix'
+react:
+  'React'
+flux:
+  'Flux'
