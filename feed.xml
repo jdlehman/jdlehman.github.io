@@ -7,6 +7,73 @@
     <atom:link href="http://inlehmansterms.net/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Overview of React and Flux</title>
+        <description>&lt;p&gt;This will be the first in a series of posts covering React and Flux. The goal of this particular one is to provide a high level overview before we dig into the specifics, so don&amp;#39;t worry if you feel a bit lost as I will likely gloss over many details. There are some resources at the bottom of this post geared towards those getting started and like I mentioned future posts are on the way.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;react&quot;&gt;React&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://facebook.github.io/react/&quot;&gt;React&lt;/a&gt; is a library by Facebook that describes itself as a &amp;quot;JavaScript library for building user interfaces&amp;quot;. Essentially React is the view layer of your application. While the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Web_Components&quot;&gt;web component&lt;/a&gt; spec is still just a draft, libraries like React allow you to begin building your web applications with similar composable pieces. Though it is not trying to replicate the web component specifications as much as &lt;a href=&quot;https://www.polymer-project.org/1.0/&quot;&gt;Polymer&lt;/a&gt;, React provides lifecycle hooks like &lt;code&gt;componentDidMount&lt;/code&gt; as well as the ability to nest React components, attach handlers, and manage state. One of the most compelling things about React is its implementation of a &amp;quot;virtual DOM&amp;quot;, an abstraction over the DOM. The key function (and only one that is required to be defined in every React element) is the &lt;code&gt;render&lt;/code&gt; function. This function specifies the virtual DOM representation that React will render for you.&lt;/p&gt;
+
+&lt;p&gt;The primary benefit of the virtual DOM abstraction is that React optimizes performance under the hood by only re-rendering nodes in the tree that have actually changed rather than re-rendering the entire component or tree of components. This means you can worry less about optimizing for performance and just focus on what is being rendered. The best way to understand what will be rendered is to just pretend that each change causes the entire React component tree to be re-rendered, that is treat each render like it is the first. This is conceptually what happens, but without all of the work of actually rendering everything since React is smart enough to only render the changes.&lt;/p&gt;
+
+&lt;p&gt;Another benefit to this abstraction is that since the &lt;code&gt;render&lt;/code&gt; function returns a representation of the virtual DOM rather than the actual DOM, React can render to other targets than just the DOM. &lt;a href=&quot;https://facebook.github.io/react-native/&quot;&gt;React Native&lt;/a&gt; renders to native iOS components, and there are other implementations in the works to render to things Android, &lt;a href=&quot;https://github.com/Flipboard/react-canvas&quot;&gt;canvas&lt;/a&gt;, and &lt;a href=&quot;https://github.com/Izzimach/react-three&quot;&gt;WebGL&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The last high level concept to cover is how React manages state. You can pass in properties to any React component (called &lt;code&gt;props&lt;/code&gt; and accessible via &lt;code&gt;this.props&lt;/code&gt;), which are immutable data that can be rendered or used by the component to determine what to render. React components also have &lt;code&gt;state&lt;/code&gt;, accessible via &lt;code&gt;this.state&lt;/code&gt;, which is meant to be used for the internal mutable state of the component. It is a bit difficult at first to understand when to use &lt;code&gt;props&lt;/code&gt; versus &lt;code&gt;state&lt;/code&gt;, but essentially any state that might change during the component&amp;#39;s lifetime would use the mutable &lt;code&gt;state&lt;/code&gt;. These would be data like whether the component is selected, the quantity on a quantity selector, data in form fields, etc. The &lt;code&gt;props&lt;/code&gt; contain state that does not change (that is, immutable data) during the life of the component instance. This might include data like the type of a component and other configuration data that you might use to initialize a component. Another unique difference between &lt;code&gt;state&lt;/code&gt; and &lt;code&gt;props&lt;/code&gt; is that &lt;code&gt;state&lt;/code&gt; is private and is set up by the component itself when it is initialized, while &lt;code&gt;props&lt;/code&gt; are passed into a component from a parent component higher up in the tree.&lt;/p&gt;
+
+&lt;h2 id=&quot;where-react-falls-short&quot;&gt;Where React falls short&lt;/h2&gt;
+
+&lt;p&gt;The pain point that comes up once you start building something larger and more complex with React is how components communicate. The only way that this can happen with vanilla React is to pass down callback functions as &lt;code&gt;props&lt;/code&gt; for the children to call, but this gets complicated very quickly and does not seem ideal if you want to speak to an ancestor several levels up because you have to pass it through all the intermediary components. Since React is just a library that focuses on the view layer, it can be used within another MVC framework or another architecture pattern entirely. In our case we will investigate Facebook&amp;#39;s solution to this and other problems that are not solved by React alone: Flux.&lt;/p&gt;
+
+&lt;h2 id=&quot;flux&quot;&gt;Flux&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://facebook.github.io/flux/&quot;&gt;Flux&lt;/a&gt; pattern is an unidirectional data flow architecture. Before we get into what the unidirectional data flow means, let&amp;#39;s look at the pieces the pattern specifies. First off, I refer to this as a &amp;quot;pattern&amp;quot; rather than a &amp;quot;library&amp;quot; because Facebook has released in detail how they apply this pattern in conjunction with React, but they have only provided the code for a single piece of the puzzle: the &lt;a href=&quot;https://github.com/facebook/flux/blob/master/src/Dispatcher.js&quot;&gt;dispatcher&lt;/a&gt;. It is important to note that this pattern can be used without React, though I will focus on its usage with React.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://facebook.github.io/flux/img/flux-simple-f8-diagram-1300w.png&quot; class=&quot;jl-Image&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;First let&amp;#39;s start with actions. Actions are just POJOs that have two parts: an action type and data. The action type is a constant string, and the data are any information that might be needed about the action that just occurred in order to change state. Actions are typically fired to trigger a change, typically by something like a click handler in a React component.&lt;/p&gt;
+
+&lt;p&gt;All actions must go through the singleton dispatcher, which is the central hub that all data must pass through before state can be changed. This is what ensures the unidirectional data flow; all data must flow in a single direction, the direction the diagram above indicates. Views cannot be updated directly by an action, but instead must go through the dispatcher and make changes in the stores that are later reflected by the views. This means that an action that changes data in the application will not have the problem of cascading changes and potential race conditions. Instead everything must run through a dispatcher singleton that queues up actions and dispatches them one at a time. This is the core purpose of the dispatcher: to queue up actions one at a time and send each action to the stores that are subscribed to it.&lt;/p&gt;
+
+&lt;p&gt;Stores are where application state resides. This should be state that needs to be shared and communicated among components. All other state should be stored in each component&amp;#39;s internal &lt;code&gt;state&lt;/code&gt;. Stores like actions are also just POJOs that hold data. They subscribe to actions using the action type constants mentioned earlier. This means multiple stores can subscribe to the same action. The action handlers receive the data contained in the action and can use it to update their state. At this point stores can emit a change event that the views (React components) which use its data are subscribed to. Best practice is to pass store data into components that require it as &lt;code&gt;props&lt;/code&gt;. This will tell the React components to re-render, which React will handle.&lt;/p&gt;
+
+&lt;p&gt;An analogy to help make it easier to understand the relationship between all the parts of Flux is that of delivering mail. Actions are like the actual letters, containing the data. The store is like a mailbox holding a collection of mail (data). The dispatcher is like the mailman and delivers the mail to the mailboxes. The views (React components) are like the customers that can check the mailboxes for data they are interested in.&lt;/p&gt;
+
+&lt;p&gt;There are many benefits to Flux and its unidirectional data flow. First of all, it is easy to record and replay the state of an application since all actions must pass through the dispatcher one at a time. This facet also makes debugging exceptionally pleasant as the dispatcher can be listened to and, logging the action type and data that are being passed through make finding where bugs are occurring much easier. This usually helps triangulate where the actual bug is located. Lastly, since every action follows the same flow, it is very easy to get up to speed on a Flux application. Once you can follow one flow through the application you can follow any of them.&lt;/p&gt;
+
+&lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;React
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://jlongster.com/Removing-User-Interface-Complexity,-or-Why-React-is-Awesome&quot;&gt;Removing User Interface Complexity, or Why React is Awesome&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://tylermcginnis.com/reactjs-tutorial-a-comprehensive-guide-to-building-apps-with-react/&quot;&gt;Comprehensive Guide to Building Apps with React&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://egghead.io/series/react-fundamentals&quot;&gt;Egghead.io React Tutorial Videos&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ricostacruz.com/cheatsheets/react.html&quot;&gt;React Cheatsheet&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Flux
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://jonathancreamer.com/what-the-flux/&quot;&gt;What the Flux?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.andrewray.me/flux-for-stupid-people/&quot;&gt;Flux for Stupid People&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://egghead.io/series/react-flux-architecture&quot;&gt;Egghead.io Flux Tutorial Videos&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Further Reading
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0&quot;&gt;Smart and Dumb Components&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://medium.com/@learnreact/container-components-c0e67432e005&quot;&gt;Container Components&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 01 Aug 2015 00:00:00 -0400</pubDate>
+        <link>http://inlehmansterms.net/2015/08/01/overview-of-react-and-flux/</link>
+        <guid isPermaLink="true">http://inlehmansterms.net/2015/08/01/overview-of-react-and-flux/</guid>
+      </item>
+    
+      <item>
         <title>JavaScript Function Memoization</title>
         <description>&lt;p&gt;In this post I am going to walk through when you might want to use memoization for your JavaScript functions and how you can easily memoize any function. Before we can go much further, let&amp;#39;s define what memoization is.&lt;/p&gt;
 

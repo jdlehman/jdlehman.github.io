@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Overview of React and Flux - In Lehman's Terms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="http://inlehmansterms.net/2015/08/01/overview-of-react-and-flux/">
+  <link rel="alternate" type="application/rss+xml" href="http://inlehmansterms.net/feed.xml">
+  <meta name="robots" content="INDEX,FOLLOW">
+
+  
+
+  
+    <meta name="description" content="This will be the first in a series of posts covering React and Flux. The goal of this particular one is to provide a high level overview before we dig into the specifics, so don&#39;t worry if you feel a bit lost as I will likely gloss over many details....">
+  
+
+  
+    <meta name="keywords" content="javascript,react,flux,javascript,react,flux,js,overview">
+  
+
+  
+    <meta http-equiv="date" content="Saturday, 01  2015 00:00:00 GMT">
+  
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/app-135e73aca9e0611311efcb9af8e2e5f3.css">
+</head>
+
+
+  <body class="Site">
+
+    <header class="Site-header">
+  <h1 class="Site-header-title">
+    <a href="/">In Lehman's Terms</a>
+  </h1>
+</header>
+
+
+    <main class="Site-main">
+      <article class="Site-navbar">
+        <nav class="Navbar">
+  <div class="Navbar-gravatar">
+    <img src="http://www.gravatar.com/avatar/d895b9d09c3e3b4f19814eb032a08669?s=150">
+  </div>
+  <a href="/" class="Navbar-link">Home</a>
+  <a href="/tags" class="Navbar-link">Tags</a>
+
+  <div class="Navbar-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </div>
+</nav>
+
+      </article>
+
+      <article class="Site-content">
+        <article class="Post ">
+
+  <header class="Post-header">
+    <h1>Overview of React and Flux</h1>
+    <section class="Post-meta">
+      <time pubdate datetime="2015-08-01T00:00:00-04:00">
+        <span>Aug 1, 2015</span>
+      </time>
+      <span> • Jonathan Lehman</span>
+    </section>
+    <section class="Post-tags">
+      <span>Tags: </span>
+      
+      
+        <a class="Post-tags-item" href="/tag/flux">flux</a>
+      
+        <a class="Post-tags-item" href="/tag/javascript">javascript</a>
+      
+        <a class="Post-tags-item" href="/tag/react">react</a>
+      
+    </section>
+  </header>
+
+  <section class="Post-content">
+    <p>This will be the first in a series of posts covering React and Flux. The goal of this particular one is to provide a high level overview before we dig into the specifics, so don&#39;t worry if you feel a bit lost as I will likely gloss over many details. There are some resources at the bottom of this post geared towards those getting started and like I mentioned future posts are on the way.</p>
+
+<!--more-->
+
+<h2 id="react">React</h2>
+
+<p><a href="https://facebook.github.io/react/">React</a> is a library by Facebook that describes itself as a &quot;JavaScript library for building user interfaces&quot;. Essentially React is the view layer of your application. While the <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">web component</a> spec is still just a draft, libraries like React allow you to begin building your web applications with similar composable pieces. Though it is not trying to replicate the web component specifications as much as <a href="https://www.polymer-project.org/1.0/">Polymer</a>, React provides lifecycle hooks like <code>componentDidMount</code> as well as the ability to nest React components, attach handlers, and manage state. One of the most compelling things about React is its implementation of a &quot;virtual DOM&quot;, an abstraction over the DOM. The key function (and only one that is required to be defined in every React element) is the <code>render</code> function. This function specifies the virtual DOM representation that React will render for you.</p>
+
+<p>The primary benefit of the virtual DOM abstraction is that React optimizes performance under the hood by only re-rendering nodes in the tree that have actually changed rather than re-rendering the entire component or tree of components. This means you can worry less about optimizing for performance and just focus on what is being rendered. The best way to understand what will be rendered is to just pretend that each change causes the entire React component tree to be re-rendered, that is treat each render like it is the first. This is conceptually what happens, but without all of the work of actually rendering everything since React is smart enough to only render the changes.</p>
+
+<p>Another benefit to this abstraction is that since the <code>render</code> function returns a representation of the virtual DOM rather than the actual DOM, React can render to other targets than just the DOM. <a href="https://facebook.github.io/react-native/">React Native</a> renders to native iOS components, and there are other implementations in the works to render to things Android, <a href="https://github.com/Flipboard/react-canvas">canvas</a>, and <a href="https://github.com/Izzimach/react-three">WebGL</a>.</p>
+
+<p>The last high level concept to cover is how React manages state. You can pass in properties to any React component (called <code>props</code> and accessible via <code>this.props</code>), which are immutable data that can be rendered or used by the component to determine what to render. React components also have <code>state</code>, accessible via <code>this.state</code>, which is meant to be used for the internal mutable state of the component. It is a bit difficult at first to understand when to use <code>props</code> versus <code>state</code>, but essentially any state that might change during the component&#39;s lifetime would use the mutable <code>state</code>. These would be data like whether the component is selected, the quantity on a quantity selector, data in form fields, etc. The <code>props</code> contain state that does not change (that is, immutable data) during the life of the component instance. This might include data like the type of a component and other configuration data that you might use to initialize a component. Another unique difference between <code>state</code> and <code>props</code> is that <code>state</code> is private and is set up by the component itself when it is initialized, while <code>props</code> are passed into a component from a parent component higher up in the tree.</p>
+
+<h2 id="where-react-falls-short">Where React falls short</h2>
+
+<p>The pain point that comes up once you start building something larger and more complex with React is how components communicate. The only way that this can happen with vanilla React is to pass down callback functions as <code>props</code> for the children to call, but this gets complicated very quickly and does not seem ideal if you want to speak to an ancestor several levels up because you have to pass it through all the intermediary components. Since React is just a library that focuses on the view layer, it can be used within another MVC framework or another architecture pattern entirely. In our case we will investigate Facebook&#39;s solution to this and other problems that are not solved by React alone: Flux.</p>
+
+<h2 id="flux">Flux</h2>
+
+<p>The <a href="https://facebook.github.io/flux/">Flux</a> pattern is an unidirectional data flow architecture. Before we get into what the unidirectional data flow means, let&#39;s look at the pieces the pattern specifies. First off, I refer to this as a &quot;pattern&quot; rather than a &quot;library&quot; because Facebook has released in detail how they apply this pattern in conjunction with React, but they have only provided the code for a single piece of the puzzle: the <a href="https://github.com/facebook/flux/blob/master/src/Dispatcher.js">dispatcher</a>. It is important to note that this pattern can be used without React, though I will focus on its usage with React.</p>
+
+<p><img src="https://facebook.github.io/flux/img/flux-simple-f8-diagram-1300w.png" class="jl-Image"></p>
+
+<p>First let&#39;s start with actions. Actions are just POJOs that have two parts: an action type and data. The action type is a constant string, and the data are any information that might be needed about the action that just occurred in order to change state. Actions are typically fired to trigger a change, typically by something like a click handler in a React component.</p>
+
+<p>All actions must go through the singleton dispatcher, which is the central hub that all data must pass through before state can be changed. This is what ensures the unidirectional data flow; all data must flow in a single direction, the direction the diagram above indicates. Views cannot be updated directly by an action, but instead must go through the dispatcher and make changes in the stores that are later reflected by the views. This means that an action that changes data in the application will not have the problem of cascading changes and potential race conditions. Instead everything must run through a dispatcher singleton that queues up actions and dispatches them one at a time. This is the core purpose of the dispatcher: to queue up actions one at a time and send each action to the stores that are subscribed to it.</p>
+
+<p>Stores are where application state resides. This should be state that needs to be shared and communicated among components. All other state should be stored in each component&#39;s internal <code>state</code>. Stores like actions are also just POJOs that hold data. They subscribe to actions using the action type constants mentioned earlier. This means multiple stores can subscribe to the same action. The action handlers receive the data contained in the action and can use it to update their state. At this point stores can emit a change event that the views (React components) which use its data are subscribed to. Best practice is to pass store data into components that require it as <code>props</code>. This will tell the React components to re-render, which React will handle.</p>
+
+<p>An analogy to help make it easier to understand the relationship between all the parts of Flux is that of delivering mail. Actions are like the actual letters, containing the data. The store is like a mailbox holding a collection of mail (data). The dispatcher is like the mailman and delivers the mail to the mailboxes. The views (React components) are like the customers that can check the mailboxes for data they are interested in.</p>
+
+<p>There are many benefits to Flux and its unidirectional data flow. First of all, it is easy to record and replay the state of an application since all actions must pass through the dispatcher one at a time. This facet also makes debugging exceptionally pleasant as the dispatcher can be listened to and, logging the action type and data that are being passed through make finding where bugs are occurring much easier. This usually helps triangulate where the actual bug is located. Lastly, since every action follows the same flow, it is very easy to get up to speed on a Flux application. Once you can follow one flow through the application you can follow any of them.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+<li>React
+
+<ul>
+<li><a href="http://jlongster.com/Removing-User-Interface-Complexity,-or-Why-React-is-Awesome">Removing User Interface Complexity, or Why React is Awesome</a></li>
+<li><a href="http://tylermcginnis.com/reactjs-tutorial-a-comprehensive-guide-to-building-apps-with-react/">Comprehensive Guide to Building Apps with React</a></li>
+<li><a href="https://egghead.io/series/react-fundamentals">Egghead.io React Tutorial Videos</a></li>
+<li><a href="http://ricostacruz.com/cheatsheets/react.html">React Cheatsheet</a></li>
+</ul></li>
+<li>Flux
+
+<ul>
+<li><a href="http://jonathancreamer.com/what-the-flux/">What the Flux?</a></li>
+<li><a href="http://blog.andrewray.me/flux-for-stupid-people/">Flux for Stupid People</a></li>
+<li><a href="https://egghead.io/series/react-flux-architecture">Egghead.io Flux Tutorial Videos</a></li>
+</ul></li>
+<li>Further Reading
+
+<ul>
+<li><a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0">Smart and Dumb Components</a></li>
+<li><a href="https://medium.com/@learnreact/container-components-c0e67432e005">Container Components</a></li>
+</ul></li>
+</ul>
+
+  </section>
+
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'inlehmansterms';
+    var disqus_identifier = '/2015/08/01/overview-of-react-and-flux/';
+    var disqus_title = 'Overview of React and Flux';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+      </article>
+    </main>
+
+    <footer class="Site-footer">
+  <article class="Site-footer-social">
+    <article class="Social">
+  <a href="https://github.com/jdlehman">
+    <span class="jl-Icon-github"></span>
+  </a>
+  <a href="https://twitter.com/inLehmans_Terms">
+    <span class="jl-Icon-twitter"></span>
+  </a>
+  <a href="/feed.xml">
+    <span class="jl-Icon-rss"></span>
+  </a>
+</article>
+
+  </article>
+
+  <article class="Site-footer-copyright">
+    <div>Powered by <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://disqus.com">Disqus</a>.</div>
+    <div>&copy; 2014-2015 Jonathan Lehman. All rights reserved.</div>
+  </article>
+</footer>
+
+    <!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Raleway|Abril+Fatface|Source+Code+Pro|Lustria|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-53645628-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+
+
+
+  </body>
+</html>
