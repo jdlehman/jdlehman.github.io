@@ -40,15 +40,15 @@ You will want to run `git fsck --no-reflogs` to make sure that commits only reac
 We pipe the output awk to only log the hashes of the dangling commits.
 
 ```sh
-git fsck --no-reflog | awk '/dangling commit/ {print $3}'
+git fsck --no-reflogs | awk '/dangling commit/ {print $3}'
 ```
 
 This still might produce a number of hashes. To better determine which hash corresponds to the commit you dropped from the stash, you can pass the hashes to `git log` or `git show` to get more information.
 
 ```sh
-git show --oneline $(git fsck --no-reflog | awk '/dangling commit/ {print $3}')
+git show --oneline $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
 # or
-git log --graph --oneline --decorate $(git fsck --no-reflog | awk '/dangling commit/ {print $3}')
+git log --graph --oneline --decorate $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
 ```
 
 ## Git Repository Browser (GUI tool)
@@ -56,5 +56,5 @@ git log --graph --oneline --decorate $(git fsck --no-reflog | awk '/dangling com
 You can also get the dangling commit hashes like the above strategy, but send them to [`gitk`](https://git-scm.com/docs/gitk) to open them in the git repository browser, which is a GUI tool.
 
 ```sh
-gitk --all $(git fsck --no-reflog | awk '/dangling commit/ {print $3}')
+gitk --all $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
 ```
