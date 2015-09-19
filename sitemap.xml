@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://inlehmansterms.net/2015/09/19/recover-a-dropped-git-stash/</loc>
+    <lastmod>2015-09-19T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://inlehmansterms.net/2015/08/01/overview-of-react-and-flux/</loc>
     <lastmod>2015-08-01T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
@@ -83,119 +89,119 @@
   
   <url>
     <loc>http://inlehmansterms.net/404.html</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tags/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/varnish/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/sass/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/css/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/typography/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/rails/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/ruby/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/database/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/vim/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/html/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/git/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/javascript/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/performance/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/react/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://inlehmansterms.net/tag/flux/</loc>
-    <lastmod>2015-08-01T17:20:28-04:00</lastmod>
+    <lastmod>2015-09-19T17:43:51-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
