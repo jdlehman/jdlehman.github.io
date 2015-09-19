@@ -110,17 +110,17 @@ git checkout 666d927cfc3062887b45eb8cb63b121b5ae68c8e
 <p>You will want to run <code>git fsck --no-reflogs</code> to make sure that commits only reachable via the reflog are not considered reachable. The commit for the dropped stash is among the dangling commits logged, but unless your git repository is brand new you will notice there are probably several dangling commits and a lot of other noise being logged by <code>git fsck</code>.</p>
 
 <p>We pipe the output awk to only log the hashes of the dangling commits.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">git fsck --no-reflog | awk <span class="s1">'/dangling commit/ {print $3}'</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">git fsck --no-reflogs | awk <span class="s1">'/dangling commit/ {print $3}'</span>
 </code></pre></div>
 <p>This still might produce a number of hashes. To better determine which hash corresponds to the commit you dropped from the stash, you can pass the hashes to <code>git log</code> or <code>git show</code> to get more information.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">git show --oneline <span class="k">$(</span>git fsck --no-reflog | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">git show --oneline <span class="k">$(</span>git fsck --no-reflogs | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
 <span class="c"># or</span>
-git log --graph --oneline --decorate <span class="k">$(</span>git fsck --no-reflog | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
+git log --graph --oneline --decorate <span class="k">$(</span>git fsck --no-reflogs | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
 </code></pre></div>
 <h2 id="git-repository-browser-(gui-tool)">Git Repository Browser (GUI tool)</h2>
 
 <p>You can also get the dangling commit hashes like the above strategy, but send them to <a href="https://git-scm.com/docs/gitk"><code>gitk</code></a> to open them in the git repository browser, which is a GUI tool.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">gitk --all <span class="k">$(</span>git fsck --no-reflog | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">gitk --all <span class="k">$(</span>git fsck --no-reflogs | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
 </code></pre></div>
   </section>
 
