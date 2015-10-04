@@ -86,13 +86,13 @@ The good news is that we can easily take other dependencies into account. Earlie
 Let's say we have a `Person` model with a firstName and lastName as well as a method, `fullName`, that takes an optional argument, title and outputs the person's full name.
 
 ```javascript
+function memoize() { ... }
+
 function Person(firstName, lastName) {
   this.firstName = firstName;
   this.lastName = lastName;
 
-  this.memoize = function(func) { ... };
-
-  this.fullName = this.memoize(function(title) {
+  this.fullName = memoize(function(title) {
     return title + ' ' + this.firstName + ' ' + this.lastName;
   });
 }
@@ -101,26 +101,26 @@ function Person(firstName, lastName) {
 All we need to do to memoize this function on the `Person` object, is to update the `memoize` function to take a second argument, `depsFunc`. `depsFunc` will be a function that returns an array of the dependencies. We can then use `depsFunc` as well as `func` to calculate the unique key in our hash.
 
 ```javascript
+function memoize(func, depsFunc) {
+  var cache = {};
+  return function() {
+    var key = JSON.stringify([depsFunc(), arguments]);
+    if(cache[key]) {
+      return cache[key];
+    }
+    else {
+      var val = func.apply(this, arguments);
+      cache[key] = val;
+      return val;
+    }
+  };
+}
+
 function Person(firstName, lastName) {
   this.firstName = firstName;
   this.lastName = lastName;
 
-  this.memoize = function(func, depsFunc) {
-    var cache = {};
-    return function() {
-      var key = JSON.stringify([depsFunc(), arguments]);
-      if(cache[key]) {
-        return cache[key];
-      }
-      else {
-        var val = func.apply(this, arguments);
-        cache[key] = val;
-        return val;
-      }
-    };
-  }
-
-  this.fullName = this.memoize(
+  this.fullName = memoize(
     // calculation
     function(title) {
       console.log('working...');
@@ -158,7 +158,7 @@ console.log(person.fullName('Mr.'));
 //=> Mr. Jon Lehman
 ```
 
-[Play with this example in Babel](https://babeljs.io/repl/#?experimental=true&playground=true&evaluate=true&loose=false&spec=false&code=function%20Person(firstName%2C%20lastName)%20%7B%0A%20%20this.firstName%20%3D%20firstName%3B%0A%20%20this.lastName%20%3D%20lastName%3B%0A%20%20%0A%20%20this.memoize%20%3D%20function(func%2C%20depsFunc)%20%7B%0A%20%20%20%20var%20cache%20%3D%20%7B%7D%3B%0A%20%20%20%20return%20function()%20%7B%0A%20%20%20%20%20%20var%20key%20%3D%20JSON.stringify(%5BdepsFunc()%2C%20arguments%5D)%3B%0A%20%20%20%20%20%20if(cache%5Bkey%5D)%20%7B%0A%20%20%20%20%20%20%20%20return%20cache%5Bkey%5D%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20else%20%7B%0A%20%20%20%20%20%20%20%20var%20val%20%3D%20func.apply(this%2C%20arguments)%3B%0A%20%20%20%20%20%20%20%20cache%5Bkey%5D%20%3D%20val%3B%0A%20%20%20%20%20%20%20%20return%20val%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%3B%0A%20%20%7D%0A%20%20%0A%20%20this.fullName%20%3D%20this.memoize(%0A%20%20%20%20%2F%2F%20calculation%0A%20%20%20%20function(title)%20%7B%0A%20%20%20%20%20%20console.log('working...')%3B%0A%20%20%20%20%20%20return%20title%20%2B%20'%20'%20%2B%20this.firstName%20%2B%20'%20'%20%2B%20this.lastName%3B%0A%20%20%20%20%7D%2C%20%0A%20%20%20%20%2F%2F%20dependencies%0A%20%20%20%20function()%20%7B%20%0A%20%20%20%20%20%20return%20%5Bthis.firstName%2C%20this.lastName%5D%3B%20%0A%20%20%20%20%7D.bind(this))%3B%0A%7D%0A%0Avar%20person%20%3D%20new%20Person('Jonathan'%2C%20'Lehman')%3B%0Aconsole.log(person.fullName('Mr.'))%3B%0Aconsole.log(person.fullName('Mr.'))%3B%0Aconsole.log(person.fullName('Mister'))%3B%0Aperson.firstName%20%3D%20'Jon'%3B%0Aconsole.log(person.fullName('Mr.'))%3B)
+[Play with this example in Babel](https://babeljs.io/repl/#?experimental=true&evaluate=true&loose=false&spec=false&playground=true&code=function%20memoize(func%2C%20depsFunc)%20%7B%0A%20%20var%20cache%20%3D%20%7B%7D%3B%0A%20%20return%20function()%20%7B%0A%20%20%20%20var%20key%20%3D%20JSON.stringify(%5BdepsFunc()%2C%20arguments%5D)%3B%0A%20%20%20%20if(cache%5Bkey%5D)%20%7B%0A%20%20%20%20%20%20return%20cache%5Bkey%5D%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20var%20val%20%3D%20func.apply(this%2C%20arguments)%3B%0A%20%20%20%20%20%20cache%5Bkey%5D%20%3D%20val%3B%0A%20%20%20%20%20%20return%20val%3B%0A%20%20%20%20%7D%0A%20%20%7D%3B%0A%7D%0A%20%20%0Afunction%20Person(firstName%2C%20lastName)%20%7B%0A%20%20this.firstName%20%3D%20firstName%3B%0A%20%20this.lastName%20%3D%20lastName%3B%0A%0A%20%20this.fullName%20%3D%20memoize(%0A%20%20%20%20%2F%2F%20calculation%0A%20%20%20%20function(title)%20%7B%0A%20%20%20%20%20%20console.log('working...')%3B%0A%20%20%20%20%20%20return%20title%20%2B%20'%20'%20%2B%20this.firstName%20%2B%20'%20'%20%2B%20this.lastName%3B%0A%20%20%20%20%7D%2C%20%0A%20%20%20%20%2F%2F%20dependencies%0A%20%20%20%20function()%20%7B%20%0A%20%20%20%20%20%20return%20%5Bthis.firstName%2C%20this.lastName%5D%3B%20%0A%20%20%20%20%7D.bind(this))%3B%0A%7D%0A%0Avar%20person%20%3D%20new%20Person('Jonathan'%2C%20'Lehman')%3B%0Aconsole.log(person.fullName('Mr.'))%3B%0Aconsole.log(person.fullName('Mr.'))%3B%0Aconsole.log(person.fullName('Mister'))%3B%0Aperson.firstName%20%3D%20'Jon'%3B%0Aconsole.log(person.fullName('Mr.'))%3B)
 
 ## Careful, memoization is not a magic bullet
 
