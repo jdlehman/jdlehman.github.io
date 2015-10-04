@@ -27,6 +27,6 @@ tools:
 unix:
   name: 'Unix'
 react:
-  'React'
+  name: 'React'
 flux:
-  'Flux'
+  name: 'Flux'
