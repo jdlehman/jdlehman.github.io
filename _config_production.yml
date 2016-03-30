@@ -28,7 +28,6 @@ highlighter: rouge
 gems:
   - jekyll-assets
   - jekyll-sitemap
-  - jekyll-paginate
 
 # Jekyll-assets settings
 assets:
