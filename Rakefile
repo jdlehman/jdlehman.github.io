@@ -102,7 +102,7 @@ end
 # rake build
 desc 'Build the site'
 task :build do
-  system 'jekyll build --incremental'
+  system 'jekyll build'
 end
 
 # rake watch
@@ -112,12 +112,12 @@ desc 'Serve and watch the site (with post limit or drafts)'
 task :watch, :option do |t, args|
   option = args[:option]
   if option.nil? || option.empty?
-    system 'jekyll serve --watch --incremental'
+    system 'jekyll serve --watch'
   else
     if option == 'drafts'
-      system 'jekyll serve --watch --drafts --incremental'
+      system 'jekyll serve --watch --drafts'
     else
-      system "jekyll serve --watch --limit_posts #{option} --incremental"
+      system "jekyll serve --watch --limit_posts #{option}"
     end
   end
 end
@@ -132,7 +132,7 @@ namespace :production do
       sleep 3
       system("open http://localhost:#{port}/")
     end
-    system 'jekyll serve --watch --config _config_production.yml --incremental'
+    system 'jekyll serve --watch --config _config_production.yml'
   end
 
   # rake production:generate
