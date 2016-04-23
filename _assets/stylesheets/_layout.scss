@@ -18,6 +18,7 @@
 
   // .Site-content
   @include jl-desc(content) {
+    padding: 0 1rem;
     @include span(full);
     @include jl-breakpoint(lg) {
       @include container(960px);
