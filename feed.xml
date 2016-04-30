@@ -22,7 +22,7 @@
 
 &lt;h3 id=&quot;setup&quot;&gt;Setup&lt;/h3&gt;
 
-&lt;p&gt;First we will need the &lt;a href=&quot;https://github.com/browserify-rails/browserify-rails&quot;&gt;&lt;code&gt;browserify-rails&lt;/code&gt;&lt;/a&gt; gem in conjunction with &lt;a href=&quot;https://babeljs.io/&quot;&gt;&lt;code&gt;babel&lt;/code&gt;&lt;/a&gt;. Other gems exist to add ES2015 support to the asset pipeline, but most do not support modules or require additional setup to get modules working. We will use browserify as it will give us module support and provides an easy means of adding plugins like &lt;code&gt;babel&lt;/code&gt; to handle compiling our ES2015 JS.&lt;/p&gt;
+&lt;p&gt;First we will need the &lt;a href=&quot;https://github.com/browserify-rails/browserify-rails&quot;&gt;&lt;code&gt;browserify-rails&lt;/code&gt;&lt;/a&gt; gem in conjunction with &lt;a href=&quot;https://babeljs.io/&quot;&gt;&lt;code&gt;babel&lt;/code&gt;&lt;/a&gt;. Other gems exist to add ES2015 support to the asset pipeline, but most do not support modules or require additional setup to get modules working. We will use &lt;code&gt;browserify&lt;/code&gt; as it will give us module support and provides an easy means of adding plugins like &lt;code&gt;babel&lt;/code&gt; to handle compiling our ES2015 JS.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Add &lt;code&gt;gem &amp;#39;browserify-rails&amp;#39;&lt;/code&gt; to your &lt;code&gt;Gemfile&lt;/code&gt; and run &lt;code&gt;bundle install&lt;/code&gt; to install it.&lt;/li&gt;
@@ -40,13 +40,13 @@
 &lt;li&gt;Run &lt;code&gt;npm install --save browserify browserify-incremental babelify babel-preset-es2015&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;This will install these dependencies to the &lt;code&gt;node_modules&lt;/code&gt; folder. You should add that to your &lt;code&gt;.gitignore&lt;/code&gt; so that you do not check in these dependencies to source control. You will have to run &lt;code&gt;npm install&lt;/code&gt; (similar to &lt;code&gt;bundle install&lt;/code&gt;) if you pull down this repo on another machine or update the &lt;code&gt;package.json&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;This will install these dependencies to the &lt;code&gt;node_modules&lt;/code&gt; folder. You should add this folder to your &lt;code&gt;.gitignore&lt;/code&gt; so that you do not check in these dependencies to source control. You will have to run &lt;code&gt;npm install&lt;/code&gt; (similar to &lt;code&gt;bundle install&lt;/code&gt;) if you pull down this repo on another machine or update the &lt;code&gt;package.json&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;babelify&lt;/code&gt; is a &lt;code&gt;browserify&lt;/code&gt; plugin to transform our ES2015 code to browser compliant ES5, and &lt;code&gt;babel-preset-es2015&lt;/code&gt; is a &lt;code&gt;babel&lt;/code&gt; plugin. You can also add other &lt;code&gt;browserify&lt;/code&gt; or &lt;code&gt;babel&lt;/code&gt; plugins for even more functionality, but we will concentrate on getting our minimal setup working.&lt;/p&gt;
 
 &lt;h3 id=&quot;configuration&quot;&gt;Configuration&lt;/h3&gt;
 
-&lt;p&gt;Let&amp;#39;s create a &lt;code&gt;browserify&lt;/code&gt; folder inside of &lt;code&gt;app/assets/javascripts&lt;/code&gt;. This will be the folder will all of our ES2015 JS will live. Having this folder makes it easy to see what JS files support ES2015 and modules. This isolation also means that our setup won&amp;#39;t affect any of our existing JS files, so there is nothing to port (at least right away). You can gradually port existing JS (or CoffeeScript) to ES2015 JS by converting and moving files to the &lt;code&gt;browserify&lt;/code&gt; folder. Once everything is in the &lt;code&gt;browserify&lt;/code&gt; folder, you will no longer need the &lt;code&gt;browserify&lt;/code&gt; folder and can point &lt;code&gt;browserify&lt;/code&gt; to compile the &lt;code&gt;javascripts&lt;/code&gt; folder instead. Speaking of which, let&amp;#39;s look at how we configure &lt;code&gt;browserify-rails&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;#39;s create a &lt;code&gt;browserify&lt;/code&gt; folder inside of &lt;code&gt;app/assets/javascripts&lt;/code&gt;. This will be the folder where all of our ES2015 JS will live. Having this folder makes it easy to see what JS files support ES2015 and modules. This isolation also means that our setup won&amp;#39;t affect any of our existing JS files, so there is nothing to port (at least right away). You can gradually port existing JS (or CoffeeScript) to ES2015 JS by converting and moving files to the &lt;code&gt;browserify&lt;/code&gt; folder. Once everything is in the &lt;code&gt;browserify&lt;/code&gt; folder, you will no longer need the &lt;code&gt;browserify&lt;/code&gt; folder and can point &lt;code&gt;browserify&lt;/code&gt; to compile the &lt;code&gt;javascripts&lt;/code&gt; folder instead. Speaking of which, let&amp;#39;s look at how we configure &lt;code&gt;browserify-rails&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Inside of &lt;code&gt;config/application.rb&lt;/code&gt;, let&amp;#39;s add the following:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# config/application.rb&lt;/span&gt;
@@ -63,9 +63,11 @@
   &lt;span class=&quot;nb&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;start_with?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;app/assets/javascripts/browserify&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That is all of the setup we will need to get ES2015 support. Now we can see how we can begin leveraging our new super powers.&lt;/p&gt;
+
 &lt;h3 id=&quot;usage&quot;&gt;Usage&lt;/h3&gt;
 
-&lt;p&gt;Now we can write ES2015 JS in our &lt;code&gt;browserify&lt;/code&gt; folder (or whatever folders you have browserify watching).&lt;/p&gt;
+&lt;p&gt;Thanks to our previous setup steps, we can now write ES2015 JS in our &lt;code&gt;browserify&lt;/code&gt; folder (or whatever folders you have browserify watching).&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// app/assets/javascripts/browserify/dog.js&lt;/span&gt;
 
 &lt;span class=&quot;kr&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -74,7 +76,7 @@
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And we can make use of ES2015 modules too!&lt;/p&gt;
+&lt;p&gt;We can also make use of ES2015 modules. This let&amp;#39;s us explicitly &lt;code&gt;import&lt;/code&gt; and &lt;code&gt;export&lt;/code&gt; our dependencies, meaning we will no longer have to rely on script order or magic globals that we assume (and hope) are already defined.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// app/assets/javascripts/browserify/logger.js&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;./dog&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
@@ -82,18 +84,18 @@
 
 &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We can also require these files into our top level sprockets manifests (browswerify will already have compiled them).&lt;/p&gt;
+&lt;p&gt;Additionally, we can require these files into our top level sprockets manifests (browswerify will already have compiled them).&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// app/assets/javascripts/application.js&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;//= require &#39;browserify/logger&#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now pages that include &lt;code&gt;application.js&lt;/code&gt; will print &lt;code&gt;WOOF!&lt;/code&gt; to the console. Note that this is a trivial example and you can build much more complex functionality in ES2015.&lt;/p&gt;
+&lt;p&gt;Based on the above code, pages that include &lt;code&gt;application.js&lt;/code&gt; will print &lt;code&gt;WOOF!&lt;/code&gt; to the console. Note that this is a trivial example and you can build much more complex functionality in ES2015.&lt;/p&gt;
 
-&lt;p&gt;An added benefit of this setup is that you can now &lt;code&gt;import&lt;/code&gt; modules that you have installed with &lt;code&gt;npm&lt;/code&gt;. Say goodbye to vendoring JS assets!&lt;/p&gt;
+&lt;p&gt;An added benefit of this setup is that you can &lt;code&gt;import&lt;/code&gt; modules that you have installed with &lt;code&gt;npm&lt;/code&gt;. Say goodbye to vendoring JS assets!&lt;/p&gt;
 
 &lt;h2 id=&quot;linting&quot;&gt;Linting&lt;/h2&gt;
 
-&lt;p&gt;We will use &lt;a href=&quot;http://eslint.org/&quot;&gt;&lt;code&gt;eslint&lt;/code&gt;&lt;/a&gt; to lint our JavaScript. Linting is useful to help us find potential errors and to keep our code style consistent. I highly recommend getting a plugin for your editor that will visualize the &lt;code&gt;eslint&lt;/code&gt; violations.&lt;/p&gt;
+&lt;p&gt;Having already set up a modern JS build system in our Rails app, we can begin to focus on other tools to help our productivity. We will use &lt;a href=&quot;http://eslint.org/&quot;&gt;&lt;code&gt;eslint&lt;/code&gt;&lt;/a&gt; to lint our JavaScript. Linting is useful to help us find potential errors and to keep our code style consistent. I highly recommend getting a plugin for your editor that will visualize the &lt;code&gt;eslint&lt;/code&gt; violations.&lt;/p&gt;
 
 &lt;p&gt;First we need to install the linting plugins we will need.&lt;/p&gt;
 
@@ -101,7 +103,7 @@
 &lt;li&gt;&lt;code&gt;npm install --save eslint babel-eslint&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Next we need to set up our &lt;code&gt;eslint&lt;/code&gt; configuration, which lives in &lt;code&gt;.eslintrc.js&lt;/code&gt;. You can check out the &lt;a href=&quot;http://eslint.org/docs/user-guide/configuring&quot;&gt;docs&lt;/a&gt; to help you configure your rules.&lt;/p&gt;
+&lt;p&gt;Next we need to set up our &lt;code&gt;eslint&lt;/code&gt; configuration, which lives in &lt;code&gt;.eslintrc.js&lt;/code&gt;. You can check out the &lt;a href=&quot;http://eslint.org/docs/user-guide/configuring&quot;&gt;docs&lt;/a&gt; to help you configure your rules. Check out the &lt;a href=&quot;https://github.com/airbnb/javascript&quot;&gt;airbnb style guide&lt;/a&gt; for a popular JS style guide.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// .eslintrc.js&lt;/span&gt;
 &lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;s2&quot;&gt;&quot;ecmaFeatures&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -132,15 +134,17 @@
   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This linting setup will help ensure that typos and errors do not make their way to production. You might want to make sure there are no linting errors before committing code. It is easy to include this in a continuous integration setup and prevent deploys when linting or tests fail. Speaking of testing...&lt;/p&gt;
+
 &lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
 
-&lt;p&gt;We are almost done! Let&amp;#39;s get some ES2015 testing in place and take advantage of being able to import and test specific modules. First we will install &lt;a href=&quot;https://mochajs.org/&quot;&gt;&lt;code&gt;mocha&lt;/code&gt;&lt;/a&gt; as our test runner and &lt;a href=&quot;https://github.com/mjackson/expect&quot;&gt;&lt;code&gt;expect&lt;/code&gt;&lt;/a&gt; as our assertion library. I am using these libraries as an example, you can easily swap out for your preference.&lt;/p&gt;
+&lt;p&gt;We are almost done! Let&amp;#39;s get some ES2015 JS testing in place and take advantage of being able to import and test specific modules. First, we will install &lt;a href=&quot;https://mochajs.org/&quot;&gt;&lt;code&gt;mocha&lt;/code&gt;&lt;/a&gt; as our test runner and &lt;a href=&quot;https://github.com/mjackson/expect&quot;&gt;&lt;code&gt;expect&lt;/code&gt;&lt;/a&gt; as our assertion library. I am using these libraries as an example, you can easily use others based on your preference.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;npm install --save mocha expect babel-core&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;We can create a &lt;code&gt;test/javascripts&lt;/code&gt; folder to put our tests in. Before we actually set up our tests, let&amp;#39;s make sure we are linting our tests and reconfigure our &lt;code&gt;package.json&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;We can create a &lt;code&gt;test/javascripts&lt;/code&gt; folder to put our JS tests in. Before we actually set up our tests, let&amp;#39;s make sure we are linting our tests by reconfiguring our &lt;code&gt;package.json&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;package.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -151,7 +155,7 @@
   &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now &lt;code&gt;npm run lint&lt;/code&gt; will lint our source and test JavaScript files. While we are in our package file, let&amp;#39;s set up our test script so we can use &lt;code&gt;npm test&lt;/code&gt; to run our JavaScript tests.&lt;/p&gt;
+&lt;p&gt;Now &lt;code&gt;npm run lint&lt;/code&gt; will lint our source and test JavaScript files. While we are still in our package file, let&amp;#39;s set up our test script so we can use &lt;code&gt;npm test&lt;/code&gt; to run our JavaScript tests.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;package.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -161,9 +165,9 @@
   &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You will notice the long bit modifying the &lt;code&gt;NODE_PATH&lt;/code&gt;. This will allow us to import as if our &lt;code&gt;browserify&lt;/code&gt; folder is our current folder. Essentially we are adding it to the paths we use to resolve imports.&lt;/p&gt;
+&lt;p&gt;You will notice the long bit modifying the &lt;code&gt;NODE_PATH&lt;/code&gt;. This will allow us to import as if our &lt;code&gt;browserify&lt;/code&gt; folder is our current folder. Essentially we are adding the &lt;code&gt;browserify&lt;/code&gt; folder to the paths we use to resolve JS imports. This will make imports less verbose in our tests.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;#39;s write a simple test for our &lt;code&gt;Dog&lt;/code&gt; class.&lt;/p&gt;
+&lt;p&gt;Let&amp;#39;s begin leveraging these tools and write a simple test for our &lt;code&gt;Dog&lt;/code&gt; class.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;expect&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Dog&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;dog&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
@@ -178,7 +182,7 @@
   &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you try to run this now, you will get some errors. There is one last thing we need to set up, our Babel config in &lt;code&gt;.babelrc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you try to run the tests now, you will get some errors. There is one last thing we need to set up, our Babel config in &lt;code&gt;.babelrc&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.babelrc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;es2015&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -188,7 +192,7 @@
 
 &lt;h2 id=&quot;heroku&quot;&gt;Heroku&lt;/h2&gt;
 
-&lt;p&gt;When deploying to &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt; make sure to include the nodejs build pack BEFORE your Ruby buildpack. See the docs for more on &lt;a href=&quot;https://devcenter.heroku.com/articles/buildpacks&quot;&gt;configuring buildpacks&lt;/a&gt;. You will also want to make sure you specify the version of node and npm you want to use on Heroku. You can do this with the &lt;code&gt;engines&lt;/code&gt; config in your &lt;code&gt;package.json&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;When deploying to &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt;, make sure to include the nodejs build pack BEFORE your Ruby buildpack. All your node dependencies will need to be installed before the assets are precompiled. See the docs for more on &lt;a href=&quot;https://devcenter.heroku.com/articles/buildpacks&quot;&gt;configuring buildpacks&lt;/a&gt;. You will also want to make sure you specify the version of node and npm you want to use on Heroku. You can do this with the &lt;code&gt;engines&lt;/code&gt; config in your &lt;code&gt;package.json&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;package.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -200,7 +204,7 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id=&quot;using-react&quot;&gt;Using React&lt;/h2&gt;
 
-&lt;p&gt;Adding &lt;a href=&quot;https://facebook.github.io/react/&quot;&gt;React&lt;/a&gt; to this configuration is pretty simple. First you need to install your new dependencies. Other than React and ReactDOM we will pull down the &lt;code&gt;babel&lt;/code&gt; preset for React, which will compile the JSX for us, the &lt;code&gt;eslint&lt;/code&gt; React plugin, which will gives us more &lt;a href=&quot;https://github.com/yannickcr/eslint-plugin-react&quot;&gt;rules&lt;/a&gt; we can use for our React components, and finally &lt;a href=&quot;http://airbnb.io/enzyme/&quot;&gt;&lt;code&gt;enzyme&lt;/code&gt;&lt;/a&gt;, a nice testing library for React from airbnb.&lt;/p&gt;
+&lt;p&gt;Adding &lt;a href=&quot;https://facebook.github.io/react/&quot;&gt;React&lt;/a&gt; to this configuration is also pretty simple. First, you need to install your new dependencies. Other than React and ReactDOM we will pull down the &lt;code&gt;babel&lt;/code&gt; preset for React, which will compile the JSX for us, the &lt;code&gt;eslint&lt;/code&gt; React plugin, which will gives us more &lt;a href=&quot;https://github.com/yannickcr/eslint-plugin-react&quot;&gt;rules&lt;/a&gt; we can use for our React components, and finally &lt;a href=&quot;http://airbnb.io/enzyme/&quot;&gt;&lt;code&gt;enzyme&lt;/code&gt;&lt;/a&gt;, a nice testing library for React from airbnb.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;npm install --save react react-dom babel-preset-react enzyme eslint-plugin-react&lt;/code&gt;&lt;/li&gt;
