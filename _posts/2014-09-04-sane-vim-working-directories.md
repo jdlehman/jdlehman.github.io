@@ -108,7 +108,7 @@ After a lot of research and failed attempts I finally found a way to debug autoc
 
 ```vim
 " netrw: follow symlink and set working directory
-autocmd CursorMoved *
+autocmd CursorMoved silent *
   " short circuit for non-netrw files
   \ if &filetype == 'netrw' |
   \   call FollowSymlink() |
