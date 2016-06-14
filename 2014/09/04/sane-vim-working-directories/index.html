@@ -172,7 +172,7 @@ autocmd <span class="nb">BufRead</span> *
 
 <p>After a lot of research and failed attempts I finally found a way to debug autocommands. <code>set verbose=9</code> will echo the autocommand events that are registered as well as any functions that are called by these events. The only autocommand that seemed to get called in <code>netrw</code> is the <code>CursorMoved</code> event. Therefore we can hook into this to enable our working directory to remain up to date even in <code>netrw</code>. If anyone knows of another autocommand that <code>netrw</code> listens to, I would love to know!</p>
 <div class="highlight"><pre><code class="language-vim" data-lang="vim"><span class="c">" netrw: follow symlink and set working directory</span>
-autocmd <span class="nb">CursorMoved</span> *
+autocmd <span class="nb">CursorMoved</span> <span class="k">silent</span> *
   <span class="c">" short circuit for non-netrw files</span>
 <span class="se">  \</span> <span class="k">if</span> &amp;<span class="k">filetype</span> <span class="p">==</span> <span class="s1">'netrw'</span> <span class="p">|</span>
 <span class="se">  \</span>   <span class="k">call</span> FollowSymlink<span class="p">()</span> <span class="p">|</span>

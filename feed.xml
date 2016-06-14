@@ -1301,7 +1301,7 @@ autocmd &lt;span class=&quot;nb&quot;&gt;BufRead&lt;/span&gt; *
 
 &lt;p&gt;After a lot of research and failed attempts I finally found a way to debug autocommands. &lt;code&gt;set verbose=9&lt;/code&gt; will echo the autocommand events that are registered as well as any functions that are called by these events. The only autocommand that seemed to get called in &lt;code&gt;netrw&lt;/code&gt; is the &lt;code&gt;CursorMoved&lt;/code&gt; event. Therefore we can hook into this to enable our working directory to remain up to date even in &lt;code&gt;netrw&lt;/code&gt;. If anyone knows of another autocommand that &lt;code&gt;netrw&lt;/code&gt; listens to, I would love to know!&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; netrw: follow symlink and set working directory&lt;/span&gt;
-autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; *
+autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;silent&lt;/span&gt; *
   &lt;span class=&quot;c&quot;&gt;&quot; short circuit for non-netrw files&lt;/span&gt;
 &lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &amp;amp;&lt;span class=&quot;k&quot;&gt;filetype&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;netrw&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;
 &lt;span class=&quot;se&quot;&gt;  \&lt;/span&gt;   &lt;span class=&quot;k&quot;&gt;call&lt;/span&gt; FollowSymlink&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;
