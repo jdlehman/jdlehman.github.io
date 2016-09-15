@@ -12,9 +12,13 @@ Though the documentation in Vim is fairly comprehensive, it is sometimes difficu
 
 <img src="http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png" class="jl-Image">
 
+This post will serve mostly as a reference and primer for your built in debugging options in Vim. The first thing I will go over is Vimscript's built in debugger, which you can use via the `debug` command.
+
 <!--more-->
 
-This post will serve mostly as a reference and primer for your built in debugging options in Vim. The first thing I will go over is Vimscript's built in debugger, which you can use via the `debug` command.
+#### Updates
+
+- *9/15/2016*: Updated the verbose command to `-V[n]` thanks to [Mark Campbell](https://twitter.com/Nitrodist/status/776516287472295936).
 
 ## Vimscript's Debugger
 
@@ -100,7 +104,7 @@ Other than the `debug` command, Vim also has a `verbose` command that provides l
 set verbose=9
 
 " set verbose on startup
-vim -V 9 file.text
+vim -V9 file.text
 ```
 
 You can set verbose to any value from 0-15, where 0 is no extra output, and 15 gives you output for everything Vim is doing. Each number progressively adds more output and insight into what Vim is doing:
