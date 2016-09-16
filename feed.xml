@@ -14,7 +14,7 @@
 
 &lt;p&gt;There are several strategies for adding modern JavaScript tooling to the Rails stack, with each technique somewhere on the spectrum of following the &amp;quot;Rails way&amp;quot; to completely removing sprockets and the asset pipeline from the process in favor of tools like &lt;a href=&quot;https://webpack.github.io/&quot;&gt;&lt;code&gt;webpack&lt;/code&gt;&lt;/a&gt; from the JS community. While, I highly recommend &lt;code&gt;webpack&lt;/code&gt; as a build tool, this article will focus on incorporating new JS tooling while still utilizing sprockets and the asset pipeline. This will be the path of least resistance and probably the easiest way to get ES2015 support into Rails, but I encourage you to play with these tools and find the solution that works BEST for your use case.&lt;/p&gt;
 
-&lt;h2 id=&quot;adding-support-for-es2015/es6&quot;&gt;Adding Support for ES2015/ES6&lt;/h2&gt;
+&lt;h2 id=&quot;adding-support-for-es2015-es6&quot;&gt;Adding Support for ES2015/ES6&lt;/h2&gt;
 
 &lt;p&gt;For those of you that like to speed ahead, I have tried to include most of the steps as bullets with the surrounding text providing details and context.&lt;/p&gt;
 
@@ -111,16 +111,16 @@
     &lt;span class=&quot;s2&quot;&gt;&quot;experimentalObjectRestSpread&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
 
-  &lt;span class=&quot;s2&quot;&gt;&quot;parser&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;babel-eslint&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;s2&quot;&gt;&quot;parser&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;babel-eslint&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
 
-  &lt;span class=&quot;s2&quot;&gt;&quot;env&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;es6&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;s2&quot;&gt;&quot;env&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;es6&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
 
-  &lt;span class=&quot;s2&quot;&gt;&quot;rules&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;accessor-pairs&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;arrow-spacing&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;before&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;after&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}],&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;block-spacing&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;always&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+  &lt;span class=&quot;s2&quot;&gt;&quot;rules&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;accessor-pairs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;arrow-spacing&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;before&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;after&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}],&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;block-spacing&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;always&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -130,9 +130,9 @@
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;lint: &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$(npm&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;bin)/eslint&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;./app/assets/javascripts/browserify&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;lint: &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$(npm&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;bin)/eslint&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;./app/assets/javascripts/browserify&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;
+  }
+}
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;This linting setup will help ensure that typos and errors do not make their way to production. You might want to make sure there are no linting errors before committing code. It is easy to include this in a continuous integration setup and prevent deploys when linting or tests fail. Speaking of testing...&lt;/p&gt;
 
@@ -295,7 +295,7 @@ git checkout 666d927cfc3062887b45eb8cb63b121b5ae68c8e
 &lt;span class=&quot;c&quot;&gt;# or&lt;/span&gt;
 git log --graph --oneline --decorate &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git fsck --no-reflogs | awk &lt;span class=&quot;s1&quot;&gt;&#39;/dangling commit/ {print $3}&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;git-repository-browser-(gui-tool)&quot;&gt;Git Repository Browser (GUI tool)&lt;/h2&gt;
+&lt;h2 id=&quot;git-repository-browser-gui-tool&quot;&gt;Git Repository Browser (GUI tool)&lt;/h2&gt;
 
 &lt;p&gt;You can also get the dangling commit hashes like the above strategy, but send them to &lt;a href=&quot;https://git-scm.com/docs/gitk&quot;&gt;&lt;code&gt;gitk&lt;/code&gt;&lt;/a&gt; to open them in the git repository browser, which is a GUI tool.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;gitk --all &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git fsck --no-reflogs | awk &lt;span class=&quot;s1&quot;&gt;&#39;/dangling commit/ {print $3}&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
@@ -378,7 +378,7 @@ git log --graph --oneline --decorate &lt;span class=&quot;k&quot;&gt;$(&lt;/span
 
 &lt;!--more--&gt;
 
-&lt;h2 id=&quot;what-is-memoization?&quot;&gt;What is memoization?&lt;/h2&gt;
+&lt;h2 id=&quot;what-is-memoization&quot;&gt;What is memoization?&lt;/h2&gt;
 
 &lt;p&gt;Memoization is an optimization technique where expensive function calls are cached such that the result can be immediately returned the next time the function is called with the same arguments. This method of optimization is not unique to JavaScript and is quite common in many programming languages. It is especially useful in recursive functions as calls are more likely to call with the same arguments while recursing. Take a recursive &lt;code&gt;factorial&lt;/code&gt; function for example:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;factorial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -388,7 +388,7 @@ git log --graph --oneline --decorate &lt;span class=&quot;k&quot;&gt;$(&lt;/span
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If we call &lt;code&gt;factorial(3)&lt;/code&gt;, the function calls &lt;code&gt;factorial(3)&lt;/code&gt;, &lt;code&gt;factorial(2)&lt;/code&gt;, and &lt;code&gt;factorial(1)&lt;/code&gt; will be called. If we memoize this function, another call to &lt;code&gt;factorial(3)&lt;/code&gt; will not need to recurse, it can simply return the result that it has cached. The real benefit is if we call &lt;code&gt;factorial(4)&lt;/code&gt;, we will short circuit our recursion, because &lt;code&gt;factorial(3)&lt;/code&gt; is already cached, so we do not need to recurse any further, we can just use that result.&lt;/p&gt;
 
-&lt;h2 id=&quot;sounds-great,-sign-me-up!&quot;&gt;Sounds great, sign me up!&lt;/h2&gt;
+&lt;h2 id=&quot;sounds-great-sign-me-up&quot;&gt;Sounds great, sign me up!&lt;/h2&gt;
 
 &lt;p&gt;We can simply create a &lt;code&gt;memoize&lt;/code&gt; function that takes another function and modifies it to memoize calls.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;memoize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -508,7 +508,7 @@ git log --graph --oneline --decorate &lt;span class=&quot;k&quot;&gt;$(&lt;/span
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;a href=&quot;https://babeljs.io/repl/#?experimental=true&amp;amp;evaluate=true&amp;amp;loose=false&amp;amp;spec=false&amp;amp;playground=true&amp;amp;code=function%20memoize(func%2C%20depsFunc)%20%7B%0A%20%20var%20cache%20%3D%20%7B%7D%3B%0A%20%20return%20function()%20%7B%0A%20%20%20%20var%20key%20%3D%20JSON.stringify(%5BdepsFunc()%2C%20arguments%5D)%3B%0A%20%20%20%20if(cache%5Bkey%5D)%20%7B%0A%20%20%20%20%20%20return%20cache%5Bkey%5D%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20var%20val%20%3D%20func.apply(this%2C%20arguments)%3B%0A%20%20%20%20%20%20cache%5Bkey%5D%20%3D%20val%3B%0A%20%20%20%20%20%20return%20val%3B%0A%20%20%20%20%7D%0A%20%20%7D%3B%0A%7D%0A%20%20%0Afunction%20Person(firstName%2C%20lastName)%20%7B%0A%20%20this.firstName%20%3D%20firstName%3B%0A%20%20this.lastName%20%3D%20lastName%3B%0A%0A%20%20this.fullName%20%3D%20memoize(%0A%20%20%20%20%2F%2F%20calculation%0A%20%20%20%20function(title)%20%7B%0A%20%20%20%20%20%20console.log(&amp;#x27;working...&amp;#x27;)%3B%0A%20%20%20%20%20%20return%20title%20%2B%20&amp;#x27;%20&amp;#x27;%20%2B%20this.firstName%20%2B%20&amp;#x27;%20&amp;#x27;%20%2B%20this.lastName%3B%0A%20%20%20%20%7D%2C%20%0A%20%20%20%20%2F%2F%20dependencies%0A%20%20%20%20function()%20%7B%20%0A%20%20%20%20%20%20return%20%5Bthis.firstName%2C%20this.lastName%5D%3B%20%0A%20%20%20%20%7D.bind(this))%3B%0A%7D%0A%0Avar%20person%20%3D%20new%20Person(&amp;#x27;Jonathan&amp;#x27;%2C%20&amp;#x27;Lehman&amp;#x27;)%3B%0Aconsole.log(person.fullName(&amp;#x27;Mr.&amp;#x27;))%3B%0Aconsole.log(person.fullName(&amp;#x27;Mr.&amp;#x27;))%3B%0Aconsole.log(person.fullName(&amp;#x27;Mister&amp;#x27;))%3B%0Aperson.firstName%20%3D%20&amp;#x27;Jon&amp;#x27;%3B%0Aconsole.log(person.fullName(&amp;#x27;Mr.&amp;#x27;))%3B&quot;&gt;Play with this example in Babel&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;careful,-memoization-is-not-a-magic-bullet&quot;&gt;Careful, memoization is not a magic bullet&lt;/h2&gt;
+&lt;h2 id=&quot;careful-memoization-is-not-a-magic-bullet&quot;&gt;Careful, memoization is not a magic bullet&lt;/h2&gt;
 
 &lt;p&gt;Keep in mind that memoization does not make sense for all function calls. There is a higher memory overhead since we must store our cached results so that we can later recall them as well as an added complexity of using memoization, so it really only makes sense for functions that are computationally expensive.&lt;/p&gt;
 
@@ -556,7 +556,7 @@ vim --startuptime vim.log
 
 ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;profiling-vimscript-functions/files&quot;&gt;Profiling Vimscript Functions/Files&lt;/h2&gt;
+&lt;h2 id=&quot;profiling-vimscript-functions-files&quot;&gt;Profiling Vimscript Functions/Files&lt;/h2&gt;
 
 &lt;p&gt;While getting information on Vim&amp;#39;s startup might be interesting, startup only happens when we first launch Vim and while a slow startup time might be annoying, what affects getting work done more is the actual performance while Vim is running. To measure this performance, Vim&amp;#39;s &lt;code&gt;profile&lt;/code&gt; command allows us to log time spent executing functions and/or scripts.&lt;/p&gt;
 
@@ -737,11 +737,17 @@ git merge -s theirs merge_branch
 
 &lt;p&gt;&lt;img src=&quot;http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png&quot; class=&quot;jl-Image&quot;&gt;&lt;/p&gt;
 
-&lt;!--more--&gt;
-
 &lt;p&gt;This post will serve mostly as a reference and primer for your built in debugging options in Vim. The first thing I will go over is Vimscript&amp;#39;s built in debugger, which you can use via the &lt;code&gt;debug&lt;/code&gt; command.&lt;/p&gt;
 
-&lt;h2 id=&quot;vimscript&amp;#39;s-debugger&quot;&gt;Vimscript&amp;#39;s Debugger&lt;/h2&gt;
+&lt;!--more--&gt;
+
+&lt;h4 id=&quot;updates&quot;&gt;Updates&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;9/15/2016&lt;/em&gt;: Updated the verbose command to &lt;code&gt;-V[n]&lt;/code&gt; thanks to &lt;a href=&quot;https://twitter.com/Nitrodist/status/776516287472295936&quot;&gt;Mark Campbell&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;vimscript-39-s-debugger&quot;&gt;Vimscript&amp;#39;s Debugger&lt;/h2&gt;
 
 &lt;p&gt;You can start up Vim in its debug mode with the &lt;code&gt;-D&lt;/code&gt; argument.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; opens vim in debug mode&lt;/span&gt;
@@ -810,7 +816,7 @@ git merge -s theirs merge_branch
 &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;9&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;&quot; set verbose on startup&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;V &lt;span class=&quot;m&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;text
+&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;V9 &lt;span class=&quot;k&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;text
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;You can set verbose to any value from 0-15, where 0 is no extra output, and 15 gives you output for everything Vim is doing. Each number progressively adds more output and insight into what Vim is doing:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vimscript&quot; data-lang=&quot;vimscript&quot;&gt;&lt;span class=&quot;c&quot;&gt;&quot; &amp;gt;= 1  When the viminfo file is read or written.&lt;/span&gt;
@@ -1069,28 +1075,28 @@ git merge -s theirs merge_branch
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border-radius&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;nc&quot;&gt;.Btn--disabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;grey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border-radius&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;nc&quot;&gt;.Btn-secondary&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border-radius&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;nc&quot;&gt;.Btn-secondary--disabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;light-grey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border-radius&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/ad10c8d57ac2807bcfc8&quot;&gt;Play with this example in Sassmeister&lt;/a&gt;&lt;/p&gt;
@@ -1163,7 +1169,7 @@ git merge -s theirs merge_branch
 &lt;h3 id=&quot;single-class-generated-css&quot;&gt;Single Class Generated CSS&lt;/h3&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nc&quot;&gt;.Btn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.Btn--disabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.Btn-secondary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.Btn-secondary--disabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border-radius&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;nc&quot;&gt;.Btn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -1188,7 +1194,7 @@ git merge -s theirs merge_branch
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border-radius&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nc&quot;&gt;.Btn-secondary&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -1219,11 +1225,11 @@ git merge -s theirs merge_branch
 
 &lt;!--more--&gt;
 
-&lt;h2 id=&quot;vim&amp;#39;s-default-working-directory&quot;&gt;Vim&amp;#39;s Default Working Directory&lt;/h2&gt;
+&lt;h2 id=&quot;vim-39-s-default-working-directory&quot;&gt;Vim&amp;#39;s Default Working Directory&lt;/h2&gt;
 
 &lt;p&gt;By default Vim uses the directory that you opened Vim in as the default working directory. You can check the current working directory by running the command, &lt;code&gt;pwd&lt;/code&gt; (print working directory). Honestly, I don&amp;#39;t believe this is a bad default. It makes a lot of sense if you open Vim and stay in that project directory for the entirety of your working session, but it begins to breakdown with fairly typical use cases.&lt;/p&gt;
 
-&lt;h2 id=&quot;why-does-it-matter?&quot;&gt;Why does it matter?&lt;/h2&gt;
+&lt;h2 id=&quot;why-does-it-matter&quot;&gt;Why does it matter?&lt;/h2&gt;
 
 &lt;p&gt;Before we jump into the cases where the default working directory breaks down, why do we even care what Vim uses as the current working directory? The working directory is used for any Vim action that needs to know about the current file structure such as searching and file/directory based commands. This not only includes built in file searching solutions like Vim&amp;#39;s &lt;code&gt;find&lt;/code&gt; or &lt;code&gt;grep&lt;/code&gt; commands, but also search plugins like &lt;a href=&quot;https://github.com/kien/ctrlp.vim&quot;&gt;CtrlP&lt;/a&gt;, &lt;a href=&quot;https://github.com/wincent/command-t&quot;&gt;Command-T&lt;/a&gt;, and &lt;a href=&quot;https://github.com/junegunn/fzf&quot;&gt;fzf&lt;/a&gt;. If you use any sort of file search or fuzzy search, the working directory affects the outcome of the search. It determines where the searching begins (in combination with the path variable).&lt;/p&gt;
 
@@ -1404,18 +1410,18 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; &lt;span class
 &lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1px&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;black&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;250px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox--small&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox-title&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox-title--large&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2rem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nc&quot;&gt;.my-AwesomeBox.is-selected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;nl&quot;&gt;background-color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -1427,7 +1433,7 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; &lt;span class
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;a href=&quot;http://sassmeister.com/gist/a166888f44271c291c80&quot;&gt;Play with this example on Sassmeister&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;why?&quot;&gt;Why?&lt;/h2&gt;
+&lt;h2 id=&quot;why&quot;&gt;Why?&lt;/h2&gt;
 
 &lt;p&gt;While it might feel strange at first glance, give SUIT a shot (or at least another modular CSS variant like &lt;a href=&quot;http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/&quot;&gt;BEM&lt;/a&gt;). Writing CSS/Sass in this manner provides a number of great benefits:&lt;/p&gt;
 
@@ -1499,7 +1505,7 @@ autocmd &lt;span class=&quot;nb&quot;&gt;CursorMoved&lt;/span&gt; &lt;span class
     
       <item>
         <title>Database Associations- &quot;Has One&quot; vs &quot;Belongs To&quot;</title>
-        <description>&lt;h2 id=&quot;which-one-goes-where?&quot;&gt;Which One Goes Where?&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;which-one-goes-where&quot;&gt;Which One Goes Where?&lt;/h2&gt;
 
 &lt;p&gt;One of the most confusing database relationship questions for me was always when to use &lt;code&gt;has_one&lt;/code&gt; vs &lt;code&gt;belongs_to&lt;/code&gt;. The relationship is a simple one-to-one relationship, and if we think about it in terms of the models, it makes a lot of sense. For example, let&amp;#39;s say we have a &lt;code&gt;Dog&lt;/code&gt; model and an &lt;code&gt;Owner&lt;/code&gt; model. Immediately we can say the &lt;code&gt;Owner has_one Dog&lt;/code&gt; and the &lt;code&gt;Dog belongs_to Owner&lt;/code&gt;. In this case, the objects are familiar to us from our everyday life and it is easy to figure out. When the objects are more abstract like &lt;code&gt;Foo&lt;/code&gt; and &lt;code&gt;Bar&lt;/code&gt; it is much more difficult to determine. Let&amp;#39;s hold that thought for a moment.&lt;/p&gt;
 
@@ -1681,7 +1687,7 @@ WHERE id = bar.foo_id
     &lt;span class=&quot;nl&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$top-rows&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;nl&quot;&gt;margin-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bottom-rows&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$leftover&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;@else&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;based&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;uses&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;@else&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;based&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uses&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;nv&quot;&gt;$font-size&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$multiplier&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;nl&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;nv&quot;&gt;$line-height-base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$top-rows&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;

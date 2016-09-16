@@ -25,7 +25,7 @@
   
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/app-4ffdfe1c4d0483f04d5bb2764c0f8c0c.css">
+  <link rel="stylesheet" href="/assets/app-c13ede272fd61eadbbf4dd6166593c49.css">
 </head>
 
 
@@ -90,11 +90,17 @@
 
 <p><img src="http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png" class="jl-Image"></p>
 
-<!--more-->
-
 <p>This post will serve mostly as a reference and primer for your built in debugging options in Vim. The first thing I will go over is Vimscript&#39;s built in debugger, which you can use via the <code>debug</code> command.</p>
 
-<h2 id="vimscript&#39;s-debugger">Vimscript&#39;s Debugger</h2>
+<!--more-->
+
+<h4 id="updates">Updates</h4>
+
+<ul>
+<li><em>9/15/2016</em>: Updated the verbose command to <code>-V[n]</code> thanks to <a href="https://twitter.com/Nitrodist/status/776516287472295936">Mark Campbell</a>.</li>
+</ul>
+
+<h2 id="vimscript-39-s-debugger">Vimscript&#39;s Debugger</h2>
 
 <p>You can start up Vim in its debug mode with the <code>-D</code> argument.</p>
 <div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" opens vim in debug mode</span>
@@ -163,7 +169,7 @@
 <span class="k">set</span> <span class="k">verbose</span><span class="p">=</span><span class="m">9</span>
 
 <span class="c">" set verbose on startup</span>
-<span class="k">vim</span> <span class="p">-</span>V <span class="m">9</span> <span class="k">file</span><span class="p">.</span>text
+<span class="k">vim</span> <span class="p">-</span>V9 <span class="k">file</span><span class="p">.</span>text
 </code></pre></div>
 <p>You can set verbose to any value from 0-15, where 0 is no extra output, and 15 gives you output for everything Vim is doing. Each number progressively adds more output and insight into what Vim is doing:</p>
 <div class="highlight"><pre><code class="language-vimscript" data-lang="vimscript"><span class="c">" &gt;= 1  When the viminfo file is read or written.</span>

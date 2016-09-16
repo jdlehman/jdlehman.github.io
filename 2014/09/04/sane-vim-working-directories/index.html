@@ -25,7 +25,7 @@
   
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/app-4ffdfe1c4d0483f04d5bb2764c0f8c0c.css">
+  <link rel="stylesheet" href="/assets/app-c13ede272fd61eadbbf4dd6166593c49.css">
 </head>
 
 
@@ -90,11 +90,11 @@
 
 <!--more-->
 
-<h2 id="vim&#39;s-default-working-directory">Vim&#39;s Default Working Directory</h2>
+<h2 id="vim-39-s-default-working-directory">Vim&#39;s Default Working Directory</h2>
 
 <p>By default Vim uses the directory that you opened Vim in as the default working directory. You can check the current working directory by running the command, <code>pwd</code> (print working directory). Honestly, I don&#39;t believe this is a bad default. It makes a lot of sense if you open Vim and stay in that project directory for the entirety of your working session, but it begins to breakdown with fairly typical use cases.</p>
 
-<h2 id="why-does-it-matter?">Why does it matter?</h2>
+<h2 id="why-does-it-matter">Why does it matter?</h2>
 
 <p>Before we jump into the cases where the default working directory breaks down, why do we even care what Vim uses as the current working directory? The working directory is used for any Vim action that needs to know about the current file structure such as searching and file/directory based commands. This not only includes built in file searching solutions like Vim&#39;s <code>find</code> or <code>grep</code> commands, but also search plugins like <a href="https://github.com/kien/ctrlp.vim">CtrlP</a>, <a href="https://github.com/wincent/command-t">Command-T</a>, and <a href="https://github.com/junegunn/fzf">fzf</a>. If you use any sort of file search or fuzzy search, the working directory affects the outcome of the search. It determines where the searching begins (in combination with the path variable).</p>
 

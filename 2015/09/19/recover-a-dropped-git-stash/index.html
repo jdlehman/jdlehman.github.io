@@ -25,7 +25,7 @@
   
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/app-4ffdfe1c4d0483f04d5bb2764c0f8c0c.css">
+  <link rel="stylesheet" href="/assets/app-c13ede272fd61eadbbf4dd6166593c49.css">
 </head>
 
 
@@ -117,7 +117,7 @@ git checkout 666d927cfc3062887b45eb8cb63b121b5ae68c8e
 <span class="c"># or</span>
 git log --graph --oneline --decorate <span class="k">$(</span>git fsck --no-reflogs | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>
 </code></pre></div>
-<h2 id="git-repository-browser-(gui-tool)">Git Repository Browser (GUI tool)</h2>
+<h2 id="git-repository-browser-gui-tool">Git Repository Browser (GUI tool)</h2>
 
 <p>You can also get the dangling commit hashes like the above strategy, but send them to <a href="https://git-scm.com/docs/gitk"><code>gitk</code></a> to open them in the git repository browser, which is a GUI tool.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">gitk --all <span class="k">$(</span>git fsck --no-reflogs | awk <span class="s1">'/dangling commit/ {print $3}'</span><span class="k">)</span>

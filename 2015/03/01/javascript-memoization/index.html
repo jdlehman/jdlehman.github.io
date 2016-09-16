@@ -25,7 +25,7 @@
   
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/app-4ffdfe1c4d0483f04d5bb2764c0f8c0c.css">
+  <link rel="stylesheet" href="/assets/app-c13ede272fd61eadbbf4dd6166593c49.css">
 </head>
 
 
@@ -92,7 +92,7 @@
 
 <!--more-->
 
-<h2 id="what-is-memoization?">What is memoization?</h2>
+<h2 id="what-is-memoization">What is memoization?</h2>
 
 <p>Memoization is an optimization technique where expensive function calls are cached such that the result can be immediately returned the next time the function is called with the same arguments. This method of optimization is not unique to JavaScript and is quite common in many programming languages. It is especially useful in recursive functions as calls are more likely to call with the same arguments while recursing. Take a recursive <code>factorial</code> function for example:</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">factorial</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
@@ -102,7 +102,7 @@
 </code></pre></div>
 <p>If we call <code>factorial(3)</code>, the function calls <code>factorial(3)</code>, <code>factorial(2)</code>, and <code>factorial(1)</code> will be called. If we memoize this function, another call to <code>factorial(3)</code> will not need to recurse, it can simply return the result that it has cached. The real benefit is if we call <code>factorial(4)</code>, we will short circuit our recursion, because <code>factorial(3)</code> is already cached, so we do not need to recurse any further, we can just use that result.</p>
 
-<h2 id="sounds-great,-sign-me-up!">Sounds great, sign me up!</h2>
+<h2 id="sounds-great-sign-me-up">Sounds great, sign me up!</h2>
 
 <p>We can simply create a <code>memoize</code> function that takes another function and modifies it to memoize calls.</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">memoize</span><span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
@@ -222,7 +222,7 @@
 </code></pre></div>
 <p><a href="https://babeljs.io/repl/#?experimental=true&amp;evaluate=true&amp;loose=false&amp;spec=false&amp;playground=true&amp;code=function%20memoize(func%2C%20depsFunc)%20%7B%0A%20%20var%20cache%20%3D%20%7B%7D%3B%0A%20%20return%20function()%20%7B%0A%20%20%20%20var%20key%20%3D%20JSON.stringify(%5BdepsFunc()%2C%20arguments%5D)%3B%0A%20%20%20%20if(cache%5Bkey%5D)%20%7B%0A%20%20%20%20%20%20return%20cache%5Bkey%5D%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20var%20val%20%3D%20func.apply(this%2C%20arguments)%3B%0A%20%20%20%20%20%20cache%5Bkey%5D%20%3D%20val%3B%0A%20%20%20%20%20%20return%20val%3B%0A%20%20%20%20%7D%0A%20%20%7D%3B%0A%7D%0A%20%20%0Afunction%20Person(firstName%2C%20lastName)%20%7B%0A%20%20this.firstName%20%3D%20firstName%3B%0A%20%20this.lastName%20%3D%20lastName%3B%0A%0A%20%20this.fullName%20%3D%20memoize(%0A%20%20%20%20%2F%2F%20calculation%0A%20%20%20%20function(title)%20%7B%0A%20%20%20%20%20%20console.log(&#x27;working...&#x27;)%3B%0A%20%20%20%20%20%20return%20title%20%2B%20&#x27;%20&#x27;%20%2B%20this.firstName%20%2B%20&#x27;%20&#x27;%20%2B%20this.lastName%3B%0A%20%20%20%20%7D%2C%20%0A%20%20%20%20%2F%2F%20dependencies%0A%20%20%20%20function()%20%7B%20%0A%20%20%20%20%20%20return%20%5Bthis.firstName%2C%20this.lastName%5D%3B%20%0A%20%20%20%20%7D.bind(this))%3B%0A%7D%0A%0Avar%20person%20%3D%20new%20Person(&#x27;Jonathan&#x27;%2C%20&#x27;Lehman&#x27;)%3B%0Aconsole.log(person.fullName(&#x27;Mr.&#x27;))%3B%0Aconsole.log(person.fullName(&#x27;Mr.&#x27;))%3B%0Aconsole.log(person.fullName(&#x27;Mister&#x27;))%3B%0Aperson.firstName%20%3D%20&#x27;Jon&#x27;%3B%0Aconsole.log(person.fullName(&#x27;Mr.&#x27;))%3B">Play with this example in Babel</a></p>
 
-<h2 id="careful,-memoization-is-not-a-magic-bullet">Careful, memoization is not a magic bullet</h2>
+<h2 id="careful-memoization-is-not-a-magic-bullet">Careful, memoization is not a magic bullet</h2>
 
 <p>Keep in mind that memoization does not make sense for all function calls. There is a higher memory overhead since we must store our cached results so that we can later recall them as well as an added complexity of using memoization, so it really only makes sense for functions that are computationally expensive.</p>
 

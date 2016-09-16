@@ -25,7 +25,7 @@
   
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/app-4ffdfe1c4d0483f04d5bb2764c0f8c0c.css">
+  <link rel="stylesheet" href="/assets/app-c13ede272fd61eadbbf4dd6166593c49.css">
 </head>
 
 
@@ -94,7 +94,7 @@
 
 <p>There are several strategies for adding modern JavaScript tooling to the Rails stack, with each technique somewhere on the spectrum of following the &quot;Rails way&quot; to completely removing sprockets and the asset pipeline from the process in favor of tools like <a href="https://webpack.github.io/"><code>webpack</code></a> from the JS community. While, I highly recommend <code>webpack</code> as a build tool, this article will focus on incorporating new JS tooling while still utilizing sprockets and the asset pipeline. This will be the path of least resistance and probably the easiest way to get ES2015 support into Rails, but I encourage you to play with these tools and find the solution that works BEST for your use case.</p>
 
-<h2 id="adding-support-for-es2015/es6">Adding Support for ES2015/ES6</h2>
+<h2 id="adding-support-for-es2015-es6">Adding Support for ES2015/ES6</h2>
 
 <p>For those of you that like to speed ahead, I have tried to include most of the steps as bullets with the surrounding text providing details and context.</p>
 
@@ -191,16 +191,16 @@
     <span class="s2">"experimentalObjectRestSpread"</span><span class="p">:</span> <span class="kc">true</span>
   <span class="p">},</span>
 
-  <span class="s2">"parser"</span><span class="err">:</span> <span class="s2">"babel-eslint"</span><span class="p">,</span>
+  <span class="s2">"parser"</span><span class="p">:</span> <span class="s2">"babel-eslint"</span><span class="p">,</span>
 
-  <span class="s2">"env"</span><span class="err">:</span> <span class="p">{</span>
-    <span class="s2">"es6"</span><span class="err">:</span> <span class="kc">true</span>
+  <span class="s2">"env"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"es6"</span><span class="p">:</span> <span class="kc">true</span>
   <span class="p">},</span>
 
-  <span class="s2">"rules"</span><span class="err">:</span> <span class="p">{</span>
-    <span class="s2">"accessor-pairs"</span><span class="err">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="s2">"arrow-spacing"</span><span class="err">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span> <span class="s2">"before"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="s2">"after"</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}],</span>
-    <span class="s2">"block-spacing"</span><span class="err">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"always"</span><span class="p">],</span>
+  <span class="s2">"rules"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"accessor-pairs"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"arrow-spacing"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span> <span class="s2">"before"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="s2">"after"</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}],</span>
+    <span class="s2">"block-spacing"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"always"</span><span class="p">],</span>
     <span class="c1">// ...</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -210,9 +210,9 @@
 </span><span class="p">{</span><span class="w">
   </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
   </span><span class="s2">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"lint: "</span><span class="err">$(npm</span><span class="w"> </span><span class="err">bin)/eslint</span><span class="w"> </span><span class="err">./app/assets/javascripts/browserify"</span><span class="w">
-  </span><span class="err">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
+    </span><span class="s2">"lint: "</span><span class="err">$(npm</span><span class="w"> </span><span class="err">bin)/eslint</span><span class="w"> </span><span class="err">./app/assets/javascripts/browserify</span><span class="s2">"
+  }
+}
 </span></code></pre></div>
 <p>This linting setup will help ensure that typos and errors do not make their way to production. You might want to make sure there are no linting errors before committing code. It is easy to include this in a continuous integration setup and prevent deploys when linting or tests fail. Speaking of testing...</p>
 
