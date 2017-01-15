@@ -17,7 +17,7 @@ HTML tables can be frustrating to use. They require a lot of boilerplate and nes
 
 <!--more-->
 
-First off, the solution will be written with [Sass](http://sass-lang.com/) in a modular fashion using [SUIT CSS](/2014/08/25/modular-css-with-suitcss/). We will use a few Sass libraries to aid us in our task. [Bourbon](http://bourbon.io/) for help generating the necessary Flexbox CSS vendor prefixes, and [Breakpoint](http://breakpoint-sass.com/) to help with our media queries. If you prefer to work in CSS, feel free to copy the generated CSS from the links to the [Sassmeister](http://sassmeister.com/gist/b38aca96fc6024a28514) examples.
+First off, the solution will be written with [Sass](http://sass-lang.com/) in a modular fashion using [SUIT CSS](/2014/08/25/modular-css-with-suitcss/). We will use a few Sass libraries to aid us in our task. [autoprefixer](https://autoprefixer.github.io/) for help generating the necessary Flexbox CSS vendor prefixes, and [Breakpoint](http://breakpoint-sass.com/) to help with our media queries. If you prefer to work in CSS, feel free to copy the generated CSS from the links to the [Sassmeister](http://sassmeister.com/gist/b38aca96fc6024a28514) examples.
 
 All we need is 3 basic classes to construct our `Table` component. First, we need the `Table` class, which will use Flexbox to make all its children (rows) flow by column. Next we need a `Table-row` class, which will use Flexbox to make all its children (row items/ columns) flow by row without wrapping. Finally, we need the `Table-row-item` class, which is essentially a cell in the table component. Now all we need is a `Table-header` class that we can add to any row element to give it the styling of a header. Given these criteria, we can write the HTML and Sass for our component as shown below.
 
@@ -72,17 +72,16 @@ All we need is 3 basic classes to construct our `Table` component. First, we nee
 ```
 
 ```sass
-@import "bourbon/bourbon";
 @import "breakpoint";
 
 .Table {
-  $dark-color: #f2f2f2;
   $light-color: #ffffff;
+  $dark-color: #f2f2f2;
   $md: 500px;
 
-  @include display(flex);
-  @include flex-flow(column nowrap);
-  @include justify-content(space-between);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
   border: 1px solid $dark-color;
   font-size: 1rem;
   margin: 0.5rem;
@@ -100,20 +99,19 @@ All we need is 3 basic classes to construct our `Table` component. First, we nee
   &-row {
     width: 100%;
     &:nth-of-type(even) { background-color: $dark-color; }
-    &:nth-of-type(odd) { background-color: $light-color; }
+     &:nth-of-type(odd) { background-color: $light-color; }
     @include breakpoint($md) {
-      @include display(flex);
-      @include flex-flow(row nowrap);
+      display: flex;
+      flex-flow: row nowrap;
       &:nth-of-type(even) { background-color: $light-color; }
       &:nth-of-type(odd) { background-color: $dark-color; }
     }
     // .Table-row-item
     &-item {
-      @include display(flex);
-      @include flex-flow(row nowrap);
-      @include flex-grow(1);
-      @include flex-basis(0);
-      @include word-wrap;
+      display: flex;
+      flex-flow: row nowrap;
+      flex-grow: 1;
+      flex-basis: 0;
       padding: 0.5em;
       word-break: break-word;
       &:before {
@@ -122,7 +120,7 @@ All we need is 3 basic classes to construct our `Table` component. First, we nee
         font-weight: 700;
       }
       @include breakpoint($md) {
-        border: 1px solid #fff;
+        border: 1px solid $light-color;
         padding: 0.5em;
         &:before { content: none; }
       }
@@ -180,7 +178,7 @@ The problem with our table component is that every column is the same width. Wha
 // generate Flexbox grow-rate utility classes
 @for $i from 1 through 10 {
   .u-Flex-grow#{$i} {
-    @include flex-grow($i);
+    flex-grow: i;
   }
 }
 ```
