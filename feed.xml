@@ -295,6 +295,11 @@ git checkout 666d927cfc3062887b45eb8cb63b121b5ae68c8e
 &lt;span class=&quot;c&quot;&gt;# or&lt;/span&gt;
 git log --graph --oneline --decorate &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git fsck --no-reflogs | awk &lt;span class=&quot;s1&quot;&gt;&#39;/dangling commit/ {print $3}&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also filter by date using the &lt;code&gt;until&lt;/code&gt; and &lt;code&gt;since&lt;/code&gt; arguments.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;git show --oneline --since&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;2017-01-01&#39;&lt;/span&gt; --until&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;2017-02-01&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git fsck --no-reflogs | awk &lt;span class=&quot;s1&quot;&gt;&#39;/dangling commit/ {print $3}&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# or&lt;/span&gt;
+git log --graph --oneline --decorate --since&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;2017-01-01&#39;&lt;/span&gt; --until&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;2017-02-01&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git fsck --no-reflogs | awk &lt;span class=&quot;s1&quot;&gt;&#39;/dangling commit/ {print $3}&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id=&quot;git-repository-browser-gui-tool&quot;&gt;Git Repository Browser (GUI tool)&lt;/h2&gt;
 
 &lt;p&gt;You can also get the dangling commit hashes like the above strategy, but send them to &lt;a href=&quot;https://git-scm.com/docs/gitk&quot;&gt;&lt;code&gt;gitk&lt;/code&gt;&lt;/a&gt; to open them in the git repository browser, which is a GUI tool.&lt;/p&gt;
