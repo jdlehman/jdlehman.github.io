@@ -51,6 +51,14 @@ git show --oneline $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
 git log --graph --oneline --decorate $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
 ```
 
+You can also filter by date using the `until` and `since` arguments.
+
+```sh
+git show --oneline --since='2017-01-01' --until='2017-02-01' $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
+# or
+git log --graph --oneline --decorate --since='2017-01-01' --until='2017-02-01' $(git fsck --no-reflogs | awk '/dangling commit/ {print $3}')
+```
+
 ## Git Repository Browser (GUI tool)
 
 You can also get the dangling commit hashes like the above strategy, but send them to [`gitk`](https://git-scm.com/docs/gitk) to open them in the git repository browser, which is a GUI tool.
