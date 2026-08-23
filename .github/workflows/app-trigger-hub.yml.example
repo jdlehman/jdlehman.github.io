@@ -1,4 +1,4 @@
-# Copy this workflow into EACH private app repo (e.g. jdlehman/water_calculator/.github/workflows/trigger-hub.yml)
+# Copy this workflow into EACH private app repo (e.g. jdlehman/water_drop_bench/.github/workflows/trigger-hub.yml)
 # It triggers the hub to rebuild whenever the app pushes to main.
 # Requires a PAT stored as secret HUB_PAT in the private app repo with repo scope,
 # or a GitHub App token with access to dispatch on jdlehman/jdlehman.github.io.
@@ -20,4 +20,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.HUB_PAT }}" \
             https://api.github.com/repos/jdlehman/jdlehman.github.io/dispatches \
-            -d '{"event_type":"app_updated","client_payload":{"app":"water_calculator"}}'
+            -d '{"event_type":"app_updated","client_payload":{"app":"water_drop_bench"}}'

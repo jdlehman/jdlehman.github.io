@@ -54,7 +54,6 @@ jobs:
         continue-on-error: true
 
       - name: Build water_drop_bench
-        if: ${{ hashFiles('/tmp/apps/water_drop_bench/package.json') != '' }}
         working-directory: /tmp/apps/water_drop_bench
         run: |
           if [ -f package.json ]; then

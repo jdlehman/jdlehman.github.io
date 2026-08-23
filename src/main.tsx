@@ -10,6 +10,9 @@ const router = createBrowserRouter([
   // Fallback route for hub dev: real /water_calculator will be a static
   // directory from the private app's build after deploy. Keep this for
   // local `npm run dev` before the private repo exists.
+  { path: '/water_drop_bench', element: <WaterCalculator /> },
+  { path: '/water_drop_bench/*', element: <WaterCalculator /> },
+  // legacy alias — keep old link alive
   { path: '/water_calculator', element: <WaterCalculator /> },
   { path: '/water_calculator/*', element: <WaterCalculator /> },
 ])

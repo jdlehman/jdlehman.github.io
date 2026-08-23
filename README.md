@@ -5,12 +5,12 @@ Vite + React + Tailwind hub for `inlehmansterms.net` (GitHub Pages, `jdlehman.gi
 ## Architecture
 
 - This repo is the **hub**: landing page at `/`, and aggregator for sub-apps.
-- Each app (e.g. `/water_calculator`) lives in **its own private repo**, any stack, any build tool. The hub's deploy workflow checks it out, builds it, and copies its static output to `dist/<slug>`.
+- Each app (e.g. `/water_drop_bench`) lives in **its own private repo**, any stack, any build tool. The hub's deploy workflow checks it out, builds it, and copies its static output to `dist/<slug>`.
 - No Jekyll/Ruby. Fully client-side.
 
 ```
 jdlehman.github.io            (public hub)  -> https://inlehmansterms.net/
-jdlehman/water-calculator     (private)     -> https://inlehmansterms.net/water_calculator
+jdlehman/water_drop_bench   (private)     -> https://inlehmansterms.net/water_drop_bench
 jdlehman/another-app          (private)     -> https://inlehmansterms.net/another_app
 ```
 
@@ -50,6 +50,6 @@ See [APPS.md](./APPS.md) — full requirements for any private app repo (npm `bu
 
 Old Jekyll files (`_config.yml`, `_posts`, `_layouts`, `Gemfile`, etc.) are obsolete. After verifying deploy, delete them. Keep `CNAME` (now at `public/CNAME`).
 
-## Water calculator
+## Water Drop Bench
 
-Current `src/pages/WaterCalculator.tsx` is a fallback stub. Once `jdlehman/water-calculator` exists, its build overwrites `/water_calculator` on deploy. Replace its heuristic formula with the exact Meta AI build logic (https://www.meta.ai/share/a/81bfdb45-bdb2-423c-8506-2c147da7a1e3) when you export it.
+`jdlehman/water_drop_bench` (private, Vite + Svelte) is the Coffee Water Lab — GH/KH drops, JL Water 58/27 Aviary base, share links. `src/pages/WaterCalculator.tsx` is the hub fallback stub; on deploy the private app's `dist` overwrites `/water_drop_bench` (legacy `/water_calculator` kept as alias). See [APPS.md](./APPS.md).
