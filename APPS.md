@@ -10,6 +10,7 @@ This hub (`jdlehman.github.io` → `inlehmansterms.net`) aggregates **private** 
 - [ ] Build outputs to `dist/` (configurable via `src/apps.config.ts` → `buildDir`)
 - [ ] `vite.config.ts` (if Vite) sets `base: '/<slug>/'`
 - [ ] Added to hub: entry in `src/apps.config.ts` + 3-step block in `.github/workflows/deploy.yml`
+- [ ] `index.html` has share preview metadata (OG/Twitter) + per-app icons (`favicon.svg`, `apple-touch-icon.png`, `og-image.png`, see §9)
 - [ ] Optional: trigger workflow in private repo to auto-rebuild hub on push
 
 If all boxes are checked, hub's deploy will pull, build, and copy `dist → dist/<slug>` on every `master` push.
@@ -175,7 +176,55 @@ export const apps: AppConfig[] = [
 
 ---
 
+## 9. Share preview / link metadata (required)
+
+Apps are shared in iMessage, Messenger, Slack, X, etc. Each app's `index.html` **must** include Open Graph + Twitter preview tags so links unfurl correctly when served at `https://inlehmansterms.net/<slug>/`. The hub does not inject this — your private app's build output must contain it.
+
+**Required tags in your app's `index.html` `<head>`** (Vite: `index.html` at repo root; framework: ensure they survive the build):
+
+```html
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Water Drop Bench — Coffee Water Lab</title>
+  <meta name="description" content="GH/KH drops for coffee — GH 58/27 Aviary base, share links, calibration." />
+
+  <!-- Open Graph (iMessage, Messenger, Slack, Facebook, LinkedIn) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://inlehmansterms.net/water_drop_bench/" />
+  <meta property="og:title" content="Water Drop Bench — Coffee Water Lab" />
+  <meta property="og:description" content="GH/KH drops for coffee — GH 58/27 Aviary base, share links, calibration." />
+  <meta property="og:image" content="https://inlehmansterms.net/water_drop_bench/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Water Drop Bench — Coffee Water Lab" />
+  <meta name="twitter:description" content="GH/KH drops for coffee — GH 58/27 Aviary base, share links, calibration." />
+  <meta name="twitter:image" content="https://inlehmansterms.net/water_drop_bench/og-image.png" />
+
+  <link rel="icon" href="/water_drop_bench/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/water_drop_bench/favicon-32x32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/water_drop_bench/apple-touch-icon.png" sizes="180x180" />
+</head>
+```
+
+**Rules:**
+
+* **Icons are per-app** — each `public/` must ship its own `favicon.svg` + `favicon-32x32.png` + `apple-touch-icon.png` (180×180) under the slug. Don't reuse the hub's `/vite.svg` or root favicon — link as `/<slug>/favicon.svg` so the tab shows the app's icon when visited at `inlehmansterms.net/<slug>/`.
+* `og:url` and `og:image` must be **absolute** `https://inlehmansterms.net/<slug>/...` — relative URLs break previews.
+* `og:image` should be `1200×630` PNG/JPG under your app's `public/` (e.g. `public/og-image.png` → built to `dist/og-image.png` → served at `/<slug>/og-image.png`). Don't point to hub root.
+* `og:title`/`twitter:title` should be human-readable (app name), `description` ≤ 160 chars.
+* For Vite, keep `base: '/<slug>/'` so `og:image` path resolves, but still use absolute URL in the meta for crawlers.
+* Validate with: [opengraph.xyz](https://www.opengraph.xyz/), [X Card Validator](https://cards-dev.twitter.com/validator), or `curl -s https://inlehmansterms.net/<slug>/ | grep -i og:` after deploy.
+
+Don't rely on the hub fallback `WaterCalculator.tsx` for previews — once the private build overwrites `/<slug>`, only your app's `index.html` metadata is seen.
+
+---
+
 ## Quick start for a new app `jdlehman/foo`
+
 
 ```bash
 # 1. create private repo jdlehman/foo, clone to ../foo
