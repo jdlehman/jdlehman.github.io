@@ -26,6 +26,10 @@ npm run build && npm run preview
 
 ## Adding a new app
 
+See [APPS.md](./APPS.md) — full requirements for any private app repo (npm `build` → `dist`, `base: '/<slug>/'`, hub registration, secrets).
+
+## Adding a new app (quick)
+
 1. Create a private repo (e.g. `jdlehman/my-app`) with any stack that builds to `dist/index.html` (Vite, Astro, Next static export, etc.).
 2. Add it to `src/apps.config.ts`.
 3. Duplicate the 3 steps in `.github/workflows/deploy.yml` for the new slug (checkout → build → copy).
