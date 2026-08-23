@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages SPA fallback: preserve path and reload via index.html
+      // For file-per-route apps (e.g. /water_calculator/index.html) this is a fallback.
+      // If the private app's static file exists, this 404 won't be hit.
+      sessionStorage.redirect = location.href;
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/'" />
+  </head>
+  <body>Redirecting…</body>
+</html>

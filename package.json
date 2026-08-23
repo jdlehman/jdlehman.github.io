@@ -1,0 +1,27 @@
+{
+  "name": "inlehmansterms",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.8",
+    "tailwindcss": "^3.4.10",
+    "postcss": "^8.4.45",
+    "autoprefixer": "^10.4.20"
+  }
+}

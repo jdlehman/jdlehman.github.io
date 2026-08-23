@@ -1,0 +1,108 @@
+name: Deploy hub to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [app_updated]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout hub
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install hub deps
+        run: npm ci
+
+      - name: Build hub
+        run: npm run build
+
+      # --- Private app integration ---
+      # Each app is a private repo that builds to static HTML. We check it out
+      # with a PAT, build it, and copy its output into the hub's dist/<slug>.
+      # Apps can use any stack (Vite, Astro, Next static, plain) — just ensure
+      # the build output dir matches the config. If a repo/secret is missing,
+      # we keep the hub's fallback page for that slug.
+
+      - name: Checkout water-calculator (private)
+        if: ${{ secrets.APPS_PAT != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: jdlehman/water_calculator
+          token: ${{ secrets.APPS_PAT }}
+          path: /tmp/apps/water-calculator
+          # uncomment if you use a non-default branch:
+          # ref: main
+        continue-on-error: true
+
+      - name: Build water-calculator
+        if: ${{ hashFiles('/tmp/apps/water-calculator/package.json') != '' }}
+        working-directory: /tmp/apps/water-calculator
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            npm run build
+          fi
+          # If the app is plain HTML (no build), just copy the repo root
+          if [ ! -d dist ] && [ -f index.html ]; then
+            mkdir -p dist
+            cp -r index.html dist/ 2>/dev/null || true
+          fi
+
+      - name: Merge water-calculator into hub dist
+        run: |
+          if [ -d /tmp/apps/water-calculator/dist ]; then
+            mkdir -p dist/water_calculator
+            # Copy built app; ensure it has an index.html at the slug root
+            cp -r /tmp/apps/water-calculator/dist/* dist/water_calculator/
+            echo "Merged water-calculator -> dist/water_calculator"
+            ls -R dist/water_calculator | head -n 50
+          else
+            echo "No water-calculator build found — keeping hub fallback"
+          fi
+
+      # --- Add more apps by duplicating the 3 steps above ---
+      # Example:
+      # - Checkout jdlehman/another-app -> /tmp/apps/another-app
+      # - Build it
+      # - cp -r /tmp/apps/another-app/dist/* dist/another_app/
+
+      - name: Ensure CNAME
+        run: cp public/CNAME dist/CNAME 2>/dev/null || echo "inlehmansterms.net" > dist/CNAME
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
