@@ -47,13 +47,13 @@ jobs:
         with:
           repository: jdlehman/water_drop_bench
           token: ${{ secrets.APPS_PAT }}
-          path: /tmp/apps/water_drop_bench
+          path: apps/water_drop_bench
           # uncomment if you use a non-default branch:
           # ref: main
         continue-on-error: true
 
       - name: Build water_drop_bench
-        working-directory: /tmp/apps/water_drop_bench
+        working-directory: apps/water_drop_bench
         run: |
           if [ -f package.json ]; then
             npm ci
@@ -67,10 +67,10 @@ jobs:
 
       - name: Merge water_drop_bench into hub dist
         run: |
-          if [ -d /tmp/apps/water_drop_bench/dist ]; then
+          if [ -d apps/water_drop_bench/dist ]; then
             mkdir -p dist/water_drop_bench
             # Copy built app; ensure it has an index.html at the slug root
-            cp -r /tmp/apps/water_drop_bench/dist/* dist/water_drop_bench/
+            cp -r apps/water_drop_bench/dist/* dist/water_drop_bench/
             echo "Merged water_drop_bench -> dist/water_drop_bench"
             ls -R dist/water_drop_bench | head -n 50
           else
@@ -79,9 +79,9 @@ jobs:
 
       # --- Add more apps by duplicating the 3 steps above ---
       # Example:
-      # - Checkout jdlehman/another-app -> /tmp/apps/another-app
+      # - Checkout jdlehman/another-app -> apps/another-app
       # - Build it
-      # - cp -r /tmp/apps/another-app/dist/* dist/another_app/
+      # - cp -r apps/another-app/dist/* dist/another_app/
 
       - name: Ensure CNAME
         run: cp public/CNAME dist/CNAME 2>/dev/null || echo "inlehmansterms.net" > dist/CNAME
