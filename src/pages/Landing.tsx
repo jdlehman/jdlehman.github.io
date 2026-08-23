@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { apps } from '../apps.config'
 
 export default function Landing() {
@@ -17,8 +16,8 @@ export default function Landing() {
           <ul className="grid gap-3">
             {apps.map((app) => (
               <li key={app.slug}>
-                <Link
-                  to={`/${app.slug}`}
+                <a
+                  href={`/${app.slug}/`}
                   className="group flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-5 py-4 hover:border-zinc-900 hover:shadow-sm transition"
                 >
                   <div>
@@ -26,7 +25,7 @@ export default function Landing() {
                     <div className="text-[13px] leading-5 text-zinc-500">{app.description}</div>
                   </div>
                   <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 group-hover:border-zinc-900 group-hover:bg-zinc-900 group-hover:text-white transition" aria-hidden>→</span>
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
