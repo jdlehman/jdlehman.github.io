@@ -42,20 +42,20 @@ jobs:
       # the build output dir matches the config. If a repo/secret is missing,
       # we keep the hub's fallback page for that slug.
 
-      - name: Checkout water-calculator (private)
+      - name: Checkout water_drop_bench (private)
         if: ${{ secrets.APPS_PAT != '' }}
         uses: actions/checkout@v4
         with:
-          repository: jdlehman/water_calculator
+          repository: jdlehman/water_drop_bench
           token: ${{ secrets.APPS_PAT }}
-          path: /tmp/apps/water-calculator
+          path: /tmp/apps/water_drop_bench
           # uncomment if you use a non-default branch:
           # ref: main
         continue-on-error: true
 
-      - name: Build water-calculator
-        if: ${{ hashFiles('/tmp/apps/water-calculator/package.json') != '' }}
-        working-directory: /tmp/apps/water-calculator
+      - name: Build water_drop_bench
+        if: ${{ hashFiles('/tmp/apps/water_drop_bench/package.json') != '' }}
+        working-directory: /tmp/apps/water_drop_bench
         run: |
           if [ -f package.json ]; then
             npm ci
@@ -67,16 +67,16 @@ jobs:
             cp -r index.html dist/ 2>/dev/null || true
           fi
 
-      - name: Merge water-calculator into hub dist
+      - name: Merge water_drop_bench into hub dist
         run: |
-          if [ -d /tmp/apps/water-calculator/dist ]; then
-            mkdir -p dist/water_calculator
+          if [ -d /tmp/apps/water_drop_bench/dist ]; then
+            mkdir -p dist/water_drop_bench
             # Copy built app; ensure it has an index.html at the slug root
-            cp -r /tmp/apps/water-calculator/dist/* dist/water_calculator/
-            echo "Merged water-calculator -> dist/water_calculator"
-            ls -R dist/water_calculator | head -n 50
+            cp -r /tmp/apps/water_drop_bench/dist/* dist/water_drop_bench/
+            echo "Merged water_drop_bench -> dist/water_drop_bench"
+            ls -R dist/water_drop_bench | head -n 50
           else
-            echo "No water-calculator build found — keeping hub fallback"
+            echo "No water_drop_bench build found — keeping hub fallback"
           fi
 
       # --- Add more apps by duplicating the 3 steps above ---

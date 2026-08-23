@@ -15,10 +15,10 @@ export interface AppConfig {
 
 export const apps: AppConfig[] = [
   {
-    slug: 'water_calculator',
-    title: 'Water Calculator',
-    description: 'Daily hydration estimate based on weight, activity, and climate.',
-    repo: 'jdlehman/water_calculator',
+    slug: 'water_drop_bench',
+    title: 'Water Drop Bench',
+    description: 'Drop Bench — Coffee Water Lab. GH/KH drops, JL Water 58/27 Aviary base, share links.',
+    repo: 'jdlehman/water_drop_bench',
     buildDir: 'dist',
   },
   // Add more apps here:
