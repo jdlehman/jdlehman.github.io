@@ -1,15 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1200" height="8" fill="#18181b"/>
-  <text x="60" y="140" font-family="system-ui, sans-serif" font-size="56" font-weight="700" letter-spacing="-1.5" fill="#18181b">In Lehman&apos;s Terms</text>
-  <text x="60" y="190" font-family="system-ui, sans-serif" font-size="20" fill="#52525b">Jonathan Lehman — notes, tools, and small experiments.</text>
-  <rect x="60" y="240" width="1080" height="1" fill="#e4e4e7"/>
-  <g transform="translate(60,280)">
-    <rect width="340" height="280" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
-    <text x="24" y="40" font-family="system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="1" fill="#18181b">TOOLS</text>
-    <text x="24" y="80" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#18181b">Water Drop Bench</text>
-    <text x="24" y="105" font-family="system-ui, sans-serif" font-size="13" fill="#52525b">Coffee Water Lab — GH/KH drops</text>
-    <text x="24" y="240" font-family="monospace" font-size="11" fill="#71717a">inlehmansterms.net/water_drop_bench</text>
-  </g>
+  <text x="60" y="300" font-family="system-ui, sans-serif" font-size="64" font-weight="700" letter-spacing="-2" fill="#18181b">In Lehman&apos;s Terms</text>
+  <text x="60" y="350" font-family="system-ui, sans-serif" font-size="22" fill="#52525b">Notes, tools, and small experiments.</text>
   <text x="60" y="600" font-family="monospace" font-size="11" fill="#a1a1aa">inlehmansterms.net</text>
 </svg>
