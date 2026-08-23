@@ -43,7 +43,6 @@ jobs:
       # we keep the hub's fallback page for that slug.
 
       - name: Checkout water_drop_bench (private)
-        if: ${{ secrets.APPS_PAT != '' }}
         uses: actions/checkout@v4
         with:
           repository: jdlehman/water_drop_bench
