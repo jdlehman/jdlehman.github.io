@@ -77,6 +77,37 @@ jobs:
             echo "No water_drop_bench build found — keeping hub fallback"
           fi
 
+      - name: Checkout water_for_coffee_crafter (private)
+        uses: actions/checkout@v4
+        with:
+          repository: jdlehman/water_for_coffee_crafter
+          token: ${{ secrets.APPS_PAT }}
+          path: apps/water_for_coffee_crafter
+        continue-on-error: true
+
+      - name: Build water_for_coffee_crafter
+        working-directory: apps/water_for_coffee_crafter
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            npm run build
+          fi
+          if [ ! -d dist ] && [ -f index.html ]; then
+            mkdir -p dist
+            cp -r index.html dist/ 2>/dev/null || true
+          fi
+
+      - name: Merge water_for_coffee_crafter into hub dist
+        run: |
+          if [ -d apps/water_for_coffee_crafter/dist ]; then
+            mkdir -p dist/water_for_coffee_crafter
+            cp -r apps/water_for_coffee_crafter/dist/* dist/water_for_coffee_crafter/
+            echo "Merged water_for_coffee_crafter -> dist/water_for_coffee_crafter"
+            ls -R dist/water_for_coffee_crafter | head -n 50
+          else
+            echo "No water_for_coffee_crafter build found — keeping hub fallback"
+          fi
+
       # --- Add more apps by duplicating the 3 steps above ---
       # Example:
       # - Checkout jdlehman/another-app -> apps/another-app

@@ -21,6 +21,11 @@ export const apps: AppConfig[] = [
     repo: 'jdlehman/water_drop_bench',
     buildDir: 'dist',
   },
-  // Add more apps here:
-  // { slug: 'another_app', title: 'Another App', description: '...', repo: 'jdlehman/another-app', buildDir: 'dist' },
+  {
+    slug: 'water_for_coffee_crafter',
+    title: 'Water for Coffee Crafter',
+    description: 'Brew water concentrate — Gagné replica, tap → target, single dose. Credit: Jonathan Gagné (Coffee Ad Astra).',
+    repo: 'jdlehman/water_for_coffee_crafter',
+    buildDir: 'dist',
+  },
 ]
