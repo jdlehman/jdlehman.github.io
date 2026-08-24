@@ -13,7 +13,7 @@ This hub (`jdlehman.github.io` → `inlehmansterms.net`) aggregates **private** 
 - [ ] `index.html` has share preview metadata (OG/Twitter) + per-app icons (`favicon.svg`, `apple-touch-icon.png`, `og-image.png`, see §9)
 - [ ] Optional: trigger workflow in private repo to auto-rebuild hub on push
 
-If all boxes are checked, hub's deploy will pull, build, and copy `dist → dist/<slug>` on every `master` push.
+If all boxes are checked, hub's deploy will pull, build, and copy `dist → dist/<slug>` on every `main` push.
 
 ---
 

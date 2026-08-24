@@ -2,7 +2,7 @@ name: Deploy hub to GitHub Pages
 
 on:
   push:
-    branches: [master, main]
+    branches: [main]
   workflow_dispatch:
   repository_dispatch:
     types: [app_updated]
