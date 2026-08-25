@@ -11,6 +11,7 @@ This hub (`jdlehman.github.io` → `inlehmansterms.net`) aggregates **private** 
 - [ ] `vite.config.ts` (if Vite) sets `base: '/<slug>/'`
 - [ ] Added to hub: entry in `src/apps.config.ts` + 3-step block in `.github/workflows/deploy.yml`
 - [ ] `index.html` has share preview metadata (OG/Twitter) + per-app icons (`favicon.svg`, `apple-touch-icon.png`, `og-image.png`, see §9)
+- [ ] `vite.config.ts` has PWA auto-update + cache cleanup so redeploys are live without manual `CACHE` bumps (see §10)
 - [ ] Optional: trigger workflow in private repo to auto-rebuild hub on push
 
 If all boxes are checked, hub's deploy will pull, build, and copy `dist → dist/<slug>` on every `main` push.
@@ -220,6 +221,62 @@ Apps are shared in iMessage, Messenger, Slack, X, etc. Each app's `index.html` *
 * Validate with: [opengraph.xyz](https://www.opengraph.xyz/), [X Card Validator](https://cards-dev.twitter.com/validator), or `curl -s https://inlehmansterms.net/<slug>/ | grep -i og:` after deploy.
 
 Don't rely on the hub fallback `WaterCalculator.tsx` for previews — once the private build overwrites `/<slug>`, only your app's `index.html` metadata is seen.
+
+---
+
+## 10. Offline / PWA & cache — redeploys must go live automatically
+
+GitHub Pages serves HTML with `cache-control: max-age=600` (CDN + browser, cannot be changed).
+Hashed `assets/index-*.js` bust on every build, but `index.html` and a Service Worker can
+serve stale if cached `cache-first`. Do **not** hand-roll `public/sw.js` with a static
+`const CACHE='v1'` + `caches.match||fetch` — that requires a manual bump on every deploy
+and reproduces the bug where clicking from `inlehmansterms.net` shows the old app until
+hard refresh.
+
+**Required for Vite apps (copy-paste):**
+
+```ts
+// vite.config.ts in private repo
+import { VitePWA } from 'vite-plugin-pwa'
+export default defineConfig({
+  base: '/<slug>/',
+  plugins: [
+    VitePWA({
+      registerType: 'autoUpdate', // update SW without waiting for tab close
+      includeAssets: ['favicon.svg', 'og-image.png'],
+      manifest: { /* scope/start_url must be /<slug>/, see §9 */ },
+      workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // only runtime cache for 3rd party (fonts); app shell via precache
+        runtimeCaching: [
+          { urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i, handler: 'CacheFirst', options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60*60*24*365 } } },
+          { urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i, handler: 'CacheFirst', options: { cacheName: 'gstatic-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 60*60*24*365 } } }
+        ]
+      }
+    })
+  ]
+})
+```
+
+Why it works automatically:
+* Workbox `globPatterns` writes content hashes into `dist/sw.js` via `precacheAndRoute([{url:"index.html",revision:"<hash>"},{url:"assets/index-ABC123.js",revision:null}])`. Changing any file changes `sw.js` bytes.
+* Browser checks `sw.js` on every navigation to scope `/<slug>/`; changed bytes → `install` → `skipWaiting`+`clientsClaim` → next navigation serves new precache. No manual `CACHE='v2'` bump.
+* `cleanupOutdatedCaches` deletes old `precache-v*` automatically.
+* `registerType: 'autoUpdate'` registers `/<slug>/sw.js` with periodic update checks (see `src/main.tsx: navigator.serviceWorker.register('/<slug>/sw.js')`).
+
+**Do not:**
+* commit a hand-written `public/sw.js` with a static cache name — delete it when using `vite-plugin-pwa` (it generates `dist/sw.js`).
+* `CacheFirst` the app shell (`/` or `index.html`) — only precache it via `globPatterns`.
+
+**Optional SHA safety net** (only if you want a guarantee even when Workbox misses a file):
+* private repo: add `additionalManifestEntries: process.env.GITHUB_SHA ? [{url:'index.html',revision: process.env.GITHUB_SHA.slice(0,7)}] : undefined` to `workbox`, and have hub's `Build <slug>` step run with `env: { GITHUB_SHA: $(git -C apps/<slug> rev-parse HEAD) }`.
+* hub deploy fallback: `echo "// ${{ github.sha }}" >> apps/<slug>/dist/sw.js` after build — forces `sw.js` to differ every hub deploy, but forces full re-download of precache each time.
+* Prefer content hashes; use SHA fallback only if needed.
+
+Validate after deploy: `curl -s https://inlehmansterms.net/<slug>/sw.js | head` should show `workbox`/`precacheAndRoute`, not `const CACHE='wfc-v1'`.
 
 ---
 

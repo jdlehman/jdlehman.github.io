@@ -57,7 +57,7 @@ jobs:
         run: |
           if [ -f package.json ]; then
             npm ci
-            npm run build
+            APP_SHA=$(git rev-parse HEAD) npm run build
           fi
           # If the app is plain HTML (no build), just copy the repo root
           if [ ! -d dist ] && [ -f index.html ]; then
@@ -90,7 +90,7 @@ jobs:
         run: |
           if [ -f package.json ]; then
             npm ci
-            npm run build
+            APP_SHA=$(git rev-parse HEAD) npm run build
           fi
           if [ ! -d dist ] && [ -f index.html ]; then
             mkdir -p dist
