@@ -108,6 +108,37 @@ jobs:
             echo "No water_for_coffee_crafter build found — keeping hub fallback"
           fi
 
+      - name: Checkout meticulous_profile_builder (private)
+        uses: actions/checkout@v4
+        with:
+          repository: jdlehman/meticulous_profile_builder
+          token: ${{ secrets.APPS_PAT }}
+          path: apps/meticulous_profile_builder
+        continue-on-error: true
+
+      - name: Build meticulous_profile_builder
+        working-directory: apps/meticulous_profile_builder
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            APP_SHA=$(git rev-parse HEAD) npm run build
+          fi
+          if [ ! -d dist ] && [ -f index.html ]; then
+            mkdir -p dist
+            cp -r index.html dist/ 2>/dev/null || true
+          fi
+
+      - name: Merge meticulous_profile_builder into hub dist
+        run: |
+          if [ -d apps/meticulous_profile_builder/dist ]; then
+            mkdir -p dist/meticulous_profile_builder
+            cp -r apps/meticulous_profile_builder/dist/* dist/meticulous_profile_builder/
+            echo "Merged meticulous_profile_builder -> dist/meticulous_profile_builder"
+            ls -R dist/meticulous_profile_builder | head -n 50
+          else
+            echo "No meticulous_profile_builder build found — keeping hub fallback"
+          fi
+
       # --- Add more apps by duplicating the 3 steps above ---
       # Example:
       # - Checkout jdlehman/another-app -> apps/another-app

@@ -15,6 +15,10 @@ const router = createBrowserRouter([
   // legacy alias — keep old link alive
   { path: '/water_calculator', element: <WaterCalculator /> },
   { path: '/water_calculator/*', element: <WaterCalculator /> },
+  { path: '/water_for_coffee_crafter', element: <WaterCalculator /> },
+  { path: '/water_for_coffee_crafter/*', element: <WaterCalculator /> },
+  { path: '/meticulous_profile_builder', element: <WaterCalculator /> },
+  { path: '/meticulous_profile_builder/*', element: <WaterCalculator /> },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

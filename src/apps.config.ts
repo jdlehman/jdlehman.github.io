@@ -28,4 +28,11 @@ export const apps: AppConfig[] = [
     repo: 'jdlehman/water_for_coffee_crafter',
     buildDir: 'dist',
   },
+  {
+    slug: 'meticulous_profile_builder',
+    title: 'Meticulous Profile Builder',
+    description: 'Meticulous espresso profile builder — variables, stages, limits, triggers, interpolation.',
+    repo: 'jdlehman/meticulous_profile_builder',
+    buildDir: 'dist',
+  },
 ]
