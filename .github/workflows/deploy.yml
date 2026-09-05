@@ -145,6 +145,45 @@ jobs:
       # - Build it
       # - cp -r apps/another-app/dist/* dist/another_app/
 
+      - name: Inject GA4 into sub-apps (dynamic — no per-app manual edit needed)
+        run: |
+          GA_ID="G-SC00ZQFH59"
+          # Allow override via secret for rotation without code change
+          if [ -n "${{ secrets.GA_MEASUREMENT_ID }}" ]; then
+            GA_ID="${{ secrets.GA_MEASUREMENT_ID }}"
+          fi
+          echo "Using GA_ID=$GA_ID"
+          for slug in water_drop_bench water_for_coffee_crafter meticulous_profile_builder; do
+            INDEX="dist/$slug/index.html"
+            if [ ! -f "$INDEX" ]; then
+              echo "skip $slug — no $INDEX"
+              continue
+            fi
+            if grep -q "googletagmanager.com/gtag" "$INDEX"; then
+              echo "skip $slug — already has gtag"
+              continue
+            fi
+            if ! grep -q "</head>" "$INDEX"; then
+              echo "warn $slug — no </head> found, skipping injection"
+              continue
+            fi
+            echo "Injecting GA4 $GA_ID into $INDEX"
+            # Use python for safer injection (handles multi-line, preserves encoding)
+            python3 - "$INDEX" "$GA_ID" << 'PY'
+          import sys
+          path, ga_id = sys.argv[1], sys.argv[2]
+          snippet = f'<!-- Google tag (gtag.js) — GA4 auto-injected by hub deploy -->\n<script async src="https://www.googletagmanager.com/gtag/js?id={ga_id}"></script>\n<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag(\'js\',new Date());gtag(\'config\',\'{ga_id}\');</script>\n'
+          with open(path, 'r', encoding='utf-8') as f:
+              html = f.read()
+          html = html.replace('</head>', snippet + '</head>', 1)
+          with open(path, 'w', encoding='utf-8') as f:
+              f.write(html)
+          print(f"injected {ga_id} into {path}")
+          PY
+          done
+          echo "GA injection complete — verify:"
+          grep -l "G-SC00ZQFH59\|googletagmanager" dist/index.html dist/*/index.html 2>/dev/null || echo "no gtag found (hub fallback may not have sub-apps in this build)"
+
       - name: Ensure CNAME
         run: cp public/CNAME dist/CNAME 2>/dev/null || echo "inlehmansterms.net" > dist/CNAME
 

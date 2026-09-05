@@ -12,6 +12,7 @@ This hub (`jdlehman.github.io` → `inlehmansterms.net`) aggregates **private** 
 - [ ] Added to hub: entry in `src/apps.config.ts` + 3-step block in `.github/workflows/deploy.yml`
 - [ ] `index.html` has share preview metadata (OG/Twitter) + per-app icons (`favicon.svg`, `apple-touch-icon.png`, `og-image.png`, see §9)
 - [ ] `vite.config.ts` has PWA auto-update + cache cleanup so redeploys are live without manual `CACHE` bumps (see §10)
+- [ ] Analytics: GA4 `G-SC00ZQFH59` is auto-injected — nothing to do per-app (see §11). Manual snippet only if you deploy the private app outside the hub
 - [ ] Optional: trigger workflow in private repo to auto-rebuild hub on push
 
 If all boxes are checked, hub's deploy will pull, build, and copy `dist → dist/<slug>` on every `main` push.
@@ -277,6 +278,57 @@ Why it works automatically:
 * Prefer content hashes; use SHA fallback only if needed.
 
 Validate after deploy: `curl -s https://inlehmansterms.net/<slug>/sw.js | head` should show `workbox`/`precacheAndRoute`, not `const CACHE='wfc-v1'`.
+
+---
+
+## 11. Analytics — GA4 (auto-injected, no per-app manual edit needed)
+
+**Hub** (`inlehmansterms.net/`): GA4 `G-SC00ZQFH59` is hard-coded in `jdlehman.github.io/index.html`:
+
+```html
+<!-- Google tag (gtag.js) — GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SC00ZQFH59"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SC00ZQFH59');
+</script>
+```
+
+**Sub-apps** (`/water_drop_bench`, `/water_for_coffee_crafter`, `/meticulous_profile_builder`, and any future `<slug>`): **do NOT manually add GA** — the hub's deploy workflow **dynamically injects** the same tag into each `dist/<slug>/index.html` after building/merging.
+
+* How: `.github/workflows/deploy.yml` → `Inject GA4 into sub-apps` runs after all `Merge <slug>` steps. For each slug, if `dist/<slug>/index.html` exists and doesn't already contain `googletagmanager.com/gtag`, it inserts the snippet before `</head>` (python replace, idempotent).
+* Same `GA_ID` as hub (`G-SC00ZQFH59`), override-able without code via repo secret `GA_MEASUREMENT_ID` (set in hub → Settings → Secrets → Actions → `GA_MEASUREMENT_ID` to rotate).
+* If your private app **already** has a `gtag` snippet, injection is skipped — no double pageview.
+* To cover a **new app**, add its slug to the `for slug in ...` list in that step (or change to `for f in dist/*/index.html` to auto-cover all).
+
+**Manual alternative** (only if you deploy your private app *outside* the hub, e.g. standalone preview):
+
+```html
+<head>
+  <!-- Google tag (gtag.js) — GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SC00ZQFH59"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SC00ZQFH59');
+  </script>
+</head>
+```
+
+The hub injector will detect this and skip, so manual + auto don't double-fire.
+
+**Validate after deploy:**
+
+```bash
+curl -s https://inlehmansterms.net/ | grep -q "G-SC00ZQFH59" && echo "hub OK"
+curl -s https://inlehmansterms.net/water_drop_bench/ | grep -q "G-SC00ZQFH59" && echo "bench OK"
+curl -s https://inlehmansterms.net/water_for_coffee_crafter/ | grep -q "G-SC00ZQFH59" && echo "crafter OK"
+```
+
+Why not "dynamic at runtime" via hub JS? Each `inlehmansterms.net/<slug>/` is a **separate HTML document** (copied from the private repo's `dist`), not the hub's SPA — hub JS never runs there. Build-time injection is the only single-source way to keep one GA ID.
 
 ---
 
