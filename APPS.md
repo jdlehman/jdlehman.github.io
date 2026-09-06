@@ -8,12 +8,14 @@ This hub (`jdlehman.github.io` → `inlehmansterms.net`) aggregates **private** 
 - [ ] Static only — no server, no secrets at runtime
 - [ ] `package.json` with `build` script **or** plain `index.html` at repo root
 - [ ] Build outputs to `dist/` (configurable via `src/apps.config.ts` → `buildDir`)
-- [ ] `vite.config.ts` (if Vite) sets `base: '/<slug>/'`
-- [ ] Added to hub: entry in `src/apps.config.ts` + 3-step block in `.github/workflows/deploy.yml`
+- [ ] `vite.config.ts` (if Vite) sets `base: '/<slug>/'` — for unlisted use `base: '/<uuid>/'` where `<uuid>` is the same as the hub secret (see §5)
+- [ ] Added to hub: **public** → entry in `src/apps.config.ts` + 3-step block in `.github/workflows/deploy.yml`; **unlisted** → NO config entry, instead hub secret `*_SLUG` + 4-step block (validate + checkout + build + merge) in `deploy.yml` (see §5)
 - [ ] `index.html` has share preview metadata (OG/Twitter) + per-app icons (`favicon.svg`, `apple-touch-icon.png`, `og-image.png`, see §9)
 - [ ] `vite.config.ts` has PWA auto-update + cache cleanup so redeploys are live without manual `CACHE` bumps (see §10)
 - [ ] Analytics: GA4 `G-SC00ZQFH59` is auto-injected — nothing to do per-app (see §11). Manual snippet only if you deploy the private app outside the hub
-- [ ] Optional: trigger workflow in private repo to auto-rebuild hub on push
+- [ ] Optional: trigger workflow in private repo to auto-rebuild hub on push (see §6)
+
+Public apps appear on the landing page and in `sitemap.xml`; unlisted apps are hidden and served with `noindex` (see §5).
 
 If all boxes are checked, hub's deploy will pull, build, and copy `dist → dist/<slug>` on every `main` push.
 
@@ -116,30 +118,47 @@ my-app/
 
 ### Astro / Next static — same idea, ensure `dist`/`out` and `base`.
 
-## 5. Hub registration
+## 5. Hub registration — public vs unlisted (UUID) apps
+
+This hub supports **unlisted** apps that are not shown on the landing page and not discoverable via `robots.txt`/`sitemap.xml`. They are accessed only via a UUID URL (e.g. `https://inlehmansterms.net/<uuid>/`). The deploy injects `noindex` so search engines don't index them even if the link is shared — obscurity, not auth. `robots.txt` intentionally does NOT contain `Disallow: /<uuid>/` (that would advertise the path).
+
+* **Public** (`visibility: 'public'` or omitted): entry in `src/apps.config.ts`, shown on `/`, in `sitemap.xml`, indexed normally.
+* **Unlisted** (`secret` UUID): **NOT** in `src/apps.config.ts` — slug stored in GitHub Secret (e.g. `RECIPE_VIEWER_SLUG`), hidden from `/`, excluded from `sitemap.xml` and `robots.txt`, served with `<meta name="robots" content="noindex, nofollow, noarchive">`. The UUID never appears in git history or the hub's client JS bundle. Each unlisted app needs its own `<NAME>_SLUG` secret or the deploy fails.
+
+Generate a stable UUID once with `node -e "console.log(crypto.randomUUID())"`, store it as a secret in the **hub** repo (Settings → Secrets → Actions), and never regenerate it (changing it breaks existing links). Use the same UUID as `base: '/<uuid>/'` in the private app's `vite.config.ts`.
 
 Two places in `jdlehman.github.io`:
 
-**a) `src/apps.config.ts`** — drives the landing page:
+**a) `src/apps.config.ts`** — drives the landing page (public only):
 
 ```ts
+// Public — shows on landing, in sitemap
 export const apps: AppConfig[] = [
-  { slug: 'water_calculator', title: 'Water Calculator', description: '...', repo: 'jdlehman/water_calculator', buildDir: 'dist' },
-  { slug: 'my_app', title: 'My App', description: '...', repo: 'jdlehman/my-app', buildDir: 'dist' },
+  { slug: 'water_drop_bench', title: 'Water Drop Bench', description: '...', repo: 'jdlehman/water_drop_bench', buildDir: 'dist', visibility: 'public' },
+  { slug: 'my_app', title: 'My App', description: '...', repo: 'jdlehman/my-app', buildDir: 'dist', visibility: 'public' },
 ]
+// Unlisted apps are NOT here — see (b) below. Their UUIDs are in GitHub Secrets.
 ```
+
+**a2) Unlisted apps — NO entry in `src/apps.config.ts`.** Instead, store the UUID as a hub secret:
+
+- Hub repo → Settings → Secrets → Actions → `RECIPE_VIEWER_SLUG` = `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (generate with `node -e "console.log(crypto.randomUUID())"`)
+- Private app → `vite.config.ts` → `base: '/<same-uuid>/'` (must match the secret)
+
+Each unlisted app gets its own `*_SLUG` secret; deploy fails if any required secret is missing.
 
 **b) `.github/workflows/deploy.yml`** — duplicate the 3-step block:
 
+Public app:
+
 ```yaml
 - name: Checkout my-app (private)
-  if: ${{ secrets.APPS_PAT != '' }}
   uses: actions/checkout@v4
-  with: { repository: jdlehman/my-app, token: ${{ secrets.APPS_PAT }}, path: /tmp/apps/my-app }
+  with: { repository: jdlehman/my-app, token: ${{ secrets.APPS_PAT }}, path: apps/my-app }
   continue-on-error: true
 
 - name: Build my-app
-  working-directory: /tmp/apps/my-app
+  working-directory: apps/my-app
   run: |
     if [ -f package.json ]; then
       npm ci
@@ -152,22 +171,63 @@ export const apps: AppConfig[] = [
 
 - name: Merge my-app into hub dist
   run: |
-    if [ -d /tmp/apps/my-app/dist ]; then
+    if [ -d apps/my-app/dist ]; then
       mkdir -p dist/my_app
-      cp -r /tmp/apps/my-app/dist/* dist/my_app/
+      cp -r apps/my-app/dist/* dist/my_app/
     fi
 ```
+
+Unlisted UUID app (secret `RECIPE_VIEWER_SLUG`):
+
+```yaml
+- name: Validate unlisted slugs (fail if secret missing)
+  run: |
+    if [ -z "${{ secrets.RECIPE_VIEWER_SLUG }}" ]; then echo "ERROR: RECIPE_VIEWER_SLUG not set"; exit 1; fi
+    echo "${{ secrets.RECIPE_VIEWER_SLUG }}" | grep -Eq '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' || (echo "ERROR: RECIPE_VIEWER_SLUG not a UUID"; exit 1)
+
+- name: Checkout recipe_viewer (private, unlisted UUID)
+  uses: actions/checkout@v4
+  with: { repository: jdlehman/recipe_viewer, token: ${{ secrets.APPS_PAT }}, path: apps/recipe_viewer }
+  continue-on-error: true
+
+- name: Build recipe_viewer
+  working-directory: apps/recipe_viewer
+  run: |
+    if [ -f package.json ]; then
+      npm ci
+      APP_SHA=$(git rev-parse HEAD) npm run build
+    fi
+    if [ ! -d dist ] && [ -f index.html ]; then
+      mkdir -p dist
+      cp index.html dist/
+    fi
+
+- name: Merge recipe_viewer into hub dist (unlisted UUID from secret)
+  run: |
+    UUID="${{ secrets.RECIPE_VIEWER_SLUG }}"
+    if [ -z "$UUID" ]; then echo "ERROR: RECIPE_VIEWER_SLUG empty"; exit 1; fi
+    if [ -d apps/recipe_viewer/dist ]; then
+      mkdir -p "dist/$UUID"
+      cp -r apps/recipe_viewer/dist/* "dist/$UUID/"
+    fi
+```
+
+`sitemap.xml` is generated from `src/apps.config.ts` public slugs only. `noindex` is injected into any `dist/*/index.html` whose folder is NOT a public slug (covers all secret UUIDs). Adding a new unlisted app requires only a new `*_SLUG` secret + its 3 deploy steps — no config list to update. GA injection auto-covers all `dist/*/index.html`.
 
 ## 6. Secrets & triggers
 
 * **Hub secret `APPS_PAT`**: PAT (classic) with `repo` scope that can read each private app. Add in `jdlehman.github.io` → Settings → Secrets → Actions → `APPS_PAT`.
 
-* **Auto-rebuild on private push** (optional but nice): copy `.github/workflows/app-trigger-hub.yml.example` into the private repo as `.github/workflows/trigger-hub.yml`, add secret `HUB_PAT` there (PAT that can `POST /repos/jdlehman/jdlehman.github.io/dispatches`). Hub listens on `repository_dispatch: app_updated` + `workflow_dispatch`.
+* **Hub secret `RECIPE_VIEWER_SLUG`** (and any future `*_SLUG` for unlisted apps): UUID for the unlisted path (generate with `node -e "console.log(crypto.randomUUID())"`). Never change it or old links break. Each unlisted app MUST have its secret or hub deploy fails (validated in `deploy.yml`). Also used locally as `VITE_RECIPE_VIEWER_SLUG` in `.env.local` for fallback routes (see `src/main.tsx`). See §5.
+
+* **Hub secret `GA_MEASUREMENT_ID`** (optional): override `G-SC00ZQFH59` without code change.
+
+* **Auto-rebuild on private push** (optional but recommended): copy `.github/workflows/app-trigger-hub.yml.example` into the private repo as `.github/workflows/trigger-hub.yml`, set `app: "recipe_viewer"` (or your app), add secret `HUB_PAT` there (PAT that can `POST /repos/jdlehman/jdlehman.github.io/dispatches`). Hub listens on `repository_dispatch: app_updated` + `workflow_dispatch`. Without this, pushing the private repo does NOT auto-update `inlehmansterms.net` — trigger hub manually via Actions → Deploy hub → Run workflow.
 
 ## 7. Local dev
 
-* **Hub:** `npm ci && npm run dev` → http://localhost:5173 — `src/pages/WaterCalculator.tsx` is a fallback stub until the private build overwrites `/water_calculator`.
-* **Private app:** develop standalone (`npm run dev` in that repo). No hub needed until deploy.
+* **Hub:** `npm ci && npm run dev` → http://localhost:5173 — `src/pages/WaterCalculator.tsx` is a fallback stub until the private build overwrites `/water_calculator`. For secret/unlisted apps, set `VITE_RECIPE_VIEWER_SLUG` in `.env.local` (see `.env.example`, `src/main.tsx`) to get a local fallback route at `http://localhost:5173/<uuid>/` — otherwise the UUID path has no SPA route locally (production uses the static `dist/<uuid>/index.html` directly).
+* **Private app:** develop standalone (`npm run dev` in that repo). No hub needed until deploy. Ensure `vite.config.ts` → `base: '/<uuid>/'` matches the hub secret.
 
 ## 8. What not to do
 
@@ -296,12 +356,12 @@ Validate after deploy: `curl -s https://inlehmansterms.net/<slug>/sw.js | head` 
 </script>
 ```
 
-**Sub-apps** (`/water_drop_bench`, `/water_for_coffee_crafter`, `/meticulous_profile_builder`, and any future `<slug>`): **do NOT manually add GA** — the hub's deploy workflow **dynamically injects** the same tag into each `dist/<slug>/index.html` after building/merging.
+**Sub-apps** (`/water_drop_bench`, `/water_for_coffee_crafter`, `/meticulous_profile_builder`, and any future `<slug>` — including unlisted UUIDs): **do NOT manually add GA** — the hub's deploy workflow **dynamically injects** the same tag into each `dist/<slug>/index.html` after building/merging (loops `dist/*/index.html`).
 
 * How: `.github/workflows/deploy.yml` → `Inject GA4 into sub-apps` runs after all `Merge <slug>` steps. For each slug, if `dist/<slug>/index.html` exists and doesn't already contain `googletagmanager.com/gtag`, it inserts the snippet before `</head>` (python replace, idempotent).
 * Same `GA_ID` as hub (`G-SC00ZQFH59`), override-able without code via repo secret `GA_MEASUREMENT_ID` (set in hub → Settings → Secrets → Actions → `GA_MEASUREMENT_ID` to rotate).
 * If your private app **already** has a `gtag` snippet, injection is skipped — no double pageview.
-* To cover a **new app**, add its slug to the `for slug in ...` list in that step (or change to `for f in dist/*/index.html` to auto-cover all).
+* New public or unlisted apps are auto-covered — no list to maintain (GA loops `dist/*/index.html`).
 
 **Manual alternative** (only if you deploy your private app *outside* the hub, e.g. standalone preview):
 
@@ -334,6 +394,7 @@ Why not "dynamic at runtime" via hub JS? Each `inlehmansterms.net/<slug>/` is a 
 
 ## Quick start for a new app `jdlehman/foo`
 
+### Public app
 
 ```bash
 # 1. create private repo jdlehman/foo, clone to ../foo
@@ -342,8 +403,19 @@ npm create vite@latest . -- --template react-ts
 # edit package.json -> ensure "build": "vite build"
 echo "dist" >> .gitignore
 
-# 2. hub: add to src/apps.config.ts and deploy.yml (see section 5)
+# 2. hub: add to src/apps.config.ts (visibility: 'public') and 3-step block in deploy.yml (see §5)
 # 3. push both repos; hub deploy copies dist/foo -> https://inlehmansterms.net/foo
+```
+
+### Unlisted (secret) app — like `recipe_viewer`
+
+```bash
+# 1. generate UUID: node -e "console.log(crypto.randomUUID())"
+#    hub repo → Settings → Secrets → Actions → RECIPE_VIEWER_SLUG=<uuid>
+#    echo "VITE_RECIPE_VIEWER_SLUG=<uuid>" >> hub/.env.local  # for local fallback
+# 2. create private repo jdlehman/recipe_viewer, vite.config.ts -> base: '/<uuid>/'
+# 3. hub: add 4-step block (validate + checkout + build + merge) in deploy.yml using the secret — NO entry in src/apps.config.ts (see §5)
+# 4. private repo: copy .github/workflows/app-trigger-hub.yml.example → .github/workflows/trigger-hub.yml, add HUB_PAT secret, so pushes auto-trigger hub (see §6)
 ```
 
 Questions? See `README.md` and `.github/workflows/deploy.yml` — they are the source of truth.

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap lists only public apps — unlisted (UUID) apps are intentionally not listed here
+# so they are not discoverable via robots.txt. Unlisted apps serve their own
+# <meta name="robots" content="noindex, nofollow, noarchive"> instead (injected by deploy).
+# Do NOT add Disallow: /<uuid>/ — that would advertise the unlisted path.
+Sitemap: https://inlehmansterms.net/sitemap.xml

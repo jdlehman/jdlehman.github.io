@@ -1,6 +1,8 @@
 import { apps } from '../apps.config'
 
 export default function Landing() {
+  const publicApps = apps.filter((a) => a.visibility !== 'unlisted')
+
   return (
     <div className="min-h-screen bg-white text-zinc-900 antialiased">
       <main className="mx-auto max-w-2xl px-6 pt-24 pb-16">
@@ -11,10 +13,10 @@ export default function Landing() {
         <section>
           <div className="flex items-baseline justify-between mb-5">
             <h1 className="text-[18px] font-[650] tracking-[-0.015em]">Tools</h1>
-            <span className="text-xs text-zinc-400">{apps.length}</span>
+            <span className="text-xs text-zinc-400">{publicApps.length}</span>
           </div>
           <ul className="grid gap-3">
-            {apps.map((app) => (
+            {publicApps.map((app) => (
               <li key={app.slug}>
                 <a
                   href={`/${app.slug}/`}

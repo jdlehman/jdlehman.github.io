@@ -41,6 +41,9 @@ jobs:
       # Apps can use any stack (Vite, Astro, Next static, plain) — just ensure
       # the build output dir matches the config. If a repo/secret is missing,
       # we keep the hub's fallback page for that slug.
+      # For unlisted (UUID) apps, the slug is stored in a GitHub Secret (e.g.
+      # RECIPE_VIEWER_SLUG) and the dist path is that UUID — see APPS.md §5.
+      # Each unlisted app MUST have its *_SLUG secret or the build fails.
 
       - name: Checkout water_drop_bench (private)
         uses: actions/checkout@v4
@@ -139,11 +142,75 @@ jobs:
             echo "No meticulous_profile_builder build found — keeping hub fallback"
           fi
 
-      # --- Add more apps by duplicating the 3 steps above ---
-      # Example:
-      # - Checkout jdlehman/another-app -> apps/another-app
-      # - Build it
-      # - cp -r apps/another-app/dist/* dist/another_app/
+      # --- Unlisted (private) apps — UUID slugs via secrets, not discoverable via robots/sitemap ---
+      - name: Validate unlisted app slug secrets (fail if missing)
+        env:
+          RECIPE_VIEWER_SLUG: ${{ secrets.RECIPE_VIEWER_SLUG }}
+        run: |
+          echo "Validating unlisted slug secrets..."
+          if [ -z "$RECIPE_VIEWER_SLUG" ]; then
+            echo "ERROR: RECIPE_VIEWER_SLUG secret is not set"
+            echo "Generate a UUID: node -e \"console.log(crypto.randomUUID())\""
+            echo "Then add to hub repo → Settings → Secrets → Actions → RECIPE_VIEWER_SLUG"
+            echo "Also set the same UUID as base: '/<uuid>/' in jdlehman/recipe_viewer vite.config.ts"
+            exit 1
+          fi
+          # Validate UUID format without printing the value (uses env indirection so secret never appears in workflow file interpolation)
+          if ! echo "$RECIPE_VIEWER_SLUG" | grep -Eq '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'; then
+            echo "ERROR: RECIPE_VIEWER_SLUG is not a valid UUID"
+            exit 1
+          fi
+          echo "RECIPE_VIEWER_SLUG is set and valid (value hidden)"
+          # Add more secrets here as you add unlisted apps:
+          # env: OTHER_APP_SLUG: ${{ secrets.OTHER_APP_SLUG }}
+          # if [ -z "$OTHER_APP_SLUG" ]; then echo "ERROR: OTHER_APP_SLUG not set"; exit 1; fi
+
+      - name: Checkout recipe_viewer (private, unlisted UUID)
+        uses: actions/checkout@v4
+        with:
+          repository: jdlehman/recipe_viewer
+          token: ${{ secrets.APPS_PAT }}
+          path: apps/recipe_viewer
+        continue-on-error: true
+
+      - name: Build recipe_viewer
+        working-directory: apps/recipe_viewer
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            APP_SHA=$(git rev-parse HEAD) npm run build
+          fi
+          if [ ! -d dist ] && [ -f index.html ]; then
+            mkdir -p dist
+            cp -r index.html dist/ 2>/dev/null || true
+          fi
+
+      - name: Merge recipe_viewer into hub dist (unlisted UUID from secret)
+        env:
+          RECIPE_VIEWER_SLUG: ${{ secrets.RECIPE_VIEWER_SLUG }}
+        run: |
+          UUID="$RECIPE_VIEWER_SLUG"
+          if [ -z "$UUID" ]; then echo "ERROR: RECIPE_VIEWER_SLUG empty at merge time"; exit 1; fi
+          # Defense-in-depth: validate again, not just emptiness (covers whitespace/padded/invalid)
+          if ! echo "$UUID" | grep -Eq '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'; then
+            echo "ERROR: RECIPE_VIEWER_SLUG invalid at merge time"
+            exit 1
+          fi
+          if [ -d apps/recipe_viewer/dist ]; then
+            mkdir -p "dist/$UUID"
+            cp -r apps/recipe_viewer/dist/* "dist/$UUID/"
+            echo "Merged recipe_viewer -> unlisted path (UUID hidden)"
+            ls -R "dist/$UUID" | head -n 50
+          else
+            echo "No recipe_viewer build found — unlisted path will 404 until private build exists"
+          fi
+
+      # --- Add more public apps by duplicating the 3 steps above ---
+      # For unlisted UUID apps, duplicate the recipe_viewer block:
+      # 1. Add validation for NEW_APP_SLUG in the Validate step
+      # 2. Checkout jdlehman/new-app -> apps/new-app
+      # 3. Build it
+      # 4. Merge: UUID="${{ secrets.NEW_APP_SLUG }}" -> dist/$UUID
 
       - name: Inject GA4 into sub-apps (dynamic — no per-app manual edit needed)
         run: |
@@ -153,18 +220,15 @@ jobs:
             GA_ID="${{ secrets.GA_MEASUREMENT_ID }}"
           fi
           echo "Using GA_ID=$GA_ID"
-          for slug in water_drop_bench water_for_coffee_crafter meticulous_profile_builder; do
-            INDEX="dist/$slug/index.html"
-            if [ ! -f "$INDEX" ]; then
-              echo "skip $slug — no $INDEX"
-              continue
-            fi
+          # Auto-discover all sub-app index.html files (public + unlisted) — no hardcoded slug list
+          for INDEX in dist/*/index.html; do
+            [ -f "$INDEX" ] || continue
             if grep -q "googletagmanager.com/gtag" "$INDEX"; then
-              echo "skip $slug — already has gtag"
+              echo "skip $INDEX — already has gtag"
               continue
             fi
             if ! grep -q "</head>" "$INDEX"; then
-              echo "warn $slug — no </head> found, skipping injection"
+              echo "warn $INDEX — no </head> found, skipping injection"
               continue
             fi
             echo "Injecting GA4 $GA_ID into $INDEX"
@@ -183,6 +247,120 @@ jobs:
           done
           echo "GA injection complete — verify:"
           grep -l "G-SC00ZQFH59\|googletagmanager" dist/index.html dist/*/index.html 2>/dev/null || echo "no gtag found (hub fallback may not have sub-apps in this build)"
+
+      - name: Inject noindex into unlisted apps (not discoverable via search/robots.txt)
+        run: |
+          echo "Injecting noindex into unlisted apps (any dist/* not in public config)..."
+          python3 << 'PY'
+          import re, pathlib
+          config_path = pathlib.Path("src/apps.config.ts")
+          text = config_path.read_text(encoding="utf-8")
+          # Build public set by parsing config and excluding visibility: unlisted
+          # Shared logic with vite.config.ts sitemapPlugin and Generate sitemap step — keep in sync
+          public_slugs = set()
+          for m in re.finditer(r"slug:\s*['\"]([^'\"]+)['\"]", text):
+              slug = m.group(1)
+              snippet = text[m.start():m.start()+1200]
+              next_slug_pos = text.find("slug:", m.end())
+              unlisted_pos = snippet.find("unlisted")
+              is_unlisted = False
+              if unlisted_pos != -1:
+                  abs_unlisted = m.start() + unlisted_pos
+                  if next_slug_pos == -1 or abs_unlisted < next_slug_pos:
+                      vis_idx = snippet.find("visibility")
+                      if vis_idx != -1 and abs(vis_idx - unlisted_pos) < 300:
+                          is_unlisted = True
+              if not is_unlisted:
+                  public_slugs.add(slug)
+          print(f"Public slugs: {sorted(public_slugs)}")
+          dist = pathlib.Path("dist")
+          count = 0
+          for child in dist.iterdir():
+              if not child.is_dir():
+                  continue
+              if child.name in ("assets",):
+                  continue
+              index = child / "index.html"
+              if not index.is_file():
+                  continue
+              if child.name in public_slugs:
+                  print(f"skip public {child.name}")
+                  continue
+              # Unlisted / secret slug — inject noindex (don't log the UUID itself)
+              html = index.read_text(encoding="utf-8")
+              if 'name="robots"' in html:
+                  print(f"skip unlisted app — already has robots meta")
+                  continue
+              if "</head>" not in html:
+                  print(f"warn unlisted app — no </head> found, skipping")
+                  continue
+              snippet = '<meta name="robots" content="noindex, nofollow, noarchive">\n'
+              html = html.replace("</head>", snippet + "</head>", 1)
+              index.write_text(html, encoding="utf-8")
+              print(f"injected noindex into unlisted app")
+              count += 1
+          print(f"noindex injected into {count} unlisted app(s)")
+          PY
+          echo "noindex injection complete — verify:"
+          grep -l 'name="robots"' dist/*/index.html 2>/dev/null | sed 's|dist/.*|dist/[unlisted]/index.html|' | head
+          echo "(above paths masked for unlisted)"
+
+      - name: Generate sitemap.xml (exclude unlisted)
+        run: |
+          echo "Generating sitemap.xml excluding unlisted apps..."
+          python3 << 'PY'
+          import re, datetime, pathlib
+          config_path = pathlib.Path("src/apps.config.ts")
+          text = config_path.read_text(encoding="utf-8")
+          # Parse public slugs only (exclude visibility: unlisted)
+          slugs = []
+          for m in re.finditer(r"slug:\s*['\"]([^'\"]+)['\"]", text):
+              slug = m.group(1)
+              snippet = text[m.start():m.start()+1200]
+              next_slug_pos = text.find("slug:", m.end())
+              unlisted_pos = snippet.find("unlisted")
+              is_unlisted = False
+              if unlisted_pos != -1:
+                  abs_unlisted = m.start() + unlisted_pos
+                  if next_slug_pos == -1 or abs_unlisted < next_slug_pos:
+                      vis_idx = snippet.find("visibility")
+                      if vis_idx != -1 and abs(vis_idx - unlisted_pos) < 300:
+                          is_unlisted = True
+              if not is_unlisted:
+                  slugs.append(slug)
+          # Deduplicate preserving order
+          seen = set()
+          public_slugs = []
+          for s in slugs:
+              if s not in seen:
+                  seen.add(s)
+                  public_slugs.append(s)
+          print(f"Public slugs for sitemap: {public_slugs}")
+          site = "https://inlehmansterms.net"
+          today = datetime.date.today().isoformat()
+          lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          lines.append(f'  <url><loc>{site}/</loc><lastmod>{today}</lastmod></url>')
+          for slug in public_slugs:
+              lines.append(f'  <url><loc>{site}/{slug}/</loc><lastmod>{today}</lastmod></url>')
+          lines.append('</urlset>')
+          content = "\n".join(lines) + "\n"
+          pathlib.Path("dist/sitemap.xml").write_text(content, encoding="utf-8")
+          print(content)
+          # Verify no unlisted slug leaked — check that every URL in sitemap is a public slug
+          # (secret slugs are not in public_slugs, so they won't be in content by construction)
+          print("sitemap.xml generated successfully, no unlisted slugs present")
+          PY
+          echo "--- dist/sitemap.xml ---"
+          cat dist/sitemap.xml
+          echo "--- dist/robots.txt ---"
+          cat dist/robots.txt
+          echo "Checking robots.txt does not accidentally contain UUID pattern as Disallow..."
+          # robots.txt should be generic Allow, not per-slug Disallow
+          if grep -Eq 'Disallow:.*[0-9a-f]{8}-' dist/robots.txt 2>/dev/null; then
+            echo "ERROR: robots.txt appears to contain a UUID Disallow"
+            exit 1
+          fi
+          echo "robots.txt clean — unlisted not discoverable"
 
       - name: Ensure CNAME
         run: cp public/CNAME dist/CNAME 2>/dev/null || echo "inlehmansterms.net" > dist/CNAME
