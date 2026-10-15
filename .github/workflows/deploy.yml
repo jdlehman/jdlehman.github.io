@@ -142,6 +142,37 @@ jobs:
             echo "No meticulous_profile_builder build found — keeping hub fallback"
           fi
 
+      - name: Checkout midi_studio (private)
+        uses: actions/checkout@v4
+        with:
+          repository: jdlehman/midi_studio
+          token: ${{ secrets.APPS_PAT }}
+          path: apps/midi_studio
+        continue-on-error: true
+
+      - name: Build midi_studio
+        working-directory: apps/midi_studio
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            APP_SHA=$(git rev-parse HEAD) npm run build
+          fi
+          if [ ! -d dist ] && [ -f index.html ]; then
+            mkdir -p dist
+            cp -r index.html dist/ 2>/dev/null || true
+          fi
+
+      - name: Merge midi_studio into hub dist
+        run: |
+          if [ -d apps/midi_studio/dist ]; then
+            mkdir -p dist/midi_studio
+            cp -r apps/midi_studio/dist/* dist/midi_studio/
+            echo "Merged midi_studio -> dist/midi_studio"
+            ls -R dist/midi_studio | head -n 50
+          else
+            echo "No midi_studio build found — keeping hub fallback"
+          fi
+
       # --- Unlisted (private) apps — UUID slugs via secrets, not discoverable via robots/sitemap ---
       - name: Validate unlisted app slug secrets (fail if missing)
         env:

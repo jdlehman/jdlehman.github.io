@@ -5,6 +5,10 @@
 
 export type AppVisibility = 'public' | 'unlisted'
 
+// Landing page headings, in the order they are shown. Each app in `apps` names one as its `section`.
+export const sections = ['Coffee', 'Music'] as const
+export type Section = (typeof sections)[number]
+
 export interface AppConfig {
   slug: string // URL path: /<slug> — for private apps use a UUID (e.g. '550e8400-e29b-41d4-a716-446655440000') so the URL is unguessable
   title: string
@@ -17,6 +21,7 @@ export interface AppConfig {
   // 'unlisted' => hidden from landing, excluded from sitemap/robots discovery, served with noindex.
   // The page is still accessible to anyone with the UUID link — obscurity, not auth.
   visibility?: AppVisibility
+  section: Section // the landing page heading it is listed under
 }
 
 export const apps: AppConfig[] = [
@@ -27,6 +32,7 @@ export const apps: AppConfig[] = [
     repo: 'jdlehman/water_drop_bench',
     buildDir: 'dist',
     visibility: 'public',
+    section: 'Coffee',
   },
   {
     slug: 'water_for_coffee_crafter',
@@ -35,6 +41,7 @@ export const apps: AppConfig[] = [
     repo: 'jdlehman/water_for_coffee_crafter',
     buildDir: 'dist',
     visibility: 'public',
+    section: 'Coffee',
   },
   {
     slug: 'meticulous_profile_builder',
@@ -43,6 +50,16 @@ export const apps: AppConfig[] = [
     repo: 'jdlehman/meticulous_profile_builder',
     buildDir: 'dist',
     visibility: 'public',
+    section: 'Coffee',
+  },
+  {
+    slug: 'midi_studio',
+    title: 'MIDI Studio',
+    description: 'Record from a MIDI keyboard and see the score as you play. Fix notes by playing them again; export MIDI or MusicXML.',
+    repo: 'jdlehman/midi_studio',
+    buildDir: 'dist',
+    visibility: 'public',
+    section: 'Music',
   },
   // Note: Unlisted (UUID) apps like recipe_viewer are NOT listed here.
   // Their slugs are stored in GitHub Secrets (e.g. RECIPE_VIEWER_SLUG) and

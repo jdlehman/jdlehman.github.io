@@ -9,7 +9,7 @@ This hub (`jdlehman.github.io` → `inlehmansterms.net`) aggregates **private** 
 - [ ] `package.json` with `build` script **or** plain `index.html` at repo root
 - [ ] Build outputs to `dist/` (configurable via `src/apps.config.ts` → `buildDir`)
 - [ ] `vite.config.ts` (if Vite) sets `base: '/<slug>/'` — for unlisted use `base: '/<uuid>/'` where `<uuid>` is the same as the hub secret (see §5)
-- [ ] Added to hub: **public** → entry in `src/apps.config.ts` + 3-step block in `.github/workflows/deploy.yml`; **unlisted** → NO config entry, instead hub secret `*_SLUG` + 4-step block (validate + checkout + build + merge) in `deploy.yml` (see §5)
+- [ ] Added to hub: **public** → entry in `src/apps.config.ts` (with its landing page `section`) + 3-step block in `.github/workflows/deploy.yml`; **unlisted** → NO config entry, instead hub secret `*_SLUG` + 4-step block (validate + checkout + build + merge) in `deploy.yml` (see §5)
 - [ ] `index.html` has share preview metadata (OG/Twitter) + per-app icons (`favicon.svg`, `apple-touch-icon.png`, `og-image.png`, see §9)
 - [ ] `vite.config.ts` has PWA auto-update + cache cleanup so redeploys are live without manual `CACHE` bumps (see §10)
 - [ ] Analytics: GA4 `G-SC00ZQFH59` is auto-injected — nothing to do per-app (see §11). Manual snippet only if you deploy the private app outside the hub
@@ -134,8 +134,8 @@ Two places in `jdlehman.github.io`:
 ```ts
 // Public — shows on landing, in sitemap
 export const apps: AppConfig[] = [
-  { slug: 'water_drop_bench', title: 'Water Drop Bench', description: '...', repo: 'jdlehman/water_drop_bench', buildDir: 'dist', visibility: 'public' },
-  { slug: 'my_app', title: 'My App', description: '...', repo: 'jdlehman/my-app', buildDir: 'dist', visibility: 'public' },
+  { slug: 'water_drop_bench', title: 'Water Drop Bench', description: '...', repo: 'jdlehman/water_drop_bench', buildDir: 'dist', visibility: 'public', section: 'Coffee' },
+  { slug: 'my_app', title: 'My App', description: '...', repo: 'jdlehman/my-app', buildDir: 'dist', visibility: 'public', section: 'Music' },
 ]
 // Unlisted apps are NOT here — see (b) below. Their UUIDs are in GitHub Secrets.
 ```
