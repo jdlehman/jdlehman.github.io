@@ -118,9 +118,29 @@ my-app/
 
 ### Astro / Next static — same idea, ensure `dist`/`out` and `base`.
 
-## 5. Hub registration — public vs unlisted (UUID) apps
+## 5. Hub registration — public, unlisted and secret apps
 
-This hub supports **unlisted** apps that are not shown on the landing page and not discoverable via `robots.txt`/`sitemap.xml`. They are accessed only via a UUID URL (e.g. `https://inlehmansterms.net/<uuid>/`). The deploy injects `noindex` so search engines don't index them even if the link is shared — obscurity, not auth. `robots.txt` intentionally does NOT contain `Disallow: /<uuid>/` (that would advertise the path).
+There are three kinds of app:
+
+| Kind | URL | On the landing page / sitemap | Search engines | Analytics | Where it's configured |
+|---|---|---|---|---|---|
+| **Public** | `/<slug>/` | yes | indexed | GA4 | `src/apps.config.ts` + `deploy.yml` |
+| **Unlisted** | readable `/<slug>/`, e.g. `/recipes/` | no | `noindex` | none | `deploy.yml` only |
+| **Secret** | `/<uuid>/` from a hub secret | no | `noindex` | none | hub secret `<NAME>_SLUG` + `deploy.yml` |
+
+Unlisted and secret apps are both left out of `src/apps.config.ts` (so the slug is not in the hub's
+client bundle), the sitemap and `robots.txt`, and get `<meta name="robots" content="noindex, nofollow, noarchive">`
+injected. In `deploy.yml`, their merge step writes a `.unlisted` marker file into the app folder so
+analytics is skipped (their URLs can carry private data, e.g. recipe_viewer's `#pair=` links); the
+markers are deleted before upload. A secret app's path is only as private as the people you share the
+link with; an unlisted app's path is guessable. Neither is authentication.
+
+recipe_viewer is **unlisted** at `/recipes/`. It used to be secret at `/<RECIPE_VIEWER_SLUG>/`; that
+path now holds only a redirect to `/recipes/` and a service worker that retires installed copies.
+
+### Secret (UUID) apps
+
+This hub supports **secret** apps that are not shown on the landing page and not discoverable via `robots.txt`/`sitemap.xml`. They are accessed only via a UUID URL (e.g. `https://inlehmansterms.net/<uuid>/`). The deploy injects `noindex` so search engines don't index them even if the link is shared — obscurity, not auth. `robots.txt` intentionally does NOT contain `Disallow: /<uuid>/` (that would advertise the path).
 
 * **Public** (`visibility: 'public'` or omitted): entry in `src/apps.config.ts`, shown on `/`, in `sitemap.xml`, indexed normally.
 * **Unlisted** (`secret` UUID): **NOT** in `src/apps.config.ts` — slug stored in GitHub Secret (e.g. `RECIPE_VIEWER_SLUG`), hidden from `/`, excluded from `sitemap.xml` and `robots.txt`, served with `<meta name="robots" content="noindex, nofollow, noarchive">`. The UUID never appears in git history or the hub's client JS bundle. Each unlisted app needs its own `<NAME>_SLUG` secret or the deploy fails.

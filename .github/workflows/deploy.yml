@@ -216,25 +216,46 @@ jobs:
             cp -r index.html dist/ 2>/dev/null || true
           fi
 
-      - name: Merge recipe_viewer into hub dist (unlisted UUID from secret)
+      - name: Merge recipe_viewer into hub dist (unlisted at /recipes/)
+        run: |
+          if [ -d apps/recipe_viewer/dist ]; then
+            mkdir -p dist/recipes
+            cp -r apps/recipe_viewer/dist/* dist/recipes/
+            touch dist/recipes/.unlisted   # marker: no analytics, noindex; removed before upload
+            echo "Merged recipe_viewer -> /recipes/ (unlisted)"
+          else
+            echo "No recipe_viewer build found — /recipes/ will 404 until private build exists"
+          fi
+
+      - name: Redirect recipe_viewer's old secret URL to /recipes/
         env:
           RECIPE_VIEWER_SLUG: ${{ secrets.RECIPE_VIEWER_SLUG }}
         run: |
+          # The app used to live at /<uuid>/. Keep that address working: send visitors (with any
+          # #pair= link intact) to /recipes/, and retire the old service worker so installed
+          # copies stop serving the cached app from the old path.
           UUID="$RECIPE_VIEWER_SLUG"
-          if [ -z "$UUID" ]; then echo "ERROR: RECIPE_VIEWER_SLUG empty at merge time"; exit 1; fi
-          # Defense-in-depth: validate again, not just emptiness (covers whitespace/padded/invalid)
           if ! echo "$UUID" | grep -Eq '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'; then
-            echo "ERROR: RECIPE_VIEWER_SLUG invalid at merge time"
-            exit 1
+            echo "ERROR: RECIPE_VIEWER_SLUG missing or invalid"; exit 1
           fi
-          if [ -d apps/recipe_viewer/dist ]; then
-            mkdir -p "dist/$UUID"
-            cp -r apps/recipe_viewer/dist/* "dist/$UUID/"
-            echo "Merged recipe_viewer -> unlisted path (UUID hidden)"
-            ls -R "dist/$UUID" | head -n 50
-          else
-            echo "No recipe_viewer build found — unlisted path will 404 until private build exists"
-          fi
+          mkdir -p "dist/$UUID"
+          cat > "dist/$UUID/index.html" << 'HTML'
+          <!doctype html>
+          <html><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow, noarchive">
+          <title>Recipes</title>
+          <script>location.replace('/recipes/' + location.search + location.hash)</script>
+          </head><body><a href="/recipes/">Recipes have moved</a></body></html>
+          HTML
+          cat > "dist/$UUID/sw.js" << 'JS'
+          self.addEventListener('install', () => self.skipWaiting())
+          self.addEventListener('activate', (e) => e.waitUntil((async () => {
+            await self.registration.unregister()
+            for (const c of await self.clients.matchAll({ type: 'window' })) c.navigate('/recipes/' + new URL(c.url).hash)
+          })()))
+          JS
+          sed -i 's/^          //' "dist/$UUID/index.html" "dist/$UUID/sw.js"
+          touch "dist/$UUID/.unlisted"
+          echo "Old recipe_viewer URL now redirects to /recipes/ (UUID hidden)"
 
       # --- Add more public apps by duplicating the 3 steps above ---
       # For unlisted UUID apps, duplicate the recipe_viewer block:
@@ -254,6 +275,11 @@ jobs:
           # Auto-discover all sub-app index.html files (public + unlisted) — no hardcoded slug list
           for INDEX in dist/*/index.html; do
             [ -f "$INDEX" ] || continue
+            # Hidden apps (marked .unlisted) get no analytics: their URLs can carry private data.
+            if [ -f "$(dirname "$INDEX")/.unlisted" ]; then
+              echo "skip unlisted app — no analytics"
+              continue
+            fi
             if grep -q "googletagmanager.com/gtag" "$INDEX"; then
               echo "skip $INDEX — already has gtag"
               continue
@@ -392,6 +418,9 @@ jobs:
             exit 1
           fi
           echo "robots.txt clean — unlisted not discoverable"
+
+      - name: Remove unlisted markers
+        run: find dist -maxdepth 2 -name .unlisted -delete
 
       - name: Ensure CNAME
         run: cp public/CNAME dist/CNAME 2>/dev/null || echo "inlehmansterms.net" > dist/CNAME
