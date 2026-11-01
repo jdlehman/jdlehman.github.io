@@ -173,6 +173,27 @@ jobs:
             echo "No midi_studio build found — keeping hub fallback"
           fi
 
+      # Songwriter: unlisted at /songwriter/ (not on the landing page, noindex, no analytics).
+      # It lives in the midi_studio repo (apps/songwriter, an npm workspace), so it reuses that
+      # checkout and its npm ci from the steps above.
+      - name: Build songwriter (from midi_studio)
+        working-directory: apps/midi_studio
+        run: |
+          if [ -f apps/songwriter/package.json ]; then
+            APP_SHA=$(git rev-parse HEAD) npm run build -w apps/songwriter
+          fi
+
+      - name: Merge songwriter into hub dist (unlisted at /songwriter/)
+        run: |
+          if [ -d apps/midi_studio/apps/songwriter/dist ]; then
+            mkdir -p dist/songwriter
+            cp -r apps/midi_studio/apps/songwriter/dist/* dist/songwriter/
+            touch dist/songwriter/.unlisted   # marker: no analytics, noindex; removed before upload
+            echo "Merged songwriter -> /songwriter/ (unlisted)"
+          else
+            echo "No songwriter build found — /songwriter/ will 404 until midi_studio main has it"
+          fi
+
       # --- Unlisted (private) apps — UUID slugs via secrets, not discoverable via robots/sitemap ---
       - name: Validate unlisted app slug secrets (fail if missing)
         env:

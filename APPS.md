@@ -135,6 +135,8 @@ analytics is skipped (their URLs can carry private data, e.g. recipe_viewer's `#
 markers are deleted before upload. A secret app's path is only as private as the people you share the
 link with; an unlisted app's path is guessable. Neither is authentication.
 
+Songwriter is **unlisted** at `/songwriter/`, built from the midi_studio repo (`apps/songwriter`). New apps start unlisted until they are ready to share, then get an entry in `src/apps.config.ts` to become public.
+
 recipe_viewer is **unlisted** at `/recipes/`. It used to be secret at `/<RECIPE_VIEWER_SLUG>/`; that
 path now holds only a redirect to `/recipes/` and a service worker that retires installed copies.
 
