@@ -28,7 +28,7 @@ export const apps: AppConfig[] = [
   {
     slug: 'water_drop_bench',
     title: 'Water Drop Bench',
-    description: 'Drop Bench — Coffee Water Lab. GH/KH drops, JL Water 58/27 Aviary base, share links.',
+    description: 'Mix coffee brewing water from mineral drops. Pick a recipe or set your own hardness, and it tells you how many drops of each to add.',
     repo: 'jdlehman/water_drop_bench',
     buildDir: 'dist',
     visibility: 'public',
@@ -37,7 +37,7 @@ export const apps: AppConfig[] = [
   {
     slug: 'water_for_coffee_crafter',
     title: 'Water for Coffee Crafter',
-    description: 'Brew water concentrate — Gagné replica, tap → target, single dose. Credit: Jonathan Gagné (Coffee Ad Astra).',
+    description: 'Jonathan Gagné’s brew water spreadsheet as an app: start from your tap water and a target, and get the grams of each salt for a concentrate.',
     repo: 'jdlehman/water_for_coffee_crafter',
     buildDir: 'dist',
     visibility: 'public',
@@ -46,7 +46,7 @@ export const apps: AppConfig[] = [
   {
     slug: 'meticulous_profile_builder',
     title: 'Meticulous Profile Builder',
-    description: 'Meticulous espresso profile builder — variables, stages, limits, triggers, interpolation.',
+    description: 'Design espresso profiles for the Meticulous machine on a chart, and import or export them as Meticulous JSON.',
     repo: 'jdlehman/meticulous_profile_builder',
     buildDir: 'dist',
     visibility: 'public',
@@ -55,8 +55,27 @@ export const apps: AppConfig[] = [
   {
     slug: 'midi_studio',
     title: 'MIDI Studio',
-    description: 'Record from a MIDI keyboard and see the score as you play. Fix notes by playing them again; export MIDI or MusicXML.',
+    description: 'Play a MIDI keyboard and watch it become sheet music. Fix a wrong note by playing it again, then export MIDI or MusicXML.',
     repo: 'jdlehman/midi_studio',
+    buildDir: 'dist',
+    visibility: 'public',
+    section: 'Music',
+  },
+  {
+    slug: 'sectional',
+    title: 'Sectional',
+    description: 'Learn your part in a choir piece. Hear it alone or with the others, slow it down, step through it note by note, and sing it to see which notes were off.',
+    repo: 'jdlehman/midi_studio', // apps/sectional, built with midi_studio in deploy.yml
+    buildDir: 'apps/sectional/dist',
+    visibility: 'public',
+    section: 'Music',
+  },
+  {
+    slug: 'score-reader',
+    title: 'Score Reader',
+    description: 'Turn a PDF or photos of sheet music into a MusicXML file, in your browser, for Sectional or a notation program.',
+    // not built here: a public AGPL repo with its own Pages workflow, served at /score-reader/ (APPS.md §5)
+    repo: 'jdlehman/score-reader',
     buildDir: 'dist',
     visibility: 'public',
     section: 'Music',

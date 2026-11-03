@@ -194,8 +194,8 @@ jobs:
             echo "No songwriter build found — /songwriter/ will 404 until midi_studio main has it"
           fi
 
-      # Sectional: unlisted at /sectional/ (not on the landing page, noindex, no analytics).
-      # Also in the midi_studio repo (apps/sectional), reusing that checkout and its npm ci.
+      # Sectional: public at /sectional/ (in apps.config.ts). Also in the midi_studio repo
+      # (apps/sectional), reusing that checkout and its npm ci.
       - name: Build sectional (from midi_studio)
         working-directory: apps/midi_studio
         run: |
@@ -203,13 +203,12 @@ jobs:
             APP_SHA=$(git rev-parse HEAD) npm run build -w apps/sectional
           fi
 
-      - name: Merge sectional into hub dist (unlisted at /sectional/)
+      - name: Merge sectional into hub dist (/sectional/)
         run: |
           if [ -d apps/midi_studio/apps/sectional/dist ]; then
             mkdir -p dist/sectional
             cp -r apps/midi_studio/apps/sectional/dist/* dist/sectional/
-            touch dist/sectional/.unlisted   # marker: no analytics, noindex; removed before upload
-            echo "Merged sectional -> /sectional/ (unlisted)"
+            echo "Merged sectional -> /sectional/"
           else
             echo "No sectional build found — /sectional/ will 404 until midi_studio main has it"
           fi
