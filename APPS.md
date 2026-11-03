@@ -137,6 +137,8 @@ link with; an unlisted app's path is guessable. Neither is authentication.
 
 Songwriter is **unlisted** at `/songwriter/` and Sectional at `/sectional/`, both built from the midi_studio repo (`apps/songwriter`, `apps/sectional`). New apps start unlisted until they are ready to share, then get an entry in `src/apps.config.ts` to become public.
 
+Score reader is **unlisted** at `/score-reader/`, but the hub doesn't build it. It is a **public** repo (`jdlehman/score-reader`, AGPL, because it runs Audiveris) with its own GitHub Pages workflow, and GitHub serves a project site of this account under the hub's domain, at `/<repo>/`. Its page has its own `noindex` and no analytics. Don't add a `score-reader` folder to the hub: it would clash with the project site. Keep the AGPL code out of the hub and out of the private repos; Sectional only links to it and opens the `.mxl` files it saves.
+
 recipe_viewer is **unlisted** at `/recipes/`. It used to be secret at `/<RECIPE_VIEWER_SLUG>/`; that
 path now holds only a redirect to `/recipes/` and a service worker that retires installed copies.
 
